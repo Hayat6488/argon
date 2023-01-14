@@ -16,8 +16,10 @@
 */
 // nodejs library that concatenates classes
 import classnames from "classnames";
+import { signOut } from "firebase/auth";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 // reactstrap components
 import {
   Collapse,
@@ -42,6 +44,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { auth } from "../../Firebase/firebase.config";
 
 function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
   // function that on mobile devices makes the search open
@@ -70,6 +73,17 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
       document.body.classList.remove("g-navbar-search-hidden");
     }, 500);
   };
+
+  const history = useHistory();
+
+
+  const logOut = () => {
+    signOut(auth)
+      .then(result => {
+        history.push('/home')
+      })
+      .catch(error => console.error('error: ', error))
+  }
 
   return (
     <>
@@ -442,8 +456,10 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                     href="#pablo"
                     onClick={(e) => e.preventDefault()}
                   >
-                    <i className="ni ni-user-run" />
-                    <span>Logout</span>
+                    <button onClick={logOut} className="border-0 btn btn-outline-light">
+                      <i className="ni ni-user-run" />
+                      <span>Logout</span>
+                    </button>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -456,7 +472,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
 }
 
 AdminNavbar.defaultProps = {
-  toggleSidenav: () => {},
+  toggleSidenav: () => { },
   sidenavOpen: false,
   theme: "dark",
 };
