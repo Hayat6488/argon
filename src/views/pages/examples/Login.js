@@ -20,7 +20,8 @@ import classnames from "classnames";
 // reactstrap components
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../../../Firebase/firebase.config"
+import { auth } from "../../../Firebase/firebase.config";
+
 
 import {
   Button,
@@ -39,10 +40,11 @@ import {
 } from "reactstrap";
 // core components
 import AuthHeader from "components/Headers/AuthHeader.js";
-import app from "Firebase/firebase.config";;
+import { useHistory } from "react-router-dom";
 
 
 const Login = () => {
+  const history = useHistory();
   const [user, setUser] = React.useState(null);
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
@@ -57,8 +59,9 @@ const Login = () => {
     .then(result => {
       console.log(result);
       const user = result.user;
-      console.log(user);
       setUser(user);
+      console.log(history);
+      history.push("/admin/dashboard");
   })
   .catch(error => console.error('error: ', error))
 

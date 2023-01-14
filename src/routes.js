@@ -1,18 +1,17 @@
 
 import Charts from "views/pages/Charts.js";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
-import Login from "views/pages/examples/Login.js";
 import Register from "views/pages/examples/Register.js";
 import Tables from "views/pages/tables/Tables.js";
 
-import HomePage from "views/pages/front/HomePage";
+import Login from "views/pages/examples/Login";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     icon: "ni ni-archive-2 text-green",
-    component: HomePage,
+    component: Login,
     layout: "/home",
   },
   {
