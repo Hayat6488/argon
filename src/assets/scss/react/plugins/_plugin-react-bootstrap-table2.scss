@@ -6,9 +6,6 @@
   th{
     color: $gray-600;
     background-color: $gray-100;
-    &.sortable{
-      position: relative;
-    }
   }
   .order-4,.caret-4-asc,.caret-4-desc{
     &:after{

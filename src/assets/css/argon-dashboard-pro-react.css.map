@@ -170,7 +170,6 @@
 		"../scss/core/shortcuts/_shortcut.scss",
 		"../scss/core/tables/_table.scss",
 		"../scss/core/tables/_table-actions.scss",
-		"../scss/core/tables/_table-sortable.scss",
 		"../scss/core/timeline/_timeline.scss",
 		"../scss/core/type/_type.scss",
 		"../scss/core/type/_article.scss",

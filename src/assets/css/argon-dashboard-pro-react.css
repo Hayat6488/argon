@@ -27104,9 +27104,6 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
   color: #8898aa;
   background-color: #f6f9fc;
 }
-.react-bootstrap-table th.sortable {
-  position: relative;
-}
 
 .react-bootstrap-table .order-4:after,
 .react-bootstrap-table .caret-4-asc:after,
