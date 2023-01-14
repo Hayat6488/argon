@@ -61,14 +61,14 @@ const routes = [
         miniName: "L",
         component: Login,
         layout: "/auth",
+      },
+      {
+        path: "/register",
+        name: "Register",
+        miniName: "R",
+        component: Register,
+        layout: "/auth",
       }
-      // {
-      //   path: "/register",
-      //   name: "Register",
-      //   miniName: "R",
-      //   component: Register,
-      //   layout: "/auth",
-      // }
     ],
   },
   {
