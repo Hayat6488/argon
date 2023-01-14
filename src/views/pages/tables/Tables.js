@@ -1,19 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard PRO React - v1.2.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 // reactstrap components
 import {
@@ -40,68 +24,54 @@ import {
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 
-//connecting firebase db
+import { onSnapshot, collection, query, updateDoc, doc } from "firebase/firestore";
 
-import {
-  doc,
-  onSnapshot,
-  updateDoc,
-  setDoc,
-  deleteDoc,
-  collection,
-  serverTimestamp,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  limit,
-  QuerySnapshot,
-} from 'firebase/firestore';
-
-import db from '../../../Firebase/firebase.config';
-import User from "./User/User";
+import db from "../../../Firebase/firebase.config";
 
 function Tables() {
-
-  const collectionRef = collection(db, 'users');
+  const collectionRef = collection(db, "users");
 
   const approve = "Approved";
   const disapprove = "Disapproved";
   const pending = "pending";
 
-
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  const q = query();
+  // const q = query();
 
-  const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
-    const items = [];
-    QuerySnapshot.forEach((doc) => {
-      items.push(doc.data());
+  React.useEffect(()=>{
+    const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+  
+        items.push({_id: doc.id, ...doc.data()});
+      });
+      setUsers(items);
+      setLoading(false);
     });
-    setUsers(items);
-    setLoading(false);
-  });
 
-  const update = (a,b) => {
-    const updated = {
-      status: b,
+    return () => {
+      unSub();
     };
+  },[collectionRef])
 
+  const update = (id, status) => {
+    console.log({ id });
+    const updated = {
+      status: status
+    };
     try {
-      const userRef = doc(db, 'users/2Y7gI9rc4MtRrjTYCkC3');
+      const userRef = doc(db, `users/${id}`); 
       updateDoc(userRef, updated);
     } catch (error) {
       console.error(error);
     }
-  }
-
+  };
 
   if (loading) {
-    return <h1>Loading</h1>
-  }
-  else {
+    return <h1>Loading</h1>;
+  } else {
     return (
       <>
         <SimpleHeader name="Tables" parentName="Tables" />
@@ -191,20 +161,18 @@ function Tables() {
                     </UncontrolledTooltip>
                   </td>
                 </tr> */}
-                {
-                  users.map(user => <tr>
+                {users.map((user) => (
+                  <tr>
                     <td className="table-user">
-                      <img
+                      {/* <img
                         alt="..."
                         className="avatar rounded-circle mr-3"
                         src={require("assets/img/theme/team-1.jpg").default}
-                      />
+                      /> */}
                       <b>{user.name}</b>
                     </td>
                     <td>
-                      <span className="text-muted">
-                        {user.email}
-                      </span>
+                      <span className="text-muted">{user.email}</span>
                     </td>
                     <td>
                       <a
@@ -217,13 +185,22 @@ function Tables() {
                             {user.status}
                           </DropdownToggle>
                           <DropdownMenu>
-                            <DropdownItem href="#pablo" onClick={() => update(1, approve)}>
+                            <DropdownItem
+                              href="#pablo"
+                              onClick={() => update(user._id, approve)}
+                            >
                               Approve
                             </DropdownItem>
-                            <DropdownItem href="#pablo" onClick={() => update(user.id, disapprove)}>
+                            <DropdownItem
+                              href="#pablo"
+                              onClick={() => update(user._id, disapprove)}
+                            >
                               Disapprove
                             </DropdownItem>
-                            <DropdownItem href="#pablo" onClick={() => update(user.id, pending)}>
+                            <DropdownItem
+                              href="#pablo"
+                              onClick={() => update(user._id, pending)}
+                            >
                               Pending
                             </DropdownItem>
                           </DropdownMenu>
@@ -243,8 +220,8 @@ function Tables() {
                         Edit product
                       </UncontrolledTooltip>
                     </td>
-                  </tr>)
-                }
+                  </tr>
+                ))}
               </tbody>
             </Table>
           </Card>

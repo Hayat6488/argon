@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 // react library for routing
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // plugins styles from node_modules
 import "react-notification-alert/dist/animate.css";
@@ -22,26 +22,25 @@ import AdminLayout from "layouts/Admin.js";
 import RTLLayout from "layouts/RTL.js";
 import AuthLayout from "layouts/Auth.js";
 
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 import store from "./redux/store";
-import {NotifyProvider} from "./context/NotifyContext";
+import { NotifyProvider } from "./context/NotifyContext";
 import FrontLayout from "layouts/Front.js";
 
 ReactDOM.render(
-    <Provider store={store}>
-        <NotifyProvider>
-        <BrowserRouter>
-            <Switch>
-                <Route path="/admin" render={(props) => <AdminLayout {...props} />}/>
-                <Route path="/rtl" render={(props) => <RTLLayout {...props} />}/>
-                <Route path="/auth" render={(props) => <AuthLayout {...props} />}/>
-                <Route path="/" render={(props) => <FrontLayout {...props} />}/>
+  // <Provider store={store}>
+  <NotifyProvider>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+        <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
+        <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
+        <Route path="/" render={(props) => <FrontLayout {...props} />} />
 
-                <Redirect from="*" to="/"/>
-            </Switch>
-        </BrowserRouter>
-        </NotifyProvider>
-    </Provider>
-    ,
-    document.getElementById("root")
+        <Redirect from="*" to="/" />
+      </Switch>
+    </BrowserRouter>
+  </NotifyProvider>,
+  // </Provider>
+  document.getElementById("root")
 );
