@@ -57,15 +57,11 @@ const Login = () => {
 
     signInWithEmailAndPassword(auth, email, password)
     .then(result => {
-      console.log(result);
       const user = result.user;
       setUser(user);
-      console.log(history);
       history.push("/admin/dashboard");
   })
   .catch(error => console.error('error: ', error))
-
-    console.log(email, password);
   }
 
   return (

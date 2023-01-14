@@ -40,7 +40,6 @@ function Front() {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      console.log({ prop });
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
@@ -62,7 +61,7 @@ function Front() {
   return (
     <>
       <div className="main-content" ref={mainContentRef}>
-        <IndexNavbar />
+        {/* <IndexNavbar /> */}
         <Switch>
           {getRoutes(routes)}
           <Redirect from="*" to="/home" />

@@ -43,6 +43,7 @@ import {
   Container,
   Row,
   Col,
+  Button,
 } from "reactstrap";
 import { auth } from "../../Firebase/firebase.config";
 
@@ -456,10 +457,10 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                     href="#pablo"
                     onClick={(e) => e.preventDefault()}
                   >
-                    <button onClick={logOut} className="border-0 btn btn-outline-light">
+                    <Button  onClick={logOut}  color="secondary" type="button">
                       <i className="ni ni-user-run" />
                       <span>Logout</span>
-                    </button>
+                    </Button>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
