@@ -13,6 +13,13 @@ const firebaseConfig = {
     storageBucket: "argon-app-f3026.appspot.com",
     messagingSenderId: "339819060556",
     appId: "1:339819060556:web:3332d245a469e33ac2c3e9"
+
+    // apiKey: "AIzaSyD22e-M8WbUsanypvGQ1YSO6ZiU917i868",
+    // authDomain: "argon-1d04c.firebaseapp.com",
+    // projectId: "argon-1d04c",
+    // storageBucket: "argon-1d04c.appspot.com",
+    // messagingSenderId: "566194160028",
+    // appId: "1:566194160028:web:44554ce7b4ef5481a60859"
 };
 
 // Initialize Firebase

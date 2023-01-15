@@ -3,7 +3,7 @@ import Charts from "views/pages/Charts.js";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
 import Register from "views/pages/examples/Register.js";
 import Tables from "views/pages/tables/Tables.js";
-
+import Posts from "views/pages/tables/Posts/Posts";
 import Login from "views/pages/examples/Login";
 
 const routes = [
@@ -62,6 +62,13 @@ const routes = [
         name: "Tables",
         miniName: "T",
         component: Tables,
+        layout: "/admin",
+      },
+      {
+        path: "/posts",
+        name: "Posts",
+        miniName: "P",
+        component: Posts,
         layout: "/admin",
       }
     ],
