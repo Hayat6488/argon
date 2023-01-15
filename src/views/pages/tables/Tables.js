@@ -27,8 +27,18 @@ import SimpleHeader from "components/Headers/SimpleHeader.js";
 import { onSnapshot, collection, query, updateDoc, doc } from "firebase/firestore";
 
 import db from "../../../Firebase/firebase.config";
+import Modals from "./Modal/Modals";
 
 function Tables() {
+
+  const [exampleModal, setExampleModal] = React.useState(false)
+  const [userDetails, setUserDetails] = React.useState(null)
+
+  const openModal= (user) => {
+    setExampleModal(!exampleModal)
+    setUserDetails(user);
+  }
+
   const collectionRef = collection(db, "users");
 
   const approve = "Approved";
@@ -40,12 +50,12 @@ function Tables() {
 
   // const q = query();
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
-  
-        items.push({_id: doc.id, ...doc.data()});
+
+        items.push({ _id: doc.id, ...doc.data() });
       });
       setUsers(items);
       setLoading(false);
@@ -54,7 +64,7 @@ function Tables() {
     return () => {
       unSub();
     };
-  },[collectionRef])
+  }, [collectionRef])
 
   const update = (id, status) => {
     console.log({ id });
@@ -62,7 +72,7 @@ function Tables() {
       status: status
     };
     try {
-      const userRef = doc(db, `users/${id}`); 
+      const userRef = doc(db, `users/${id}`);
       updateDoc(userRef, updated);
     } catch (error) {
       console.error(error);
@@ -71,7 +81,9 @@ function Tables() {
 
   if (loading) {
     return <h1>Loading</h1>;
-  } else {
+  }
+
+  else {
     return (
       <>
         <SimpleHeader name="Tables" parentName="Tables" />
@@ -113,54 +125,6 @@ function Tables() {
                 </tr>
               </thead>
               <tbody>
-                {/* <tr>
-                  <td className="table-user">
-                    <img
-                      alt="..."
-                      className="avatar rounded-circle mr-3"
-                      src={require("assets/img/theme/team-1.jpg").default}
-                    />
-                    <b>John Michael</b>
-                  </td>
-                  <td>
-                    <span className="text-muted">
-                      10/09/{new Date().getFullYear()}
-                    </span>
-                  </td>
-                  <td>
-                    <a
-                      className="font-weight-bold"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      Argon Dashboard PRO
-                    </a>
-                  </td>
-                  <td className="table-actions">
-                    <a
-                      className="table-action"
-                      href="#pablo"
-                      id="tooltip564981685"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fas fa-user-edit" />
-                    </a>
-                    <UncontrolledTooltip delay={0} target="tooltip564981685">
-                      Edit product
-                    </UncontrolledTooltip>
-                    <a
-                      className="table-action table-action-delete"
-                      href="#pablo"
-                      id="tooltip601065234"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <i className="fas fa-trash" />
-                    </a>
-                    <UncontrolledTooltip delay={0} target="tooltip601065234">
-                      Delete product
-                    </UncontrolledTooltip>
-                  </td>
-                </tr> */}
                 {users.map((user) => (
                   <tr>
                     <td className="table-user">
@@ -208,17 +172,26 @@ function Tables() {
                       </a>
                     </td>
                     <td className="table-actions">
-                      <a
+                      <button
+                        aria-label="Close"
+                        className="close"
+                        data-dismiss="modal"
+                        type="button"
+                        onClick={() => openModal(user)}
+                      >
+                        <span aria-hidden={true}><i className="fas fa-eye" /></span>
+                      </button>
+                      {/* <a
                         className="table-action"
                         href="#pablo"
                         id="tooltip564981685"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={() => (!exampleModal)}
                       >
                         <i className="fas fa-eye" />
                       </a>
                       <UncontrolledTooltip delay={0} target="tooltip564981685">
                         Edit product
-                      </UncontrolledTooltip>
+                      </UncontrolledTooltip> */}
                     </td>
                   </tr>
                 ))}
@@ -226,6 +199,7 @@ function Tables() {
             </Table>
           </Card>
         </Container>
+        {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
       </>
     );
   }
