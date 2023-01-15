@@ -31,6 +31,8 @@ import Modals from "./Modal/Modals";
 
 function Tables() {
 
+  // States for Modals **********
+
   const [exampleModal, setExampleModal] = React.useState(false)
   const [userDetails, setUserDetails] = React.useState(null)
 
@@ -38,6 +40,10 @@ function Tables() {
     setExampleModal(!exampleModal)
     setUserDetails(user);
   }
+
+  // States for Modals **********
+
+  // Database call to read Data ***************
 
   const collectionRef = collection(db, "users");
 
@@ -66,6 +72,11 @@ function Tables() {
     };
   }, [collectionRef])
 
+  // Database call to read Data ***************
+
+
+  // Function to update data in database **************
+
   const update = (id, status) => {
     console.log({ id });
     const updated = {
@@ -79,9 +90,16 @@ function Tables() {
     }
   };
 
+  // Function to update data in database **************
+
+  // Loader to show Loading ***********
+
   if (loading) {
     return <h1>Loading</h1>;
   }
+
+
+  // Loader to show Loading ***********
 
   else {
     return (
