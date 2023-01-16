@@ -26,10 +26,10 @@ import SimpleHeader from "components/Headers/SimpleHeader.js";
 
 import { onSnapshot, collection, query, updateDoc, doc } from "firebase/firestore";
 
-import db from "../../../Firebase/firebase.config";
+import db from "../../../../Firebase/firebase.config";
 import Modals from "./Modal/Modals";
 
-function Tables() {
+function Tradesman() {
 
   // States for Modals **********
 
@@ -104,15 +104,15 @@ function Tables() {
   else {
     return (
       <>
-        <SimpleHeader name="Tables" parentName="Tables" />
+        <SimpleHeader name="Tradesman" parentName="Users" />
         <Container className="mt--6" fluid>
           <Card>
             <CardHeader className="border-0">
               <Row>
                 <Col xs="6">
-                  <h3 className="mb-0">Inline actions</h3>
+                  <h3 className="mb-0">Tradesman</h3>
                 </Col>
-                <Col className="text-right" xs="6">
+                {/* <Col className="text-right" xs="6">
                   <Button
                     className="btn-neutral btn-round btn-icon"
                     color="default"
@@ -129,7 +129,7 @@ function Tables() {
                   <UncontrolledTooltip delay={0} target="tooltip969372949">
                     Edit product
                   </UncontrolledTooltip>
-                </Col>
+                </Col> */}
               </Row>
             </CardHeader>
 
@@ -223,4 +223,4 @@ function Tables() {
   }
 }
 
-export default Tables;
+export default Tradesman;

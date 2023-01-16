@@ -2,18 +2,25 @@ import React from "react";
 // reactstrap components
 import {
   Badge,
+  Card,
+  Container,
+  CardHeader,
+  Row,
+  Col,
+  Button,
   Media,
   Progress,
+  UncontrolledTooltip,
   Table
 } from "reactstrap";
-import { onSnapshot, collection} from "firebase/firestore";
+import { onSnapshot, collection } from "firebase/firestore";
 import db from "../../../Firebase/firebase.config";
 import SimpleHeader from "components/Headers/SimpleHeader";
 
-  function Posts() {
+function Posts() {
 
 
-      const collectionRef = collection(db, "posts");
+  const collectionRef = collection(db, "posts");
 
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -41,27 +48,55 @@ import SimpleHeader from "components/Headers/SimpleHeader";
   //   console.log(id);
   // }
 
-  if(loading){
+  if (loading) {
     return <h1>Loading</h1>
   }
 
-  else{
+  else {
     return (
       <>
         <SimpleHeader name="Tables" parentName="Tables" />
-        <Table className="align-items-center" responsive>
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">POSTS</th>
-              <th scope="col">Author</th>
-              <th scope="col">Status</th>
-              <th scope="col">Reviews</th>
-              <th scope="col">Reports</th>
-              <th scope="col" />
-            </tr>
-          </thead>
-          <tbody>
-            {/* <tr>
+        <Container className="mt--6" fluid>
+          <Card>
+            <CardHeader className="border-0">
+              <Row>
+                <Col xs="6">
+                  <h3 className="mb-0">POSTS</h3>
+                </Col>
+                {/* <Col className="text-right" xs="6">
+                  <Button
+                    className="btn-neutral btn-round btn-icon"
+                    color="default"
+                    href="#pablo"
+                    id="tooltip969372949"
+                    onClick={(e) => e.preventDefault()}
+                    size="sm"
+                  >
+                    <span className="btn-inner--icon mr-1">
+                      <i className="fas fa-user-edit" />
+                    </span>
+                    <span className="btn-inner--text">Export</span>
+                  </Button>
+                  <UncontrolledTooltip delay={0} target="tooltip969372949">
+                    Edit product
+                  </UncontrolledTooltip>
+                </Col> */}
+              </Row>
+            </CardHeader>
+
+            <Table className="align-items-center table-flush" responsive>
+              <thead className="thead-light">
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Author</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Reviews</th>
+                  <th scope="col">Reports</th>
+                  <th scope="col" />
+                </tr>
+              </thead>
+              <tbody>
+                {/* <tr>
               <th scope="row">
                 <Media className="align-items-center">
                   <a
@@ -211,11 +246,11 @@ import SimpleHeader from "components/Headers/SimpleHeader";
                 </UncontrolledDropdown>
               </td>
             </tr> */}
-            {
-              posts.map( post => <tr>
-                <th scope="row">
-                  <Media className="align-items-center">
-                    {/* <a
+                {
+                  posts.map(post => <tr>
+                    <th scope="row">
+                      <Media className="align-items-center">
+                        {/* <a
                       className="avatar rounded-circle mr-3"
                       href="#pablo"
                       onClick={e => e.preventDefault()}
@@ -225,39 +260,39 @@ import SimpleHeader from "components/Headers/SimpleHeader";
                         src={require("assets/img/theme/bootstrap.jpg").default}
                       />
                     </a> */}
-                    <Media>
-                      <span className="mb-0 text-sm">
-                        {post.des}
-                      </span>
-                    </Media>
-                  </Media>
-                </th>
-                <td>{post.author}</td>
-                <td>
-                  <Badge color="" className="badge-dot mr-4">
-                    <i className="bg-warning" />
-                    {post.status}
-                  </Badge>
-                </td>
-                <td>
-                  <Badge color="" className="badge-dot mr-4">
-                    <i className="bg-warning" />
-                    {post.reports}
-                  </Badge>
-                </td>
-                <td>
-                  <div className="d-flex align-items-center">
-                    <span className="mr-2">60%</span>
-                    <div>
-                      <Progress
-                        max="100"
-                        value="60"
-                        barClassName="bg-danger"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td className="table-actions">
+                        <Media>
+                          <span className="mb-0 text-sm">
+                            {post.des}
+                          </span>
+                        </Media>
+                      </Media>
+                    </th>
+                    <td>{post.author}</td>
+                    <td>
+                      <Badge color="" className="badge-dot mr-4">
+                        <i className="bg-warning" />
+                        {post.status}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Badge color="" className="badge-dot mr-4">
+                        <i className="bg-warning" />
+                        {post.reports}
+                      </Badge>
+                    </td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <span className="mr-2">60%</span>
+                        <div>
+                          <Progress
+                            max="100"
+                            value="60"
+                            barClassName="bg-danger"
+                          />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="table-actions">
                       <button
                         aria-label="Close"
                         className="close"
@@ -267,7 +302,7 @@ import SimpleHeader from "components/Headers/SimpleHeader";
                         <span aria-hidden={true}><i className="fas fa-eye" /></span>
                       </button>
                     </td>
-                {/* <td className="text-right">
+                    {/* <td className="text-right">
                   <UncontrolledDropdown>
                     <DropdownToggle
                       className="btn-icon-only text-light"
@@ -301,13 +336,15 @@ import SimpleHeader from "components/Headers/SimpleHeader";
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </td> */}
-              </tr> )
-            }
-          </tbody>
-        </Table>
+                  </tr>)
+                }
+              </tbody>
+            </Table>
+          </Card>
+        </Container>
       </>
     );
   }
-  }
+}
 
 export default Posts

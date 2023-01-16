@@ -2,7 +2,8 @@
 import Charts from "views/pages/Charts.js";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
 import Register from "views/pages/examples/Register.js";
-import Tables from "views/pages/tables/Tables.js";
+import Tradesman from "views/pages/Users/Tradesman/Tradesman";
+import Users from "views/pages/Users/Users/Users";
 import Posts from "views/pages/Posts/Posts";
 import Login from "views/pages/examples/Login";
 
@@ -14,21 +15,21 @@ const routes = [
     component: Login,
     layout: "/home",
   },
-  // {
-  //   collapse: true,
-  //   name: "Dashboards",
-  //   icon: "ni ni-shop text-primary",
-  //   state: "dashboardsCollapse",
-  //   views: [
-  //     {
-  //       path: "/dashboard",
-  //       name: "Dashboard",
-  //       miniName: "D",
-  //       component: Dashboard,
-  //       layout: "/admin",
-  //     }
-  //   ],
-  // },
+  {
+    collapse: true,
+    name: "Dashboards",
+    icon: "ni ni-shop text-primary",
+    state: "dashboardsCollapse",
+    views: [
+      {
+        path: "/dashboard",
+        name: "Dashboard",
+        miniName: "D",
+        component: Dashboard,
+        layout: "/admin",
+      }
+    ],
+  },
   {
     collapse: true,
     name: "Examples",
@@ -58,10 +59,17 @@ const routes = [
     state: "tablesCollapse",
     views: [
       {
-        path: "/tables",
+        path: "/users/tradesman",
         name: "Tradesman",
         miniName: "T",
-        component: Tables,
+        component: Tradesman,
+        layout: "/admin",
+      },
+      {
+        path: "/users/users",
+        name: "Users",
+        miniName: "U",
+        component: Users,
         layout: "/admin",
       }
     ],
