@@ -2,18 +2,13 @@ import React from "react";
 // reactstrap components
 import {
   Badge,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
   Media,
   Progress,
-  Table,
-  UncontrolledTooltip
+  Table
 } from "reactstrap";
-import { onSnapshot, collection, query, updateDoc, doc } from "firebase/firestore";
-import db from "../../../../Firebase/firebase.config";
-import SimpleHeader from "components/Headers/SimpleHeader.js";
+import { onSnapshot, collection} from "firebase/firestore";
+import db from "../../../Firebase/firebase.config";
+import SimpleHeader from "components/Headers/SimpleHeader";
 
   function Posts() {
 
@@ -40,6 +35,11 @@ import SimpleHeader from "components/Headers/SimpleHeader.js";
       unSub();
     };
   }, [collectionRef])
+
+
+  // const Delete = (id) => {
+  //   console.log(id);
+  // }
 
   if(loading){
     return <h1>Loading</h1>
@@ -257,7 +257,17 @@ import SimpleHeader from "components/Headers/SimpleHeader.js";
                     </div>
                   </div>
                 </td>
-                <td className="text-right">
+                <td className="table-actions">
+                      <button
+                        aria-label="Close"
+                        className="close"
+                        data-dismiss="modal"
+                        type="button"
+                      >
+                        <span aria-hidden={true}><i className="fas fa-eye" /></span>
+                      </button>
+                    </td>
+                {/* <td className="text-right">
                   <UncontrolledDropdown>
                     <DropdownToggle
                       className="btn-icon-only text-light"
@@ -290,7 +300,7 @@ import SimpleHeader from "components/Headers/SimpleHeader.js";
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
-                </td>
+                </td> */}
               </tr> )
             }
           </tbody>

@@ -3,7 +3,7 @@ import Charts from "views/pages/Charts.js";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
 import Register from "views/pages/examples/Register.js";
 import Tables from "views/pages/tables/Tables.js";
-import Posts from "views/pages/tables/Posts/Posts";
+import Posts from "views/pages/Posts/Posts";
 import Login from "views/pages/examples/Login";
 
 const routes = [
@@ -53,25 +53,25 @@ const routes = [
   },
   {
     collapse: true,
-    name: "Tables",
+    name: "Users",
     icon: "ni ni-align-left-2 text-default",
     state: "tablesCollapse",
     views: [
       {
         path: "/tables",
-        name: "Tables",
+        name: "Tradesman",
         miniName: "T",
         component: Tables,
         layout: "/admin",
-      },
-      {
-        path: "/posts",
-        name: "Posts",
-        miniName: "P",
-        component: Posts,
-        layout: "/admin",
       }
     ],
+  },
+  {
+    path: "/posts",
+    name: "Posts",
+    icon: "ni ni-chart-pie-35 text-info",
+    component: Posts,
+    layout: "/admin",
   },
   {
     path: "/charts",
