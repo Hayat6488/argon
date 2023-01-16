@@ -14,21 +14,21 @@ const routes = [
     component: Login,
     layout: "/home",
   },
-  {
-    collapse: true,
-    name: "Dashboards",
-    icon: "ni ni-shop text-primary",
-    state: "dashboardsCollapse",
-    views: [
-      {
-        path: "/dashboard",
-        name: "Dashboard",
-        miniName: "D",
-        component: Dashboard,
-        layout: "/admin",
-      }
-    ],
-  },
+  // {
+  //   collapse: true,
+  //   name: "Dashboards",
+  //   icon: "ni ni-shop text-primary",
+  //   state: "dashboardsCollapse",
+  //   views: [
+  //     {
+  //       path: "/dashboard",
+  //       name: "Dashboard",
+  //       miniName: "D",
+  //       component: Dashboard,
+  //       layout: "/admin",
+  //     }
+  //   ],
+  // },
   {
     collapse: true,
     name: "Examples",
@@ -54,7 +54,7 @@ const routes = [
   {
     collapse: true,
     name: "Users",
-    icon: "ni ni-align-left-2 text-default",
+    icon: "ni ni-single-02 text-default",
     state: "tablesCollapse",
     views: [
       {
@@ -69,7 +69,7 @@ const routes = [
   {
     path: "/posts",
     name: "Posts",
-    icon: "ni ni-chart-pie-35 text-info",
+    icon: "ni ni-paper-diploma text-info",
     component: Posts,
     layout: "/admin",
   },

@@ -204,7 +204,7 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
       <div className="navbar-inner">
         <Collapse navbar isOpen={true}>
           <Nav navbar>{createLinks(routes)}</Nav>
-          <hr className="my-3" />
+          {/* <hr className="my-3" />
           <h6 className="navbar-heading p-0 text-muted">
             <span className="docs-normal">Documentation</span>
             <span className="docs-mini">D</span>
@@ -246,7 +246,7 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
                 <span className="nav-link-text">Plugins</span>
               </NavLink>
             </NavItem>
-          </Nav>
+          </Nav> */}
         </Collapse>
       </div>
     </div>
