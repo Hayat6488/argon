@@ -53,7 +53,7 @@ function WorkReports() {
   else {
     return (
       <>
-        <SimpleHeader name="Reports for works" parentName="Reports List" />
+        <SimpleHeader name="Reports" parentName="Reports List" />
         <Container className="mt--6" fluid>
           <Card>
             <CardHeader className="border-0">

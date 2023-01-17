@@ -18,9 +18,9 @@ import SimpleHeader from "components/Headers/SimpleHeader";
 function Transactions() {
 
 
-  const collectionRef = collection(db, "posts");
+  const collectionRef = collection(db, "transactions");
 
-  const [posts, setPosts] = React.useState([]);
+  const [transactions, setTransactions] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
   // const q = query();
@@ -32,7 +32,7 @@ function Transactions() {
 
         items.push({ _id: doc.id, ...doc.data() });
       });
-      setPosts(items);
+      setTransactions(items);
       setLoading(false);
     });
 
@@ -71,46 +71,38 @@ function Transactions() {
                   <th scope="col">Tradesman</th>
                   <th scope="col">Amount</th>
                   <th scope="col">Time</th>
-                  <th scope="col">Reports</th>
+                  <th scope="col">Transaction ID</th>
                   <th scope="col" />
                 </tr>
               </thead>
               <tbody>
                 {
-                  posts.map(post => <tr>
+                  transactions.map(transaction => <tr>
                     <th scope="row">
                       <Media className="align-items-center">
                         <Media>
                           <span className="mb-0 text-sm">
-                            {post.des}
+                            {transaction.user}
                           </span>
                         </Media>
                       </Media>
                     </th>
-                    <td>{post.author}</td>
+                    <td>{transaction.tradesman}</td>
                     <td>
                       <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        {post.status}
+                        {/* <i className="bg-warning" /> */}
+                        {transaction.amount}
                       </Badge>
                     </td>
                     <td>
                       <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        {post.reports}
+                        {transaction.time}
                       </Badge>
                     </td>
                     <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">60%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="60"
-                            barClassName="bg-danger"
-                          />
-                        </div>
-                      </div>
+                      <Badge color="" className="badge-dot mr-4">
+                        {transaction.trxID}
+                      </Badge>
                     </td>
                     <td className="table-actions">
                       <button
