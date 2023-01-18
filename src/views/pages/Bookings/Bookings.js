@@ -16,11 +16,19 @@ import {
 import { onSnapshot, collection } from "firebase/firestore";
 import db from "../../../Firebase/firebase.config";
 import SimpleHeader from "components/Headers/SimpleHeader";
+import Modals from "./Modal/Modals";
 
 function Bookings() {
 
+  const [exampleModal, setExampleModal] = React.useState(false)
+  const [bookingsDetails, setBookingsDetails] = React.useState(null)
 
-  const collectionRef = collection(db, "jobPosts");
+  const openModal= (user) => {
+    setExampleModal(!exampleModal)
+    setBookingsDetails(user);
+  }
+
+  const collectionRef = collection(db, "bookings");
 
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -34,7 +42,6 @@ function Bookings() {
 
         items.push({ _id: doc.id, ...doc.data() });
       });
-      console.log(items)
       setPosts(items);
       setLoading(false);
     });
@@ -64,35 +71,16 @@ function Bookings() {
                 <Col xs="6">
                   <h3 className="mb-0">JOB POSTS</h3>
                 </Col>
-                {/* <Col className="text-right" xs="6">
-                  <Button
-                    className="btn-neutral btn-round btn-icon"
-                    color="default"
-                    href="#pablo"
-                    id="tooltip969372949"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    <span className="btn-inner--icon mr-1">
-                      <i className="fas fa-user-edit" />
-                    </span>
-                    <span className="btn-inner--text">Export</span>
-                  </Button>
-                  <UncontrolledTooltip delay={0} target="tooltip969372949">
-                    Edit product
-                  </UncontrolledTooltip>
-                </Col> */}
               </Row>
             </CardHeader>
 
             <Table className="align-items-center table-flush" responsive>
               <thead className="thead-light">
                 <tr>
+                  <th scope="col">User</th>
+                  <th scope="col">Tradesman</th>
                   <th scope="col">Title</th>
-                  <th scope="col">Author</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Reviews</th>
-                  <th scope="col">Reports</th>
+                  <th scope="col">Amount</th>
                   <th scope="col" />
                 </tr>
               </thead>
@@ -100,38 +88,18 @@ function Bookings() {
                 {
                   posts.map(post => <tr>
                     <th scope="row">
-                      <Media className="align-items-center">
-                        <Media>
-                          <span className="mb-0 text-sm">
-                            {post.name}
-                          </span>
-                        </Media>
-                      </Media>
+                    <img className="avatar rounded-circle" alt="..." src={post.userPic} />
+                      <span className="ml-2">{post.user}</span>
                     </th>
-                    <td>{post.author}</td>
                     <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        {post.category}
-                      </Badge>
+                      <img className="avatar rounded-circle" alt="..." src={post.tradesmanPic} />
+                      <span className="ml-2">{post.tradesman}</span>
                     </td>
                     <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        {post.reports}
-                      </Badge>
+                      <span>{post.time}</span>
                     </td>
                     <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">60%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="60"
-                            barClassName="bg-danger"
-                          />
-                        </div>
-                      </div>
+                      <span>{post.amount}</span>
                     </td>
                     <td className="table-actions">
                       <button
@@ -139,6 +107,7 @@ function Bookings() {
                         className="close"
                         data-dismiss="modal"
                         type="button"
+                        onClick={() => openModal(post.timeline)}
                       >
                         <span aria-hidden={true}><i className="fas fa-eye" /></span>
                       </button>
@@ -183,6 +152,7 @@ function Bookings() {
             </Table>
           </Card>
         </Container>
+        {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} bookingsDetails={bookingsDetails}></Modals>}
       </>
     );
   }

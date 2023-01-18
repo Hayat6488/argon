@@ -21,20 +21,27 @@ const routes = [
     layout: "/home",
   },
   {
-    collapse: true,
+    path: "/dashboard",
     name: "Dashboards",
     icon: "ni ni-shop text-primary",
-    state: "dashboardsCollapse",
-    views: [
-      {
-        path: "/dashboard",
-        name: "Dashboard",
-        miniName: "D",
-        component: Dashboard,
-        layout: "/admin",
-      }
-    ],
+    component: Dashboard,
+    layout: "/admin",
   },
+  // {
+  //   collapse: false,
+  //   name: "Dashboards",
+  //   icon: "ni ni-shop text-primary",
+  //   state: "dashboardsCollapse",
+  //   views: [
+  //     {
+  //       path: "/dashboard",
+  //       name: "Dashboard",
+  //       miniName: "D",
+  //       component: Dashboard,
+  //       layout: "/admin",
+  //     }
+  //   ],
+  // },
   {
     collapse: true,
     name: "Examples",
@@ -42,7 +49,7 @@ const routes = [
     state: "examplesCollapse",
     views: [
       {
-        path: "/login",
+        path: "/",
         name: "Login",
         miniName: "L",
         component: Login,
