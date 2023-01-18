@@ -28,6 +28,7 @@ import { onSnapshot, collection, query, updateDoc, doc } from "firebase/firestor
 
 import db from "../../../../Firebase/firebase.config";
 import Modals from "./Modal/Modals";
+import ReportsModals from "./ReportsModal/ReportsModal";
 
 function Tradesman() {
 
@@ -36,9 +37,19 @@ function Tradesman() {
   const [exampleModal, setExampleModal] = React.useState(false)
   const [userDetails, setUserDetails] = React.useState(null)
 
+
+  const [reportModal, setReportModal] = React.useState(false)
+  const [reports, setReports] = React.useState(null)
+
   const openModal= (user) => {
     setExampleModal(!exampleModal)
     setUserDetails(user);
+  }
+
+
+  const openreports = (reports) => {
+    setReportModal(!reportModal)
+    setReports(reports);
   }
 
   // States for Modals **********
@@ -139,6 +150,7 @@ function Tradesman() {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Reports</th>
                   <th>Status</th>
                   <th />
                 </tr>
@@ -156,6 +168,17 @@ function Tradesman() {
                     </td>
                     <td>
                       <span className="text-muted">{user.email}</span>
+                    </td>
+                    <td>
+                    <button
+                        aria-label="Close"
+                        className="border-0 rounded-lg px-2 primary"
+                        data-dismiss="modal"
+                        type="button"
+                        onClick={() => openreports(user.reports)}
+                      >
+                        <h3 className="text-muted  fs-4">{user.reports.length}</h3>
+                      </button>
                     </td>
                     <td>
                       <a
@@ -219,6 +242,9 @@ function Tradesman() {
           </Card>
         </Container>
         {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
+        {
+          reportModal && <ReportsModals setReportModal={setReportModal} reportModal={reportModal} reports={reports}></ReportsModals>
+        }
       </>
     );
   }
