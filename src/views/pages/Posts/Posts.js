@@ -7,25 +7,30 @@ import {
   CardHeader,
   Row,
   Col,
-  Button,
   Media,
   Progress,
-  UncontrolledTooltip,
   Table
 } from "reactstrap";
 import { onSnapshot, collection } from "firebase/firestore";
 import db from "../../../Firebase/firebase.config";
 import SimpleHeader from "components/Headers/SimpleHeader";
+import Modals from "./Modal/Modals";
 
 function Posts() {
+
+  const [exampleModal, setExampleModal] = React.useState(false)
+  const [postDetails, setPostDetails] = React.useState(null)
+
+  const openModal= (user) => {
+    setExampleModal(!exampleModal);
+    setPostDetails(user);
+  }
 
 
   const collectionRef = collection(db, "jobPosts");
 
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-
-  // const q = query();
 
   React.useEffect(() => {
     const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
@@ -42,7 +47,8 @@ function Posts() {
     return () => {
       unSub();
     };
-  }, [collectionRef])
+  }, [collectionRef]
+  )
 
 
   // const Delete = (id) => {
@@ -90,15 +96,14 @@ function Posts() {
                 <tr>
                   <th scope="col">Title</th>
                   <th scope="col">Author</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Reviews</th>
-                  <th scope="col">Reports</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Deadline</th>
                   <th scope="col" />
                 </tr>
               </thead>
               <tbody>
                 {
-                  posts.map(post => <tr>
+                  posts.map(post => <tr key={post._id}>
                     <th scope="row">
                       <Media className="align-items-center">
                         <Media>
@@ -108,7 +113,10 @@ function Posts() {
                         </Media>
                       </Media>
                     </th>
-                    <td>{post.author}</td>
+                    <td>
+                    <img className="avatar rounded-circle" alt="..." src={require("assets/img/theme/team-4.jpg").default} />
+                      {post.author}
+                    </td>
                     <td>
                       <Badge color="" className="badge-dot mr-4">
                         <i className="bg-warning" />
@@ -139,6 +147,7 @@ function Posts() {
                         className="close"
                         data-dismiss="modal"
                         type="button"
+                        onClick={() => openModal(post)}
                       >
                         <span aria-hidden={true}><i className="fas fa-eye" /></span>
                       </button>
@@ -183,6 +192,9 @@ function Posts() {
             </Table>
           </Card>
         </Container>
+        {
+          exampleModal && <Modals key={postDetails._id} setExampleModal={setExampleModal} exampleModal={exampleModal} postDetails={postDetails}></Modals>
+        }
       </>
     );
   }

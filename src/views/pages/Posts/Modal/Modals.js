@@ -9,7 +9,10 @@ import {
   Table
 } from "reactstrap";
 
-function Modals({ exampleModal, setExampleModal, userDetails }) {
+function Modals({ exampleModal, setExampleModal, postDetails }) {
+
+  console.log(postDetails)
+
   return (
     <>
       <Modal
@@ -24,7 +27,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
         </div>
         <div className="mt-2">
           <div className="d-flex mb-1 justify-content-center">
-            <img src={userDetails.pic} alt="" />
+            {/* <img src={userDetails.pic} alt="" /> */}
           </div>
         </div>
         <Table className="align-items-center" responsive>
@@ -41,7 +44,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                     Name: 
                     </span>
               </th>
-              <td>{userDetails.name}</td>
+              {/* <td>{userDetails.name}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -49,7 +52,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                     Contact: 
                     </span>
               </th>
-              <td>{userDetails.contact}</td>
+              {/* <td>{userDetails.contact}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -57,7 +60,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                     email: 
                     </span>
               </th>
-              <td>{userDetails.email}</td>
+              {/* <td>{userDetails.email}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -65,7 +68,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                       Location: 
                     </span>
               </th>
-              <td>{userDetails.loca}</td>
+              {/* <td>{userDetails.loca}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -73,7 +76,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                     Business Type: 
                     </span>
               </th>
-              <td>{userDetails.type}</td>
+              {/* <td>{userDetails.type}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -81,7 +84,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                       Skills
                     </span>
               </th>
-              <td>{userDetails.skill}</td>
+              {/* <td>{userDetails.skill}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -89,7 +92,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                       Service Type:
                     </span>
               </th>
-              <td>{userDetails.serviceType}</td>
+              {/* <td>{userDetails.serviceType}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -97,7 +100,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                       Past Job:
                     </span>
               </th>
-              <td>{userDetails.pastWork}</td>
+              {/* <td>{userDetails.pastWork}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -105,7 +108,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                       Past Job Category:
                     </span>
               </th>
-              <td>{userDetails.pastCategory}</td>
+              {/* <td>{userDetails.pastCategory}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -113,7 +116,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                       Past Work Details:
                     </span>
               </th>
-              <td>{userDetails.des}</td>
+              {/* <td>{userDetails.des}</td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -121,7 +124,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                       External Link About
                     </span>
               </th>
-              <td><a href={userDetails.link}  target="_blank">Last Job</a></td>
+              {/* <td><a href={userDetails.link}  target="_blank">Last Job</a></td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -130,7 +133,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                     </span>
               </th>
               {/* <td><a href={userDetails.photoId} target="_blank">See Photo Id</a></td> */}
-              <td><a href={userDetails.photoId} target="_blank"><img className="w-50" src={userDetails.photoId} alt="" /></a></td>
+              {/* <td><a href={userDetails.photoId} target="_blank"><img className="w-50" src={userDetails.photoId} alt="" /></a></td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -139,7 +142,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                     </span>
               </th>
               {/* <td><a href={userDetails.tradeId} target="_blank">See Trade Id</a></td> */}
-              <td><a href={userDetails.tradeId} target="_blank"><img className="w-50" src={userDetails.tradeId} alt="" /></a></td>
+              {/* <td><a href={userDetails.tradeId} target="_blank"><img className="w-50" src={userDetails.tradeId} alt="" /></a></td> */}
             </tr>
             <tr>
               <th scope="row">
@@ -148,7 +151,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                     </span>
               </th>
               {/* <td><a href={userDetails.certificate} target="_blank">See Training Certificate</a></td> */}
-              <td><a href={userDetails.certificate} target="_blank"><img className="w-50" src={userDetails.certificate} alt="" /></a></td>
+              {/* <td><a href={userDetails.certificate} target="_blank"><img className="w-50" src={userDetails.certificate} alt="" /></a></td> */}
             </tr>
           </tbody>
         </Table>

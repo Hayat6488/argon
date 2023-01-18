@@ -86,7 +86,7 @@ function Bookings() {
               </thead>
               <tbody>
                 {
-                  posts.map(post => <tr>
+                  posts.map(post => <tr key={post._id}>
                     <th scope="row">
                     <img className="avatar rounded-circle" alt="..." src={post.userPic} />
                       <span className="ml-2">{post.user}</span>

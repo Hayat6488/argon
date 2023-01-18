@@ -77,7 +77,7 @@ function WorkReports() {
               </thead>
               <tbody>
                 {
-                  posts.map(post => <tr>
+                  posts.map(post => <tr key={post._id}>
                     <th scope="row">
                       <Media className="align-items-center">
                         <Media>

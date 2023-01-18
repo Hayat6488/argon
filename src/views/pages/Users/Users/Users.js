@@ -103,7 +103,7 @@ function Users() {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr>
+                  <tr key={user._id}>
                     <td className="table-user">
                       {/* <img
                         alt="..."

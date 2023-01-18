@@ -77,7 +77,7 @@ function Transactions() {
               </thead>
               <tbody>
                 {
-                  transactions.map(transaction => <tr>
+                  transactions.map(transaction => <tr key={transaction._id}>
                     <th scope="row">
                       <img className="avatar rounded-circle" alt="..." src={require("assets/img/theme/team-4.jpg").default} />
                       <span className="mb-0 text-sm">

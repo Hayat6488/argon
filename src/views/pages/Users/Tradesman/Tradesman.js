@@ -63,6 +63,7 @@ function Tradesman() {
 
         items.push({ _id: doc.id, ...doc.data() });
       });
+      console.log(items)
       setUsers(items);
       setLoading(false);
     });
@@ -144,7 +145,7 @@ function Tradesman() {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr>
+                  <tr key={user._id}>
                     <td className="table-user">
                       {/* <img
                         alt="..."
