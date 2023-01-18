@@ -45,7 +45,7 @@ function Modals({ exampleModal, setExampleModal, bookingsDetails }) {
                   {
                     bookingsDetails.map(step => <div className="timeline-block">
                     <span className="timeline-step badge-success">
-                      <i className="ni ni-bell-55" />
+                      <i className="ni ni-check-bold" />
                     </span>
                     <div className="timeline-content">
                       <small className="text-muted font-weight-bold">
