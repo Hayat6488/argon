@@ -79,15 +79,17 @@ function Transactions() {
                 {
                   transactions.map(transaction => <tr>
                     <th scope="row">
-                      <Media className="align-items-center">
-                        <Media>
-                          <span className="mb-0 text-sm">
-                            {transaction.user}
-                          </span>
-                        </Media>
-                      </Media>
+                      <img className="avatar rounded-circle" alt="..." src={require("assets/img/theme/team-4.jpg").default} />
+                      <span className="mb-0 text-sm">
+                        {transaction.user}
+                      </span>
                     </th>
-                    <td>{transaction.tradesman}</td>
+                    <td>
+                    <img className="avatar rounded-circle" alt="..." src={require("assets/img/theme/team-4.jpg").default} />
+                      <span>
+                        {transaction.tradesman}
+                      </span>
+                    </td>
                     <td>
                       <Badge color="" className="badge-dot mr-4">
                         {/* <i className="bg-warning" /> */}

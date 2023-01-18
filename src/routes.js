@@ -136,20 +136,13 @@ const routes = [
     component: Transactions,
     layout: "/admin",
   },
-  {
-    path: "/charts",
-    name: "Charts",
-    icon: "ni ni-chart-pie-35 text-info",
-    component: Charts,
-    layout: "/admin",
-  },
-  {
-    path: "/timeline",
-    name: "Timeline",
-    icon: "ni ni-chart-pie-35 text-info",
-    component: Timeline,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/charts",
+  //   name: "Charts",
+  //   icon: "ni ni-chart-pie-35 text-info",
+  //   component: Charts,
+  //   layout: "/admin",
+  // },
 ];
 
 export default routes;
