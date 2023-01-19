@@ -21,11 +21,7 @@ import "assets/scss/argon-dashboard-pro-react.scss?v1.2.0";
 import AdminLayout from "layouts/Admin.js";
 import RTLLayout from "layouts/RTL.js";
 import AuthLayout from "layouts/Auth.js";
-
-import { Provider } from "react-redux";
-import store from "./redux/store";
 import { NotifyProvider } from "./context/NotifyContext";
-// import FrontLayout from "layouts/Front.js";
 
 ReactDOM.render(
   // <Provider store={store}>

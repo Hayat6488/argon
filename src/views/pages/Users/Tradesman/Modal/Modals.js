@@ -113,7 +113,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                   External Link About
                 </span>
               </th>
-              <td><a href={userDetails?.workLink} target="_blank">{userDetails?.workLink}</a></td>
+              <td><a href={userDetails?.workLink} target="_blank" rel="noreferrer">{userDetails?.workLink}</a></td>
             </tr>
             <tr>
               <th scope="row">
@@ -122,7 +122,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                 </span>
               </th>
               {/* <td><a href={userDetails.photoId} target="_blank">See Photo Id</a></td> */}
-              <td><a href={userDetails?.photoID} target="_blank"><img className="w-50" src={userDetails?.photoID} alt="" /></a></td>
+              <td><a href={userDetails?.photoID} target="_blank"  rel="noreferrer"><img className="w-50" src={userDetails?.photoID} alt="" /></a></td>
             </tr>
             <tr>
               <th scope="row">
@@ -131,7 +131,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                 </span>
               </th>
               {/* <td><a href={userDetails.tradeId} target="_blank">See Trade Id</a></td> */}
-              <td><a href={userDetails?.authorizingProof} target="_blank"><img className="w-50" src={userDetails?.authorizingProof} alt="" /></a></td>
+              <td><a href={userDetails?.authorizingProof} target="_blank"  rel="noreferrer"><img className="w-50" src={userDetails?.authorizingProof} alt="" /></a></td>
             </tr>
             <tr>
               <th scope="row">
@@ -140,7 +140,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
                 </span>
               </th>
               {/* <td><a href={userDetails.certificate} target="_blank">See Training Certificate</a></td> */}
-              <td><a href={userDetails?.certificate} target="_blank"><img className="w-50" src={userDetails?.certificate} alt="" /></a></td>
+              <td><a href={userDetails?.certificate} target="_blank"  rel="noreferrer"><img className="w-50" src={userDetails?.certificate} alt="" /></a></td>
             </tr>
           </tbody>
         </Table>
@@ -159,42 +159,3 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
   );
 }
 export default Modals;
-
-
-
-{/* <Table className="align-items-center" responsive>
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">Project</th>
-              <th scope="col">Budget</th>
-              <th scope="col">Status</th>
-              <th scope="col">Users</th>
-              <th scope="col">Completion</th>
-              <th scope="col" />
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">
-                <Media className="align-items-center">
-                  <a
-                    className="avatar rounded-circle mr-3"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <img
-                      alt="..."
-                      src={require("assets/img/theme/bootstrap.jpg").default}
-                    />
-                  </a>
-                  <Media>
-                    <span className="mb-0 text-sm">
-                      Argon Design System
-                    </span>
-                  </Media>
-                </Media>
-              </th>
-              <td>$2,500 USD</td>
-            </tr>
-          </tbody>
-        </Table> */}

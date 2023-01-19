@@ -1,15 +1,14 @@
 
 // import Charts from "views/pages/Charts.js";
 // import Messages from "views/pages/Reports/Inbox/Inbox";
-// import Works from "views/pages/Reports/Work/WorkReports";
-// import Transactions from "views/pages/Transactions/Transactions";
+import Works from "views/pages/Reports/Work/WorkReports";
+import Transactions from "views/pages/Transactions/Transactions";
 // import Timeline from "views/pages/examples/Timeline";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
-import Register from "views/pages/examples/Register.js";
 import Tradesman from "views/pages/Users/Tradesman/Tradesman";
-// import Bookings from "views/pages/Bookings/Bookings";
+import Bookings from "views/pages/Bookings/Bookings";
 import Users from "views/pages/Users/Users/Users";
-// import Posts from "views/pages/Posts/Posts";
+import Posts from "views/pages/Posts/Posts";
 import Login from "views/pages/examples/Login";
 
 const routes = [
@@ -18,7 +17,8 @@ const routes = [
     name: "Home",
     icon: "ni ni-archive-2 text-green",
     component: Login,
-    layout: "/home",
+    layout: "/auth",
+    invisible: true
   },
   {
     path: "/dashboard",
@@ -26,43 +26,7 @@ const routes = [
     icon: "ni ni-shop text-primary",
     component: Dashboard,
     layout: "/admin",
-  },
-  // {
-  //   collapse: false,
-  //   name: "Dashboards",
-  //   icon: "ni ni-shop text-primary",
-  //   state: "dashboardsCollapse",
-  //   views: [
-  //     {
-  //       path: "/dashboard",
-  //       name: "Dashboard",
-  //       miniName: "D",
-  //       component: Dashboard,
-  //       layout: "/admin",
-  //     }
-  //   ],
-  // },
-  {
-    collapse: true,
-    name: "Examples",
-    icon: "ni ni-ungroup text-orange",
-    state: "examplesCollapse",
-    views: [
-      {
-        path: "/",
-        name: "Login",
-        miniName: "L",
-        component: Login,
-        layout: "/auth",
-      },
-      {
-        path: "/register",
-        name: "Register",
-        miniName: "R",
-        component: Register,
-        layout: "/auth",
-      }
-    ],
+    invisible: true
   },
   {
     collapse: true,
@@ -86,20 +50,20 @@ const routes = [
       }
     ],
   },
-  // {
-  //   path: "/reportslist",
-  //   name: "Reports List",
-  //   icon: "ni ni-bullet-list-67 text-info",
-  //   component: Works,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/bookings",
-  //   name: "Bookings",
-  //   icon: "ni ni-collection text-info",
-  //   component: Bookings,
-  //   layout: "/admin",
-  // },
+  {
+    path: "/reportslist",
+    name: "Reports List",
+    icon: "ni ni-bullet-list-67 text-info",
+    component: Works,
+    layout: "/admin",
+  },
+  {
+    path: "/bookings",
+    name: "Bookings",
+    icon: "ni ni-collection text-info",
+    component: Bookings,
+    layout: "/admin",
+  },
   // // {
   // //   collapse: true,
   // //   name: "Reports List",
@@ -122,27 +86,20 @@ const routes = [
   // //     }
   // //   ],
   // // },
-  // {
-  //   path: "/posts",
-  //   name: "Posts",
-  //   icon: "ni ni-paper-diploma text-info",
-  //   component: Posts,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/transactions",
-  //   name: "Transactions",
-  //   icon: "ni ni-money-coins text-info",
-  //   component: Transactions,
-  //   layout: "/admin",
-  // },
-  // // {
-  // //   path: "/charts",
-  // //   name: "Charts",
-  // //   icon: "ni ni-chart-pie-35 text-info",
-  // //   component: Charts,
-  // //   layout: "/admin",
-  // // },
+  {
+    path: "/posts",
+    name: "Posts",
+    icon: "ni ni-paper-diploma text-info",
+    component: Posts,
+    layout: "/admin",
+  },
+  {
+    path: "/transactions",
+    name: "Transactions",
+    icon: "ni ni-money-coins text-info",
+    component: Transactions,
+    layout: "/admin",
+  }
 ];
 
 export default routes;

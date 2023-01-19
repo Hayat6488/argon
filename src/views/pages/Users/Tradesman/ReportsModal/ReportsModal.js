@@ -5,12 +5,8 @@ import {
   Modal,
 } from "reactstrap";
 import {
-    Badge,
     ListGroupItem,
     ListGroup,
-    Progress,
-    Row,
-    Col
   } from "reactstrap";
 
 function ReportsModals({ setReportModal, reportModal, reports }) {

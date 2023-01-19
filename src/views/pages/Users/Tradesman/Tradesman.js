@@ -2,36 +2,31 @@ import React from "react";
 // reactstrap components
 import {
   Badge,
-  Button,
   Card,
   CardHeader,
-  CardFooter,
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
   UncontrolledDropdown,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
   Table,
   Container,
   Row,
   Col,
-  UncontrolledTooltip,
 } from "reactstrap";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 
-import { onSnapshot, collection, query, updateDoc, doc } from "firebase/firestore";
+import { onSnapshot, collection, updateDoc, doc } from "firebase/firestore";
 import Modals from "./Modal/Modals";
 import ReportsModals from "./ReportsModal/ReportsModal";
 import { db } from "Firebase/firebase.config";
+import NotifyContext from "context/NotifyContext";
+import sendPushNotification from "utility/notification";
 
 function Tradesman() {
 
   // States for Modals **********
+  const { Notify } = React.useContext(NotifyContext);
 
   const [exampleModal, setExampleModal] = React.useState(false)
   const [userDetails, setUserDetails] = React.useState(null)
@@ -59,20 +54,21 @@ function Tradesman() {
 
   const approve = "Approved";
   const disapprove = "Disapproved";
-  const pending = "pending";
+  const pending = "Pending";
 
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
   // const q = query();
 
+  const collectionRef = collection(db, "/usersList/provider/children");
+
   React.useLayoutEffect(() => {
-    const collectionRef = collection(db, "/usersList/provider/children");
     const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
 
-        items.push({ _id: doc.id, ...doc.data() });
+        items.push({ id: doc.id, ...doc.data() });
       });
       console.log(items)
       setUsers(items);
@@ -82,21 +78,22 @@ function Tradesman() {
     return () => {
       unSub();
     };
-  }, [])
+  }, [collectionRef])
 
   // Database call to read Data ***************
 
 
   // Function to update data in database **************
 
-  const update = (id, status) => {
-    console.log({ id });
+  const update = async(id, status) => {
     const updated = {
-      status: status
+      profileVerified: status
     };
     try {
-      const userRef = doc(db, `users/${id}`);
-      updateDoc(userRef, updated);
+      const userRef = doc(db, `/usersList/provider/children/${id}`);
+      await updateDoc(userRef, updated);
+      Notify("success", `Profile ${status} successfully.`, "Profile Status Update");
+      await sendPushNotification()
     } catch (error) {
       console.error(error);
     }
@@ -149,9 +146,11 @@ function Tradesman() {
               <thead className="thead-light">
                 <tr>
                   <th>Name</th>
-                  <th>Email</th>
+                  <th>Service Category</th>
                   <th>Reports</th>
-                  <th>Status</th>
+                  <th>Business Location</th>
+                  <th>Profile Status</th>
+                  <th>Verification Status</th>
                   <th />
                 </tr>
               </thead>
@@ -159,15 +158,15 @@ function Tradesman() {
                 {users.map((user) => (
                   <tr key={user._id}>
                     <td className="table-user">
-                      {/* <img
+                      <img
                         alt="..."
                         className="avatar rounded-circle mr-3"
-                        src={require("assets/img/theme/team-1.jpg").default}
-                      /> */}
-                      <b>{user.name}</b>
+                        src={user?.profilePhoto}
+                      />
+                      <b>{user?.name}</b>
                     </td>
                     <td>
-                      <span className="text-muted">{user.email}</span>
+                      <span className="text-muted">{user?.category}</span>
                     </td>
                     <td>
                       <button
@@ -175,10 +174,16 @@ function Tradesman() {
                         className="border-0 rounded-lg px-2 primary"
                         data-dismiss="modal"
                         type="button"
-                        onClick={() => openreports(user.reports)}
+                        onClick={() => openreports(user?.reports)}
                       >
                         <h3 className="text-muted  fs-4">{user?.reports?.length}</h3>
                       </button>
+                    </td>
+                    <td>
+                      <span className="text-muted">{user?.businessLocation}</span>
+                    </td>
+                    <td>
+                      <Badge color={user?.profileStatus === "complete" ? "success" : "warning"} className="text-muted">{user?.profileStatus}</Badge>
                     </td>
                     <td>
                       <a
@@ -188,24 +193,24 @@ function Tradesman() {
                       >
                         <UncontrolledDropdown>
                           <DropdownToggle caret color="secondary">
-                            {user.status}
+                            {user?.profileVerified}
                           </DropdownToggle>
                           <DropdownMenu>
                             <DropdownItem
                               href="#pablo"
-                              onClick={() => update(user._id, approve)}
+                              onClick={() => update(user.id, approve)}
                             >
                               Approve
                             </DropdownItem>
                             <DropdownItem
                               href="#pablo"
-                              onClick={() => update(user._id, disapprove)}
+                              onClick={() => update(user.id, disapprove)}
                             >
                               Disapprove
                             </DropdownItem>
                             <DropdownItem
                               href="#pablo"
-                              onClick={() => update(user._id, pending)}
+                              onClick={() => update(user.id, pending)}
                             >
                               Pending
                             </DropdownItem>

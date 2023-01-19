@@ -1,5 +1,4 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import baseUrl from "../api/baseApi";
 
 export const getAllBranch = createAsyncThunk("classSetting/all",async ()=>{
     try {

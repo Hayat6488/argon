@@ -2,20 +2,10 @@ import React from "react";
 // reactstrap components
 
 import {
-  Badge,
-  Container,
-} from "reactstrap";
-import {
   Button,
   Card,
   CardHeader,
   CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Modal,
   Row,
   Col

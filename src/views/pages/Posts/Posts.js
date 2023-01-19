@@ -11,49 +11,52 @@ import {
   Progress,
   Table
 } from "reactstrap";
-import { onSnapshot, collection } from "firebase/firestore";
-import db from "../../../Firebase/firebase.config";
+import { collection, getDoc, doc, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Modals from "./Modal/Modals";
+import { db } from "Firebase/firebase.config";
 
 function Posts() {
 
   const [exampleModal, setExampleModal] = React.useState(false)
   const [postDetails, setPostDetails] = React.useState(null)
 
-  const openModal= (user) => {
+  const openModal = (user) => {
     setExampleModal(!exampleModal);
     setPostDetails(user);
   }
 
-
-  const collectionRef = collection(db, "jobPosts");
-
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  React.useLayoutEffect(() => {
-    const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
-      const items = [];
-      QuerySnapshot.forEach((doc) => {
+  React.useEffect(() => {
+    const getData = async () => {
+      const querySnapshot = await getDocs(collection(db, "jobPosts"));
+      let dataList = [];
 
-        items.push({ _id: doc.id, ...doc.data() });
+      querySnapshot.forEach(async (x) => {
+        const authorId = x.data().uid;
+
+        const docRef = doc(db, `usersList/user/children/${authorId}`);
+        const docSnap = await getDoc(docRef);
+        const list = {
+          id: x.id,
+          ...x.data(),
+          ...docSnap.data(),
+        };
+        dataList.push({
+          id: x.id,
+          ...x.data(),
+          ...docSnap.data(),
+        });
       });
-      console.log(items)
-      setPosts(items);
-      setLoading(false);
-    });
-
-    return () => {
-      unSub();
+      setPosts(dataList);
+      setLoading(false)
     };
-  }, [collectionRef]
-  )
+    getData();
+  }, []);
 
-
-  // const Delete = (id) => {
-  //   console.log(id);
-  // }
+  console.log(posts)
 
   if (loading) {
     return <h1>Loading</h1>
@@ -96,27 +99,33 @@ function Posts() {
                 <tr>
                   <th scope="col">Title</th>
                   <th scope="col">Author</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Deadline</th>
+                  <th scope="col">address</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">DESCRIPTION</th>
                   <th scope="col" />
                 </tr>
               </thead>
               <tbody>
                 {
-                  posts.map(post => <tr key={post._id}>
+                  posts.map(post => <tr key={post.id}>
                     <th scope="row">
                       <Media className="align-items-center">
                         <Media>
                           <span className="mb-0 text-sm">
-                            {post.name}
+                            {post?.title}
                           </span>
                         </Media>
                       </Media>
                     </th>
                     <td>
+                      {
+
+                      }
+                    </td>
+                    {/* <td>
                     <img className="avatar rounded-circle" alt="..." src={require("assets/img/theme/team-4.jpg").default} />
                       {post.author}
-                    </td>
+                    </td> */}
                     <td>
                       <Badge color="" className="badge-dot mr-4">
                         <i className="bg-warning" />

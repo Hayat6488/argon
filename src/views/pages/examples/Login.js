@@ -19,7 +19,7 @@ import React from "react";
 import classnames from "classnames";
 // reactstrap components
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from "../../../Firebase/firebase.config";
 
 
@@ -41,9 +41,7 @@ import {
 // core components
 import AuthHeader from "components/Headers/AuthHeader.js";
 import { useHistory } from "react-router-dom";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { NotifyProvider } from "context/NotifyContext";
-import { useContext } from "preact/hooks";
+import { doc, getDoc } from "firebase/firestore";
 import NotifyContext from "context/NotifyContext";
 
 
@@ -57,7 +55,7 @@ const Login = () => {
   const { Notify } = React.useContext(NotifyContext);
 
   const history = useHistory();
-  const [user, setUser] = React.useState(null);
+  // const [user, setUser] = React.useState(null);
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
 

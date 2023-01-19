@@ -1,30 +1,17 @@
 import React from "react";
 // reactstrap components
 import {
-  Badge,
-  Button,
   Card,
   CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
   Table,
   Container,
   Row,
   Col,
-  UncontrolledTooltip,
 } from "reactstrap";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader";
 
-import { onSnapshot, collection, query, updateDoc, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 import Modals from "./Modal/Modals";
 import { db } from "Firebase/firebase.config";

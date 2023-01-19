@@ -98,6 +98,7 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
       if (prop.redirect) {
         return null;
       }
+      if(prop.invisible) return null;
       if (prop.collapse) {
         var st = {};
         st[prop["state"]] = !state[prop.state];
@@ -177,15 +178,16 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
   const scrollBarInner = (
     <div className="scrollbar-inner">
       <div className="sidenav-header d-flex align-items-center">
-        {logo ? (
           <NavbarBrand {...navbarBrandProps}>
+            <div className="d-flex">
             <img
               alt={logo.imgAlt}
               className="navbar-brand-img"
-              src={logo.imgSrc}
+              src="https://firebasestorage.googleapis.com/v0/b/locality-tradesmen.appspot.com/o/logo.jpg?alt=media&token=01658242-f931-4a42-b70c-149bac12dc49"
             />
+            <h2 className="text-primary ml-1">Locality</h2>
+            </div>
           </NavbarBrand>
-        ) : null}
         <div className="ml-auto">
           <div
             className={classnames("sidenav-toggler d-none d-xl-block", {

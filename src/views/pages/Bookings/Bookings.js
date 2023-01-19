@@ -1,22 +1,17 @@
 import React from "react";
 // reactstrap components
 import {
-  Badge,
   Card,
   Container,
   CardHeader,
   Row,
   Col,
-  Button,
-  Media,
-  Progress,
-  UncontrolledTooltip,
   Table
 } from "reactstrap";
 import { onSnapshot, collection } from "firebase/firestore";
-import db from "../../../Firebase/firebase.config";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Modals from "./Modal/Modals";
+import { db } from "Firebase/firebase.config";
 
 function Bookings() {
 
