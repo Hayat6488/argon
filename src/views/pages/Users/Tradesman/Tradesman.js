@@ -25,10 +25,9 @@ import {
 import SimpleHeader from "components/Headers/SimpleHeader.js";
 
 import { onSnapshot, collection, query, updateDoc, doc } from "firebase/firestore";
-
-import db from "../../../../Firebase/firebase.config";
 import Modals from "./Modal/Modals";
 import ReportsModals from "./ReportsModal/ReportsModal";
+import { db } from "Firebase/firebase.config";
 
 function Tradesman() {
 
@@ -41,7 +40,7 @@ function Tradesman() {
   const [reportModal, setReportModal] = React.useState(false)
   const [reports, setReports] = React.useState(null)
 
-  const openModal= (user) => {
+  const openModal = (user) => {
     setExampleModal(!exampleModal)
     setUserDetails(user);
   }
@@ -56,7 +55,7 @@ function Tradesman() {
 
   // Database call to read Data ***************
 
-  const collectionRef = collection(db, "users");
+
 
   const approve = "Approved";
   const disapprove = "Disapproved";
@@ -67,7 +66,8 @@ function Tradesman() {
 
   // const q = query();
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
+    const collectionRef = collection(db, "/usersList/provider/children");
     const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
@@ -82,7 +82,7 @@ function Tradesman() {
     return () => {
       unSub();
     };
-  }, [collectionRef])
+  }, [])
 
   // Database call to read Data ***************
 
@@ -170,14 +170,14 @@ function Tradesman() {
                       <span className="text-muted">{user.email}</span>
                     </td>
                     <td>
-                    <button
+                      <button
                         aria-label="Close"
                         className="border-0 rounded-lg px-2 primary"
                         data-dismiss="modal"
                         type="button"
                         onClick={() => openreports(user.reports)}
                       >
-                        <h3 className="text-muted  fs-4">{user.reports.length}</h3>
+                        <h3 className="text-muted  fs-4">{user?.reports?.length}</h3>
                       </button>
                     </td>
                     <td>

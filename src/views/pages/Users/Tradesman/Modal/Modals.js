@@ -24,7 +24,7 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
         </div>
         <div className="mt-2">
           <div className="d-flex mb-1 justify-content-center">
-            <img src={userDetails.pic} alt="" />
+            <img className="avatar avatar-xl rounded-circle" src={userDetails.profilePhoto} alt="" />
           </div>
         </div>
         <Table className="align-items-center" responsive>
@@ -37,118 +37,110 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
           <tbody>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                    Name: 
-                    </span>
+                <span className="mb-0 text-sm">
+                  Name:
+                </span>
               </th>
-              <td>{userDetails.name}</td>
+              <td>{userDetails?.name}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                    Contact: 
-                    </span>
+                <span className="mb-0 text-sm">
+                  Contact:
+                </span>
               </th>
-              <td>{userDetails.contact}</td>
+              <td>{userDetails?.contactInfo}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                    email: 
-                    </span>
+                <span className="mb-0 text-sm">
+                  Email:
+                </span>
               </th>
-              <td>{userDetails.email}</td>
+              <td>{userDetails?.email}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Location: 
-                    </span>
+                <span className="mb-0 text-sm">
+                  Location:
+                </span>
               </th>
-              <td>{userDetails.loca}</td>
+              <td>{userDetails?.businessLocation}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                    Business Type: 
-                    </span>
+                <span className="mb-0 text-sm">
+                  Business Type:
+                </span>
               </th>
-              <td>{userDetails.type}</td>
+              <td>{userDetails?.businessType}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Skills
-                    </span>
+                <span className="mb-0 text-sm">
+                  Job Category:
+                </span>
               </th>
-              <td>{userDetails.skill}</td>
+              <td>{userDetails?.category}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Service Type:
-                    </span>
+                <span className="mb-0 text-sm">
+                  Skills:
+                </span>
               </th>
-              <td>{userDetails.serviceType}</td>
+              <td>{userDetails?.specialty}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Past Job:
-                    </span>
+                <span className="mb-0 text-sm">
+                  Past Job Experience:
+                </span>
               </th>
-              <td>{userDetails.pastWork}</td>
+              <td>{userDetails?.workTitle}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Past Job Category:
-                    </span>
+                <span className="mb-0 text-sm">
+                  Past Work Details:
+                </span>
               </th>
-              <td>{userDetails.pastCategory}</td>
+              <td>{userDetails?.description}</td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Past Work Details:
-                    </span>
+                <span className="mb-0 text-sm">
+                  External Link About
+                </span>
               </th>
-              <td>{userDetails.des}</td>
+              <td><a href={userDetails?.workLink} target="_blank">{userDetails?.workLink}</a></td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                      External Link About
-                    </span>
-              </th>
-              <td><a href={userDetails.link}  target="_blank">Last Job</a></td>
-            </tr>
-            <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                    Photo ID: 
-                    </span>
+                <span className="mb-0 text-sm">
+                  Photo ID:
+                </span>
               </th>
               {/* <td><a href={userDetails.photoId} target="_blank">See Photo Id</a></td> */}
-              <td><a href={userDetails.photoId} target="_blank"><img className="w-50" src={userDetails.photoId} alt="" /></a></td>
+              <td><a href={userDetails?.photoID} target="_blank"><img className="w-50" src={userDetails?.photoID} alt="" /></a></td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Trade ID:
-                    </span>
+                <span className="mb-0 text-sm">
+                  Provincial/Federal Trade Certificate:
+                </span>
               </th>
               {/* <td><a href={userDetails.tradeId} target="_blank">See Trade Id</a></td> */}
-              <td><a href={userDetails.tradeId} target="_blank"><img className="w-50" src={userDetails.tradeId} alt="" /></a></td>
+              <td><a href={userDetails?.authorizingProof} target="_blank"><img className="w-50" src={userDetails?.authorizingProof} alt="" /></a></td>
             </tr>
             <tr>
               <th scope="row">
-                    <span className="mb-0 text-sm">
-                    Training Certificate: 
-                    </span>
+                <span className="mb-0 text-sm">
+                  Provincial/Federal Training Certificate:
+                </span>
               </th>
               {/* <td><a href={userDetails.certificate} target="_blank">See Training Certificate</a></td> */}
-              <td><a href={userDetails.certificate} target="_blank"><img className="w-50" src={userDetails.certificate} alt="" /></a></td>
+              <td><a href={userDetails?.certificate} target="_blank"><img className="w-50" src={userDetails?.certificate} alt="" /></a></td>
             </tr>
           </tbody>
         </Table>

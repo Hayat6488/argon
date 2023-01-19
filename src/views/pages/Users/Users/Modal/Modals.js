@@ -2,18 +2,11 @@ import React from "react";
 // reactstrap components
 import {
   Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Modal,
-  Row,
-  Col
+} from "reactstrap";
+
+import {
+  Table
 } from "reactstrap";
 
 function Modals ({exampleModal, setExampleModal, userDetails}) {
@@ -30,10 +23,45 @@ function Modals ({exampleModal, setExampleModal, userDetails}) {
             USER DETAILS
           </h5>
         </div>
-        <div className="modal-body">{userDetails.name}</div>
-        <div className="modal-body">{userDetails.email}</div>
-        <div className="modal-body">{userDetails.status}</div>
-        <div className="modal-body">{userDetails._id}</div>
+        <div className="mt-2">
+          <div className="d-flex mb-1 justify-content-center">
+            <img className="avatar avatar-xl rounded-circle" src={userDetails.photoURL} alt="" />
+          </div>
+        </div>
+        <Table className="align-items-center" responsive>
+          <thead className="thead-light">
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
+                    Name: 
+                    </span>
+              </th>
+              <td>{userDetails.name}</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
+                    email: 
+                    </span>
+              </th>
+              <td>{userDetails.email}</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
+                      Location: 
+                    </span>
+              </th>
+              <td>{userDetails.loca}</td>
+            </tr>
+          </tbody>
+        </Table>
         <div className="modal-footer">
           <Button
             color="secondary"

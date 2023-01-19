@@ -6,9 +6,9 @@
 // import Timeline from "views/pages/examples/Timeline";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
 import Register from "views/pages/examples/Register.js";
-// import Tradesman from "views/pages/Users/Tradesman/Tradesman";
+import Tradesman from "views/pages/Users/Tradesman/Tradesman";
 // import Bookings from "views/pages/Bookings/Bookings";
-// import Users from "views/pages/Users/Users/Users";
+import Users from "views/pages/Users/Users/Users";
 // import Posts from "views/pages/Posts/Posts";
 import Login from "views/pages/examples/Login";
 
@@ -64,28 +64,28 @@ const routes = [
       }
     ],
   },
-  // {
-  //   collapse: true,
-  //   name: "Users",
-  //   icon: "ni ni-single-02 text-default",
-  //   state: "tablesCollapse",
-  //   views: [
-  //     {
-  //       path: "/users/tradesman",
-  //       name: "Tradesman",
-  //       miniName: "T",
-  //       component: Tradesman,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/users/users",
-  //       name: "Users",
-  //       miniName: "U",
-  //       component: Users,
-  //       layout: "/admin",
-  //     }
-  //   ],
-  // },
+  {
+    collapse: true,
+    name: "Users",
+    icon: "ni ni-single-02 text-default",
+    state: "tablesCollapse",
+    views: [
+      {
+        path: "/users/tradesman",
+        name: "Tradesman",
+        miniName: "T",
+        component: Tradesman,
+        layout: "/admin",
+      },
+      {
+        path: "/users/users",
+        name: "Users",
+        miniName: "U",
+        component: Users,
+        layout: "/admin",
+      }
+    ],
+  },
   // {
   //   path: "/reportslist",
   //   name: "Reports List",

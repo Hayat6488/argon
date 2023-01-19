@@ -25,7 +25,7 @@ function InboxReports() {
 
   // const q = query();
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {

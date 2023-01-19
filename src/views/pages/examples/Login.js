@@ -84,7 +84,7 @@ const Login = () => {
       //     uid: auth.currentUser.uid,
       //   }
       // );
-      // }
+      // history.push("/admin/dashboard")
 
       // sign in function
 
@@ -99,7 +99,7 @@ const Login = () => {
         history.push("/admin/dashboard");
         Notify("success", "Log in successful", "Log In")
       } else {
-   
+
       Notify("error", "User Don't Exist", "Log In")
       }
 
@@ -114,14 +114,17 @@ const Login = () => {
     <>
       <AuthHeader
         title="Welcome!"
-        lead="Use these awesome forms to login or create new account in your project for free."
+        // lead="Use these awesome forms to login or create new account in your project for free."
       />
       <Container className="mt--8 pb-5">
         <Row className="justify-content-center">
           <Col lg="5" md="7">
             <Card className="bg-secondary border-0 mb-0">
               <CardHeader className="bg-transparent pb-5">
-                <div className="text-muted text-center mt-2 mb-3">
+                <div className="d-flex justify-content-center">
+                <img className="w-50 rounded-circle" src="https://firebasestorage.googleapis.com/v0/b/locality-tradesmen.appspot.com/o/logo.jpg?alt=media&token=01658242-f931-4a42-b70c-149bac12dc49" alt="" />
+                </div>
+                {/* <div className="text-muted text-center mt-2 mb-3">
                   <small>Sign in with</small>
                 </div>
                 <div className="btn-wrapper text-center">
@@ -157,11 +160,11 @@ const Login = () => {
                     </span>
                     <span className="btn-inner--text">Google</span>
                   </Button>
-                </div>
+                </div> */}
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-5">
                 <div className="text-center text-muted mb-4">
-                  <small>Or sign in with credentials</small>
+                  <h2>Sign in</h2>
                 </div>
                 <Form onSubmit={handleLogIn}>
                   <FormGroup
@@ -225,26 +228,6 @@ const Login = () => {
                 </Form>
               </CardBody>
             </Card>
-            <Row className="mt-3">
-              <Col xs="6">
-                <a
-                  className="text-light"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <small>Forgot password?</small>
-                </a>
-              </Col>
-              <Col className="text-right" xs="6">
-                <a
-                  className="text-light"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <small>Create new account</small>
-                </a>
-              </Col>
-            </Row>
           </Col>
         </Row>
       </Container>

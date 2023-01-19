@@ -25,7 +25,7 @@ import AuthLayout from "layouts/Auth.js";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { NotifyProvider } from "./context/NotifyContext";
-import FrontLayout from "layouts/Front.js";
+// import FrontLayout from "layouts/Front.js";
 
 ReactDOM.render(
   // <Provider store={store}>
@@ -35,7 +35,7 @@ ReactDOM.render(
         <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
         <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-        <Route path="/" render={(props) => <FrontLayout {...props} />} />
+        <Route path="/" render={(props) => <AuthLayout {...props} />} />
 
         <Redirect from="*" to="/" />
       </Switch>

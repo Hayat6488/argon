@@ -32,7 +32,7 @@ function Posts() {
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {

@@ -24,10 +24,10 @@ import {
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader";
 
-import { onSnapshot, collection, query, updateDoc, doc } from "firebase/firestore";
+import { onSnapshot, collection, query, updateDoc, doc, getDoc, getDocs } from "firebase/firestore";
 
-import db from "../../../../Firebase/firebase.config";
 import Modals from "./Modal/Modals";
+import { db } from "Firebase/firebase.config";
 
 function Users() {
 
@@ -36,7 +36,7 @@ function Users() {
   const [exampleModal, setExampleModal] = React.useState(false)
   const [userDetails, setUserDetails] = React.useState(null)
 
-  const openModal= (user) => {
+  const openModal = (user) => {
     setExampleModal(!exampleModal)
     setUserDetails(user);
   }
@@ -45,28 +45,26 @@ function Users() {
 
   // Database call to read Data ***************
 
-  const collectionRef = collection(db, "users");
 
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  // const q = query();
 
-  React.useEffect(() => {
-    const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
-      const items = [];
-      QuerySnapshot.forEach((doc) => {
+  React.useLayoutEffect(() => {
+    const getData = async () => {
+      const ref = collection(db, "usersList/user/children");
 
-        items.push({ _id: doc.id, ...doc.data() });
+      const querySnapshot = await getDocs(ref);
+      let data = [];
+
+      querySnapshot.forEach((doc) => {
+        data.push({ id: doc.id, ...doc.data() });
       });
-      setUsers(items);
+      setUsers(data);
       setLoading(false);
-    });
-
-    return () => {
-      unSub();
     };
-  }, [collectionRef])
+    getData();
+  }, []);
 
   // Database call to read Data ***************
 
@@ -98,56 +96,27 @@ function Users() {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th/>
+                  <th>Location</th>
+                  <th />
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user._id}>
+                  <tr key={user?.id}>
                     <td className="table-user">
-                      {/* <img
+                      <img
                         alt="..."
                         className="avatar rounded-circle mr-3"
-                        src={require("assets/img/theme/team-1.jpg").default}
-                      /> */}
-                      <b>{user.name}</b>
+                        src={user?.photoURL}
+                      />
+                      <b>{user?.name}</b>
                     </td>
                     <td>
-                      <span className="text-muted">{user.email}</span>
+                      <span className="">{user?.email}</span>
                     </td>
-                    {/* <td>
-                      <a
-                        className="font-weight-bold"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <UncontrolledDropdown>
-                          <DropdownToggle caret color="secondary">
-                            {user.status}
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={() => update(user._id, approve)}
-                            >
-                              Approve
-                            </DropdownItem>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={() => update(user._id, disapprove)}
-                            >
-                              Disapprove
-                            </DropdownItem>
-                            <DropdownItem
-                              href="#pablo"
-                              onClick={() => update(user._id, pending)}
-                            >
-                              Pending
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </a>
-                    </td> */}
+                    <td>
+                      <span>{user?.location}</span>
+                    </td>
                     <td className="table-actions">
                       <button
                         aria-label="Close"
