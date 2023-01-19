@@ -36,6 +36,8 @@ import {
 // core components
 import AuthHeader from "components/Headers/AuthHeader.js";
 
+
+
 function Register() {
   const [focusedName, setfocusedName] = React.useState(false);
   const [focusedEmail, setfocusedEmail] = React.useState(false);

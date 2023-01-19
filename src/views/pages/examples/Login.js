@@ -19,8 +19,8 @@ import React from "react";
 import classnames from "classnames";
 // reactstrap components
 
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../../../Firebase/firebase.config";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, db } from "../../../Firebase/firebase.config";
 
 
 import {
@@ -41,28 +41,74 @@ import {
 // core components
 import AuthHeader from "components/Headers/AuthHeader.js";
 import { useHistory } from "react-router-dom";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { NotifyProvider } from "context/NotifyContext";
+import { useContext } from "preact/hooks";
+import NotifyContext from "context/NotifyContext";
 
+
+
+
+
+// Handle Login
 
 const Login = () => {
+
+  const { Notify } = React.useContext(NotifyContext);
+
   const history = useHistory();
   const [user, setUser] = React.useState(null);
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
 
-  const handleLogIn = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const password = form.password.value;
-    const email = form.email.value;
+  const handleLogIn = async (event) => {
+    try {
+      event.preventDefault();
+      const form = event.target;
+      const password = form.password.value;
+      const email = form.email.value;
 
-    signInWithEmailAndPassword(auth, email, password)
-    .then(result => {
-      const user = result.user;
-      setUser(user);
-      history.push("/admin/dashboard");
-  })
-  .catch(error => console.error('error: ', error))
+
+      // SignUp Function
+
+      // await createUserWithEmailAndPassword(auth, email, password);
+
+      // await updateProfile(auth.currentUser, {
+      //   displayName: "Admin",
+      // });
+      // await setDoc(
+      //   doc(db, `usersList/admin/children/${auth.currentUser.uid}`),
+      //   {
+      //     name: "Admin",
+      //     email: email,
+      //     uid: auth.currentUser.uid,
+      //   }
+      // );
+      // }
+
+      // sign in function
+
+      await signInWithEmailAndPassword(auth, email, password);
+      const docRef = doc(
+        db,
+        `usersList/admin/children/${auth.currentUser.uid}`
+      );
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        history.push("/admin/dashboard");
+        Notify("success", "Log in successful", "Log In")
+      } else {
+   
+      Notify("error", "User Don't Exist", "Log In")
+      }
+
+
+    } catch (error) {
+      Notify("error", error.message, "Log In")
+    }
   }
+
 
   return (
     <>
