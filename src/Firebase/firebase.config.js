@@ -23,14 +23,14 @@ const firebaseConfig = {
 
     // Main DataBase
 
-    apiKey: "AIzaSyDrzd_SK_uq7nSjISd9VFkARU7OsctwKPQ",
-    authDomain: "locality-tradesmen.firebaseapp.com",
-    databaseURL: "https://locality-tradesmen-default-rtdb.firebaseio.com",
-    projectId: "locality-tradesmen",
-    storageBucket: "locality-tradesmen.appspot.com",
-    messagingSenderId: "843068978464",
-    appId: "1:843068978464:web:e853b17d34875c801f5345",
-    measurementId: "G-S81PHZXMK6"
+    apiKey: process.env.REACT_APP_apiKey,
+    authDomain: process.env.REACT_APP_authDomain,
+    databaseURL: process.env.REACT_APP_databaseURL,
+    projectId: process.env.REACT_APP_projectId,
+    storageBucket: process.env.REACT_APP_storageBucket,
+    messagingSenderId: process.env.REACT_APP_messagingSenderId,
+    appId: process.env.REACT_APP_appId,
+    measurementId: process.env.REACT_APP_measurementId
 };
 
 // Initialize Firebase

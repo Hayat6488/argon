@@ -163,6 +163,7 @@ const Login = () => {
               <CardBody className="px-lg-5 py-lg-5">
                 <div className="text-center text-muted mb-4">
                   <h2>Sign in</h2>
+                  <h2>{process.env.REACT_APP_apiKey}</h2>
                 </div>
                 <Form onSubmit={handleLogIn}>
                   <FormGroup
