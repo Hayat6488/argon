@@ -1,20 +1,20 @@
 import React from "react";
 // reactstrap components
 import {
-  Badge,
   Card,
   Container,
   CardHeader,
   Row,
   Col,
   Media,
-  Progress,
-  Table
+  Table,
+  Spinner
 } from "reactstrap";
 import { collection, getDoc, doc, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Modals from "./Modal/Modals";
 import { db } from "Firebase/firebase.config";
+import Loader from "utility/Loader";
 
 function Posts() {
 
@@ -29,7 +29,7 @@ function Posts() {
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const getData = async () => {
       const querySnapshot = await getDocs(collection(db, "jobPosts"));
       let dataList = [];
@@ -39,28 +39,32 @@ function Posts() {
 
         const docRef = doc(db, `usersList/user/children/${authorId}`);
         const docSnap = await getDoc(docRef);
-        const list = {
-          id: x.id,
-          ...x.data(),
-          ...docSnap.data(),
-        };
+        // const list = {
+        //   id: x.id,
+        //   ...x.data(),
+        //   ...docSnap.data(),
+        // };
         dataList.push({
           id: x.id,
           ...x.data(),
           ...docSnap.data(),
         });
+        // console.log(dataList);
       });
       setPosts(dataList);
-      setLoading(false)
+      setLoading(true)
     };
     getData();
   }, []);
 
-  console.log(posts)
+  // console.log(posts)
 
   if (loading) {
-    return <h1>Loading</h1>
+    return <Container>
+      <Loader></Loader>
+    </Container>
   }
+
 
   else {
     return (
@@ -73,26 +77,9 @@ function Posts() {
                 <Col xs="6">
                   <h3 className="mb-0">JOB POSTS</h3>
                 </Col>
-                {/* <Col className="text-right" xs="6">
-                  <Button
-                    className="btn-neutral btn-round btn-icon"
-                    color="default"
-                    href="#pablo"
-                    id="tooltip969372949"
-                    onClick={(e) => e.preventDefault()}
-                    size="sm"
-                  >
-                    <span className="btn-inner--icon mr-1">
-                      <i className="fas fa-user-edit" />
-                    </span>
-                    <span className="btn-inner--text">Export</span>
-                  </Button>
-                  <UncontrolledTooltip delay={0} target="tooltip969372949">
-                    Edit product
-                  </UncontrolledTooltip>
-                </Col> */}
               </Row>
             </CardHeader>
+            <h1>{posts?.length}</h1>
 
             <Table className="align-items-center table-flush" responsive>
               <thead className="thead-light">
@@ -119,7 +106,7 @@ function Posts() {
                     </th>
                     <td>
                       {
-
+                        post?.name
                       }
                     </td>
                     {/* <td>
@@ -127,27 +114,14 @@ function Posts() {
                       {post.author}
                     </td> */}
                     <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        {post.category}
-                      </Badge>
+                      {post?.address?.houseNumber}, {post?.address?.street}, {post?.address?.city}
                     </td>
                     <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        {post.reports}
-                      </Badge>
+                      {post?.category}
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <span className="mr-2">60%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="60"
-                            barClassName="bg-danger"
-                          />
-                        </div>
+                        <span className="mr-2">{post?.description}</span>
                       </div>
                     </td>
                     <td className="table-actions">
@@ -161,40 +135,6 @@ function Posts() {
                         <span aria-hidden={true}><i className="fas fa-eye" /></span>
                       </button>
                     </td>
-                    {/* <td className="text-right">
-                  <UncontrolledDropdown>
-                    <DropdownToggle
-                      className="btn-icon-only text-light"
-                      href="#pablo"
-                      role="button"
-                      size="sm"
-                      color=""
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fas fa-ellipsis-v" />
-                    </DropdownToggle>
-                    <DropdownMenu className="dropdown-menu-arrow" right>
-                      <DropdownItem
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        Action
-                      </DropdownItem>
-                      <DropdownItem
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        Another action
-                      </DropdownItem>
-                      <DropdownItem
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        Something else here
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td> */}
                   </tr>)
                 }
               </tbody>
