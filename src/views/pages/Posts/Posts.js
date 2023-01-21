@@ -10,7 +10,7 @@ import {
   Table,
   Spinner
 } from "reactstrap";
-import { collection, getDoc, doc, getDocs } from "firebase/firestore";
+import { collection, getDoc, doc, getDocs, onSnapshot } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Modals from "./Modal/Modals";
 import { db } from "Firebase/firebase.config";
@@ -28,6 +28,27 @@ function Posts() {
 
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [users, setUsers] = React.useState([]);
+
+  const userRef = collection(db, "/usersList/user/children");
+
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(userRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+
+        items.push({ uid: doc.id, ...doc.data() });
+      });
+      setUsers(items);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
+  // console.log(users);
 
   React.useLayoutEffect(() => {
     const getData = async () => {
@@ -37,8 +58,11 @@ function Posts() {
       querySnapshot.forEach(async (x) => {
         const authorId = x.data().uid;
 
-        const docRef = doc(db, `usersList/user/children/${authorId}`);
-        const docSnap = await getDoc(docRef);
+        // console.log(authorId);
+
+        const author = users?.find(user => user.uid === authorId);
+        console.log(author);
+        
         // const list = {
         //   id: x.id,
         //   ...x.data(),
@@ -47,17 +71,17 @@ function Posts() {
         dataList.push({
           id: x.id,
           ...x.data(),
-          ...docSnap.data(),
+          ...author,
         });
         // console.log(dataList);
       });
       setPosts(dataList);
-      setLoading(true)
+      setLoading(false)
     };
     getData();
-  }, []);
+  }, [users]);
 
-  // console.log(posts)
+  console.log(posts)
 
   if (loading) {
     return <Container>
@@ -117,7 +141,7 @@ function Posts() {
                       {post?.address?.houseNumber}, {post?.address?.street}, {post?.address?.city}
                     </td>
                     <td>
-                      {post?.category}
+                      {post?.notificationToken}
                     </td>
                     <td>
                       <div className="d-flex align-items-center">

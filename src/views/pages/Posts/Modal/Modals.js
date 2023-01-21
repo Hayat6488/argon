@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 // reactstrap components
 import {
@@ -11,24 +12,20 @@ import {
 
 function Modals({ exampleModal, setExampleModal, postDetails }) {
 
-  console.log(postDetails)
+  console.log(postDetails);
 
   return (
     <>
       <Modal
         className="modal-dialog-centered"
+        size="lg"
         isOpen={exampleModal}
         toggle={() => setExampleModal(!exampleModal)}
       >
         <div className="modal-header mt-2">
           <h2 className="modal-title" id="exampleModalLabel">
-            TRADESMAN DETAILS
+            POST DETAILS
           </h2>
-        </div>
-        <div className="mt-2">
-          <div className="d-flex mb-1 justify-content-center">
-            {/* <img src={userDetails.pic} alt="" /> */}
-          </div>
         </div>
         <Table className="align-items-center" responsive>
           <thead className="thead-light">
@@ -44,114 +41,55 @@ function Modals({ exampleModal, setExampleModal, postDetails }) {
                     Name: 
                     </span>
               </th>
-              {/* <td>{userDetails.name}</td> */}
+              <td>{postDetails?.name}</td>
             </tr>
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">
-                    Contact: 
+                    Title: 
                     </span>
               </th>
-              {/* <td>{userDetails.contact}</td> */}
+              <td>{postDetails?.title}</td>
             </tr>
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">
-                    email: 
+                    Address: 
                     </span>
               </th>
-              {/* <td>{userDetails.email}</td> */}
+              <td>{postDetails?.address?.houseNumber}, {postDetails?.address?.street}, {postDetails?.address?.city}</td>
             </tr>
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">
-                      Location: 
+                    Description: 
                     </span>
               </th>
-              {/* <td>{userDetails.loca}</td> */}
+              <td>{postDetails?.description}</td>
             </tr>
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">
-                    Business Type: 
+                    Category: 
                     </span>
               </th>
-              {/* <td>{userDetails.type}</td> */}
+              <td>{postDetails?.category}</td>
             </tr>
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">
-                      Skills
+                    Job Type: 
                     </span>
               </th>
-              {/* <td>{userDetails.skill}</td> */}
+              <td>{postDetails?.jobType}</td>
             </tr>
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">
-                      Service Type:
+                    Job Post Date: 
                     </span>
               </th>
-              {/* <td>{userDetails.serviceType}</td> */}
-            </tr>
-            <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Past Job:
-                    </span>
-              </th>
-              {/* <td>{userDetails.pastWork}</td> */}
-            </tr>
-            <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Past Job Category:
-                    </span>
-              </th>
-              {/* <td>{userDetails.pastCategory}</td> */}
-            </tr>
-            <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Past Work Details:
-                    </span>
-              </th>
-              {/* <td>{userDetails.des}</td> */}
-            </tr>
-            <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                      External Link About
-                    </span>
-              </th>
-              {/* <td><a href={userDetails.link}  target="_blank">Last Job</a></td> */}
-            </tr>
-            <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                    Photo ID: 
-                    </span>
-              </th>
-              {/* <td><a href={userDetails.photoId} target="_blank">See Photo Id</a></td> */}
-              {/* <td><a href={userDetails.photoId} target="_blank"><img className="w-50" src={userDetails.photoId} alt="" /></a></td> */}
-            </tr>
-            <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                      Trade ID:
-                    </span>
-              </th>
-              {/* <td><a href={userDetails.tradeId} target="_blank">See Trade Id</a></td> */}
-              {/* <td><a href={userDetails.tradeId} target="_blank"><img className="w-50" src={userDetails.tradeId} alt="" /></a></td> */}
-            </tr>
-            <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                    Training Certificate: 
-                    </span>
-              </th>
-              {/* <td><a href={userDetails.certificate} target="_blank">See Training Certificate</a></td> */}
-              {/* <td><a href={userDetails.certificate} target="_blank"><img className="w-50" src={userDetails.certificate} alt="" /></a></td> */}
+              <td>12-12-2023</td>
             </tr>
           </tbody>
         </Table>

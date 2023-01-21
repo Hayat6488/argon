@@ -70,7 +70,6 @@ function Tradesman() {
 
         items.push({ id: doc.id, ...doc.data() });
       });
-      console.log(items)
       setUsers(items);
       setLoading(false);
     });
