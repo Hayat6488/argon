@@ -14,10 +14,11 @@ function Modals({ exampleModal, setExampleModal, userDetails }) {
     <>
       <Modal
         className="modal-dialog-centered"
+        size="lg"
         isOpen={exampleModal}
         toggle={() => setExampleModal(!exampleModal)}
       >
-        <div className="modal-header mt-2">
+        <div className="modal-header mt-2 w-75">
           <h2 className="modal-title" id="exampleModalLabel">
             TRADESMAN DETAILS
           </h2>

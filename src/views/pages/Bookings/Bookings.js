@@ -23,7 +23,7 @@ function Bookings() {
     setBookingsDetails(user);
   }
 
-  const collectionRef = collection(db, "bookings");
+  const collectionRef = collection(db, "bookingRequest");
 
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -45,7 +45,6 @@ function Bookings() {
       unSub();
     };
   }, [collectionRef])
-
 
   // const Delete = (id) => {
   //   console.log(id);
