@@ -7,10 +7,9 @@ import {
   Row,
   Col,
   Media,
-  Table,
-  Spinner
+  Table
 } from "reactstrap";
-import { collection, getDoc, doc, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Modals from "./Modal/Modals";
 import { db } from "Firebase/firebase.config";
@@ -48,8 +47,6 @@ function Posts() {
     };
   }, []);
 
-  // console.log(users);
-
   React.useLayoutEffect(() => {
     const getData = async () => {
       const querySnapshot = await getDocs(collection(db, "jobPosts"));
@@ -58,22 +55,14 @@ function Posts() {
       querySnapshot.forEach(async (x) => {
         const authorId = x.data().uid;
 
-        // console.log(authorId);
-
         const author = users?.find(user => user.uid === authorId);
         console.log(author);
         
-        // const list = {
-        //   id: x.id,
-        //   ...x.data(),
-        //   ...docSnap.data(),
-        // };
         dataList.push({
           id: x.id,
           ...x.data(),
           ...author,
         });
-        // console.log(dataList);
       });
       setPosts(dataList);
       setLoading(false)
@@ -81,7 +70,6 @@ function Posts() {
     getData();
   }, [users]);
 
-  console.log(posts)
 
   if (loading) {
     return <Container>
@@ -103,7 +91,6 @@ function Posts() {
                 </Col>
               </Row>
             </CardHeader>
-            <h1>{posts?.length}</h1>
 
             <Table className="align-items-center table-flush" responsive>
               <thead className="thead-light">
