@@ -4,7 +4,6 @@ import {
     Button,
     Card,
     CardBody,
-    CardHeader,
     CardTitle,
     Col,
     Container,
@@ -15,7 +14,7 @@ import {
 } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Loader from "utility/Loader";
-import { addDoc, collection, doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { db } from "Firebase/firebase.config";
 import NotifyContext from "context/NotifyContext";
 
@@ -38,9 +37,7 @@ function Services() {
         }
         try {
             const serviceRef = collection(db, "serviceCategory");
-            // await addDoc(serviceRef, data);
             await addDoc(serviceRef, data);
-            // setUpdate(!update);
             Notify("success", `Service Added successfully.`, "Add Service");
 
         } catch (error) {
@@ -78,9 +75,7 @@ function Services() {
         }
         try {
             const subServiceRef = collection(db, `/serviceCategory/${serviceField.id}/sub/`);
-            // await addDoc(serviceRef, data);
             await addDoc(subServiceRef, data);
-            // setUpdate(!update);
             Notify("success", `Service Added successfully.`, "Add Service");
 
         } catch (error) {
@@ -170,7 +165,7 @@ function Services() {
                                             <CardBody>
                                                 <div className="w-100">
                                                     <CardTitle className="text-uppercase text-muted mb-0">
-                                                        <h1>Add Sub-Service To {serviceField.title} Category</h1>
+                                                        <h1>Add Service To {serviceField.title} Sub Category</h1>
                                                     </CardTitle>
                                                     <form onSubmit={(event) => AddSubService(event)}>
                                                         <div className="d-flex">
@@ -188,13 +183,12 @@ function Services() {
                                             <CardBody>
                                                 <div className="w-100">
                                                     <CardTitle className="text-uppercase text-muted mb-0">
-                                                        <h1>Service Category</h1>
+                                                        <h1>Service Sub Category</h1>
                                                     </CardTitle>
                                                     <ListGroup>
                                                         {
                                                             subServices.map(subService => <ListGroupItem key={subServices?.id} className="p-0 mb-2"><div className="w-100 bg-danger text-white text-center font-weight-bold py-2 rounded-sm" disabled>{subService?.value}</div></ListGroupItem>)
                                                         }
-                                                        {/* <ListGroupItem>Cras justo odio</ListGroupItem> */}
                                                     </ListGroup>
                                                 </div>
                                             </CardBody>
