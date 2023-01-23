@@ -7,6 +7,7 @@ import Transactions from "views/pages/Transactions/Transactions";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
 import Tradesman from "views/pages/Users/Tradesman/Tradesman";
 import ServiceFee from "views/pages/ServiceFee/ServiceFee";
+import Services from "views/pages/Services/Services";
 import Bookings from "views/pages/Bookings/Bookings";
 import Users from "views/pages/Users/Users/Users";
 import Posts from "views/pages/Posts/Posts";
@@ -99,6 +100,13 @@ const routes = [
     name: "Transactions",
     icon: "ni ni-credit-card text-info",
     component: Transactions,
+    layout: "/admin",
+  },
+  {
+    path: "/services",
+    name: "Services",
+    icon: "ni ni-settings text-info",
+    component: Services,
     layout: "/admin",
   },
   {

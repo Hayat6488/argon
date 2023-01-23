@@ -17,13 +17,12 @@ import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "Firebase/firebase.config";
 import NotifyContext from "context/NotifyContext";
 
-function Posts() {
+function ServicesFee() {
     const { Notify } = React.useContext(NotifyContext);
 
     const [update, setUpdate] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [serviceFee, setServiceFee] = React.useState([]);
-    const [showInput, setInput] = React.useState(true);
 
     const collectionRef = collection(db, "serviceFee");
 
@@ -54,7 +53,7 @@ function Posts() {
             await updateDoc(userRef, updated);
             setUpdate(!update);
             Notify("success", `Service Fee Updated successfully.`, "Service Fee Update");
-            
+
         } catch (error) {
             console.error(error);
         }
@@ -95,24 +94,26 @@ function Posts() {
                                                 </CardTitle>
                                                 <h1 className="h2 font-weight-bold mb-0 fs-1">{serviceFee[0]?.fee}%</h1>
                                             </div>
-                                            {update && <div className="col">
-                                                <CardTitle className="text-uppercase text-muted mb-0">
-                                                    UPDATE SERVICE FEE
-                                                </CardTitle>
-                                                <form onSubmit={(event) => updateServiceFee(event, serviceFee[0]?.id)}>
-                                                    <div className="d-flex">
-                                                        <Input className="w-50" required placeholder={serviceFee[0]?.fee} type="text" name="service" bsSize="sm" id="" />
-                                                        <Button className="py-0 rounded-end" color="info" type="submit">UPDATE</Button>
+                                            <div>
+                                                {update && <div className="col">
+                                                    <CardTitle className="text-uppercase text-muted mb-0">
+                                                        UPDATE SERVICE FEE
+                                                    </CardTitle>
+                                                    <form onSubmit={(event) => updateServiceFee(event, serviceFee[0]?.id)}>
+                                                        <div className="d-flex">
+                                                            <Input className="w-100" required placeholder={serviceFee[0]?.fee} type="text" name="service" bsSize="sm" id="" />
+                                                            <Button className="py-0 rounded-end" color="info" type="submit">UPDATE</Button>
+                                                        </div>
+                                                    </form>
+                                                </div>}
+                                                {
+                                                    !update && <div>
+                                                        <Button onClick={() => setUpdate(!update)} className="btn-icon btn-2 px-4 mr-20 py-1" size="sm" color="info" type="button">
+                                                            UPDATE
+                                                        </Button>
                                                     </div>
-                                                </form>
-                                            </div>}
-                                            {
-                                                !update && <div>
-                                                <Button onClick={() => setUpdate(!update)} className="btn-icon btn-2 px-4 mr-20 py-1" size="sm" color="info" type="button">
-                                                    UPDATE
-                                                </Button>
+                                                }
                                             </div>
-                                            }
                                         </Row>
                                     </CardBody>
                                 </Card>
@@ -125,4 +126,4 @@ function Posts() {
     }
 }
 
-export default Posts
+export default ServicesFee
