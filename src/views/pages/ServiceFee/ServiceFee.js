@@ -90,24 +90,24 @@ function ServicesFee() {
                                         <Row className="d-flex align-items-center justify-content-between">
                                             <div className="col">
                                                 <CardTitle className="text-uppercase text-muted mb-0">
-                                                    SERVICE FEE
+                                                    <h1 className="text-muted">SERVICE FEE</h1>
                                                 </CardTitle>
                                                 <h1 className="h2 font-weight-bold mb-0 fs-1">{serviceFee[0]?.fee}%</h1>
                                             </div>
-                                            <div>
+                                            <div className="w-50">
                                                 {update && <div className="col">
-                                                    <CardTitle className="text-uppercase text-muted mb-0">
-                                                        UPDATE SERVICE FEE
+                                                    <CardTitle className="text-uppercase mb-0">
+                                                        <h1 className="text-muted">UPDATE SERVICE FEE</h1>
                                                     </CardTitle>
                                                     <form onSubmit={(event) => updateServiceFee(event, serviceFee[0]?.id)}>
                                                         <div className="d-flex">
-                                                            <Input className="w-100" required placeholder={serviceFee[0]?.fee} type="text" name="service" bsSize="sm" id="" />
+                                                            <Input className="w-100 py-3" required placeholder={serviceFee[0]?.fee} type="text" name="service" bsSize="sm" id="" />
                                                             <Button className="py-0 rounded-end" color="info" type="submit">UPDATE</Button>
                                                         </div>
                                                     </form>
                                                 </div>}
                                                 {
-                                                    !update && <div>
+                                                    !update && <div className="px-4 mr-4 w-100 d-flex justify-content-end">
                                                         <Button onClick={() => setUpdate(!update)} className="btn-icon btn-2 px-4 mr-20 py-1" size="sm" color="info" type="button">
                                                             UPDATE
                                                         </Button>
