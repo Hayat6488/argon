@@ -100,8 +100,6 @@ const Login = () => {
 
       Notify("error", "User Don't Exist", "Log In")
       }
-
-
     } catch (error) {
       Notify("error", error.message, "Log In")
     }

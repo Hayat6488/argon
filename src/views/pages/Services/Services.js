@@ -9,6 +9,8 @@ import {
     Col,
     Container,
     Input,
+    ListGroup,
+    ListGroupItem,
     Row,
 } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader";
@@ -20,27 +22,13 @@ import NotifyContext from "context/NotifyContext";
 function Services() {
     const { Notify } = React.useContext(NotifyContext);
 
-    // const [update, setUpdate] = React.useState(false);
+    const [subServicesField, setSubServicesField] = React.useState(false);
+    const [serviceField, setServiceField] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
-    // const [serviceFee, setServiceFee] = React.useState([]);
+    const [services, setServices] = React.useState([]);
+    const [subServices, setSubServices] = React.useState([]);
 
-    // const collectionRef = collection(db, "serviceFee");
-
-    // React.useLayoutEffect(() => {
-    //     const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
-    //         const items = [];
-    //         QuerySnapshot.forEach((doc) => {
-
-    //             items.push({ id: doc.id, ...doc.data() });
-    //         });
-    //         setServiceFee(items);
-    //         setLoading(false);
-    //     });
-
-    //     return () => {
-    //         unSub();
-    //     };
-    // }, [])
+    const servicesRef = collection(db, "serviceCategory");
 
     const AddService = async (event) => {
         event.preventDefault();
@@ -48,20 +36,76 @@ function Services() {
         const data = {
             title: service
         }
-        console.log(service);
         try {
             const serviceRef = collection(db, "serviceCategory");
             // await addDoc(serviceRef, data);
             await addDoc(serviceRef, data);
             // setUpdate(!update);
-            Notify("success", `Service Added successfully.`, "Service Add");
+            Notify("success", `Service Added successfully.`, "Add Service");
 
         } catch (error) {
             console.error(error);
         }
     }
 
-    // console.log(update);
+    const addSubServices = (service) => {
+        setSubServicesField(true);
+        setServiceField(service);
+    }
+
+    React.useLayoutEffect(() => {
+        const unSub = onSnapshot(servicesRef, (QuerySnapshot) => {
+            const items = [];
+            QuerySnapshot.forEach((doc) => {
+
+                items.push({ id: doc.id, ...doc.data() });
+            });
+            setServices(items);
+            setLoading(false);
+        });
+
+        return () => {
+            unSub();
+        };
+    }, [])
+
+    const AddSubService = async (event) => {
+        event.preventDefault();
+        const subService = event.target.subService.value;
+        const data = {
+            key: subService,
+            value: subService
+        }
+        try {
+            const subServiceRef = collection(db, `/serviceCategory/${serviceField.id}/sub/`);
+            // await addDoc(serviceRef, data);
+            await addDoc(subServiceRef, data);
+            // setUpdate(!update);
+            Notify("success", `Service Added successfully.`, "Add Service");
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+    React.useLayoutEffect(() => {
+        const servicesRef = collection(db, `serviceCategory/${serviceField.id}/sub`);
+        const unSub = onSnapshot(servicesRef, (QuerySnapshot) => {
+            const items = [];
+            QuerySnapshot.forEach((doc) => {
+
+                items.push({ id: doc.id, ...doc.data() });
+            });
+            setSubServices(items);
+            setLoading(false);
+        });
+
+        return () => {
+            unSub();
+        };
+    }, [serviceField])
+    console.log(subServices);
 
     if (loading) {
         return <Container>
@@ -79,54 +123,88 @@ function Services() {
                         <Col lg="6">
                             <Card className="card-stats">
 
-                                <CardBody>
-                                    <Row>
-                                        <Card>
+                                <CardBody className="w-100">
+                                    <Row className="w-100">
+                                        <Card className="w-100">
                                             <CardBody>
-                                                    <div className="">
-                                                        <CardTitle className="text-uppercase text-muted mb-0">
-                                                            Add Service Category
-                                                        </CardTitle>
-                                                        <form onSubmit={(event) => AddService(event)}>
-                                                            <div className="d-flex">
-                                                                <Input className="w-100" required placeholder="" type="text" name="service" bsSize="sm" id="" />
-                                                                <Button className="py-0 rounded-end" color="info" type="submit">ADD</Button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
+                                                <div className="w-100">
+                                                    <CardTitle className="text-uppercase text-muted mb-0 w-100">
+                                                        <h1>Add Service</h1>
+                                                    </CardTitle>
+                                                    <form onSubmit={(event) => AddService(event)}>
+                                                        <div className="d-flex">
+                                                            <Input className="w-100" required placeholder="" type="text" name="service" bsSize="sm" id="" />
+                                                            <Button className="py-0 rounded-end" color="info" type="submit">ADD</Button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </CardBody>
+                                        </Card>
+                                    </Row>
+                                    <Row className="w-100">
+                                        <Card className="w-100">
+                                            <CardBody>
+                                                <div className="">
+                                                    <CardTitle className="text-uppercase text-muted mb-0">
+                                                        <h1>Service Category</h1>
+                                                    </CardTitle>
+                                                    <ListGroup>
+                                                        {
+                                                            services.map(service => <ListGroupItem key={service?.id} onClick={() => addSubServices(service)} className="p-0 mb-2"><Button color="info" className="w-100">{service?.title}</Button></ListGroupItem>)
+                                                        }
+                                                    </ListGroup>
+                                                </div>
                                             </CardBody>
                                         </Card>
                                     </Row>
                                 </CardBody>
                             </Card>
                         </Col>
-                        <Col lg="6">
+                        {
+                            subServicesField && <Col lg="6">
                             <Card className="card-stats">
 
-                                <CardBody>
-                                    <Row>
-                                        <div className="col">
-                                            <CardTitle className="text-uppercase text-muted mb-0">
-                                                New users
-                                            </CardTitle>
-                                            <span className="h2 font-weight-bold mb-0">2,356</span>
-                                        </div>
-                                        <Col className="col-auto">
-                                            <div className="icon icon-shape bg-orange text-white rounded-circle shadow">
-                                                <i className="ni ni-chart-pie-35" />
-                                            </div>
-                                        </Col>
+                                <CardBody className="w-100">
+                                <Row className="w-100">
+                                        <Card className="w-100">
+                                            <CardBody>
+                                                <div className="w-100">
+                                                    <CardTitle className="text-uppercase text-muted mb-0">
+                                                        <h1>Add Sub-Service To {serviceField.title} Category</h1>
+                                                    </CardTitle>
+                                                    <form onSubmit={(event) => AddSubService(event)}>
+                                                        <div className="d-flex">
+                                                            <Input className="w-100" required placeholder="" type="text" name="subService" bsSize="sm" id="" />
+                                                            <Button className="py-0 rounded-end" color="danger" type="submit">ADD</Button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </CardBody>
+                                        </Card>
                                     </Row>
-                                    <p className="mt-3 mb-0 text-sm">
-                                        <span className="text-success mr-2">
-                                            <i className="fa fa-arrow-up" />
-                                            3.48%
-                                        </span>
-                                        <span className="text-nowrap">Since last month</span>
-                                    </p>
+                                    {
+                                        subServices !== 0 && <Row>
+                                        <Card className="w-100">
+                                            <CardBody>
+                                                <div className="w-100">
+                                                    <CardTitle className="text-uppercase text-muted mb-0">
+                                                        <h1>Service Category</h1>
+                                                    </CardTitle>
+                                                    <ListGroup>
+                                                        {
+                                                            subServices.map(subService => <ListGroupItem key={subServices?.id} className="p-0 mb-2"><div className="w-100 bg-danger text-white text-center font-weight-bold py-2 rounded-sm" disabled>{subService?.value}</div></ListGroupItem>)
+                                                        }
+                                                        {/* <ListGroupItem>Cras justo odio</ListGroupItem> */}
+                                                    </ListGroup>
+                                                </div>
+                                            </CardBody>
+                                        </Card>
+                                    </Row>
+                                    }
                                 </CardBody>
                             </Card>
                         </Col>
+                        }
                     </Row>
                 </Container>
             </>
