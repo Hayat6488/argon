@@ -16,28 +16,28 @@ import { db } from "Firebase/firebase.config";
 function Transactions() {
 
 
-  const collectionRef = collection(db, "transactions");
+  // const collectionRef = collection(db, "transactions");
 
   const [transactions, setTransactions] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   // const q = query();
 
-  React.useLayoutEffect(() => {
-    const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
-      const items = [];
-      QuerySnapshot.forEach((doc) => {
+  // React.useLayoutEffect(() => {
+  //   const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
+  //     const items = [];
+  //     QuerySnapshot.forEach((doc) => {
 
-        items.push({ _id: doc.id, ...doc.data() });
-      });
-      setTransactions(items);
-      setLoading(false);
-    });
+  //       items.push({ _id: doc.id, ...doc.data() });
+  //     });
+  //     setTransactions(items);
+  //     setLoading(false);
+  //   });
 
-    return () => {
-      unSub();
-    };
-  }, [collectionRef])
+  //   return () => {
+  //     unSub();
+  //   };
+  // }, [collectionRef])
 
 
   // const Delete = (id) => {

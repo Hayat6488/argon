@@ -53,6 +53,8 @@ function Users() {
     getData();
   }, []);
 
+  console.log(users);
+
   // Database call to read Data ***************
 
   // Loader to show Loading ***********

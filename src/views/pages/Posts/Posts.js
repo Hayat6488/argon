@@ -70,6 +70,8 @@ function Posts() {
     getData();
   }, [users]);
 
+  console.log(users);
+
 
   if (loading) {
     return <Container>

@@ -44,7 +44,9 @@ function Bookings() {
     return () => {
       unSub();
     };
-  }, [collectionRef])
+  }, [])
+
+  console.log(posts);
 
   // const Delete = (id) => {
   //   console.log(id);

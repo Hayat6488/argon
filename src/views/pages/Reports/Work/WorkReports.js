@@ -18,28 +18,28 @@ import { db } from "Firebase/firebase.config";
 function WorkReports() {
 
 
-  const collectionRef = collection(db, "posts");
+  // const collectionRef = collection(db, "posts");
 
   const [posts, setPosts] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   // const q = query();
 
-  React.useLayoutEffect(() => {
-    const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
-      const items = [];
-      QuerySnapshot.forEach((doc) => {
+  // React.useLayoutEffect(() => {
+  //   const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
+  //     const items = [];
+  //     QuerySnapshot.forEach((doc) => {
 
-        items.push({ _id: doc.id, ...doc.data() });
-      });
-      setPosts(items);
-      setLoading(false);
-    });
+  //       items.push({ _id: doc.id, ...doc.data() });
+  //     });
+  //     setPosts(items);
+  //     setLoading(false);
+  //   });
 
-    return () => {
-      unSub();
-    };
-  }, [collectionRef])
+  //   return () => {
+  //     unSub();
+  //   };
+  // }, [collectionRef])
 
 
   // const Delete = (id) => {
