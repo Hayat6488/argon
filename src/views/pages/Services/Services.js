@@ -17,6 +17,8 @@ import Loader from "utility/Loader";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
 import { db } from "Firebase/firebase.config";
 import NotifyContext from "context/NotifyContext";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "Firebase/firebase.config";
 
 function Services() {
     const { Notify } = React.useContext(NotifyContext);
@@ -28,12 +30,12 @@ function Services() {
     const [subServices, setSubServices] = React.useState([]);
 
     const servicesRef = collection(db, "serviceCategory");
+    // const imagesListRef = ref(storage, "images/");
 
-    const AddService = async (event) => {
-        event.preventDefault();
-        const service = event.target.service.value;
+    const addDataToFireStore = async(service, url) => {
         const data = {
-            title: service
+            title: service,
+            imageURL: url
         }
         try {
             const serviceRef = collection(db, "serviceCategory");
@@ -43,6 +45,20 @@ function Services() {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    const AddService = async (event) => {
+        event.preventDefault();
+        const service = event.target.service.value;
+        const image = event.target.image.files[0];
+        const imageRef = ref(storage, `services/${image.name}`);
+        uploadBytes(imageRef, image).then((snapshot) => {
+          getDownloadURL(snapshot.ref).then((url) => {
+            console.log(url);
+            addDataToFireStore(service, url);
+          });
+        });
+        event.target.reset()
     }
 
     const addSubServices = (service) => {
@@ -127,9 +143,10 @@ function Services() {
                                                         <h1>Add Service</h1>
                                                     </CardTitle>
                                                     <form onSubmit={(event) => AddService(event)}>
-                                                        <div className="d-flex">
-                                                            <Input className="w-100" required placeholder="" type="text" name="service" bsSize="sm" id="" />
-                                                            <Button className="py-0 rounded-end" color="info" type="submit">ADD</Button>
+                                                        <div className="d-flex flex-column">
+                                                            <Input className="w-100 mb-2" required placeholder="" type="text" name="service" bsSize="sm" id="" />
+                                                            <Input className="w-100 mb-2" required type="file" name="image" id="" />
+                                                            <Button className="py-2 rounded-end w-25" color="info" type="submit">ADD</Button>
                                                         </div>
                                                     </form>
                                                 </div>
