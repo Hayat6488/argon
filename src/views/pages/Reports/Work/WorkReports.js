@@ -67,11 +67,11 @@ function WorkReports() {
             <Table className="align-items-center table-flush" responsive>
               <thead className="thead-light">
                 <tr>
-                  <th scope="col">User</th>
-                  <th scope="col">Tradesman</th>
-                  <th scope="col">Amount</th>
-                  <th scope="col">Time</th>
-                  <th scope="col">Reports</th>
+                  <th scope="col">Reported By</th>
+                  <th scope="col">Reported By</th>
+                  <th scope="col">Reported User</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
                   <th scope="col" />
                 </tr>
               </thead>

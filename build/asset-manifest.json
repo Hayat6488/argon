@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.892483a3.chunk.css",
-    "main.js": "/static/js/main.1c7be695.chunk.js",
-    "main.js.map": "/static/js/main.1c7be695.chunk.js.map",
+    "main.js": "/static/js/main.d58b2853.chunk.js",
+    "main.js.map": "/static/js/main.d58b2853.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.8b28264f.js",
     "runtime-main.js.map": "/static/js/runtime-main.8b28264f.js.map",
     "static/css/2.72ddca35.chunk.css": "/static/css/2.72ddca35.chunk.css",
@@ -12,7 +12,7 @@
     "static/css/2.72ddca35.chunk.css.map": "/static/css/2.72ddca35.chunk.css.map",
     "static/css/main.892483a3.chunk.css.map": "/static/css/main.892483a3.chunk.css.map",
     "static/js/2.8255a7f8.chunk.js.LICENSE.txt": "/static/js/2.8255a7f8.chunk.js.LICENSE.txt",
-    "static/js/main.1c7be695.chunk.js.LICENSE.txt": "/static/js/main.1c7be695.chunk.js.LICENSE.txt",
+    "static/js/main.d58b2853.chunk.js.LICENSE.txt": "/static/js/main.d58b2853.chunk.js.LICENSE.txt",
     "static/media/angular.jpg": "/static/media/angular.b5045666.jpg",
     "static/media/argon-react.png": "/static/media/argon-react.128d71d3.png",
     "static/media/bootstrap.jpg": "/static/media/bootstrap.bd712487.jpg",
@@ -32,6 +32,6 @@
     "static/css/2.72ddca35.chunk.css",
     "static/js/2.8255a7f8.chunk.js",
     "static/css/main.892483a3.chunk.css",
-    "static/js/main.1c7be695.chunk.js"
+    "static/js/main.d58b2853.chunk.js"
   ]
 }

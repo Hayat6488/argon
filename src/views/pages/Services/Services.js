@@ -178,7 +178,7 @@ function Services() {
                                         </Card>
                                     </Row>
                                     {
-                                        subServices !== 0 && <Row>
+                                        subServices !== 0 && <Row className="w-100">
                                         <Card className="w-100">
                                             <CardBody>
                                                 <div className="w-100">
