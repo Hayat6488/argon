@@ -13,6 +13,16 @@ import {
 function Modals({ exampleModal, setExampleModal, postDetails }) {
 
   console.log(postDetails);
+  const dateObj = postDetails?.jobPostedDate;
+  function formatDate(date) {
+    const formatDate = new Date(
+        date.seconds * 1000 + date.nanoseconds / 1000000
+    );
+    return formatDate.toLocaleTimeString('en-us', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+  const date = formatDate(dateObj);
+
 
   return (
     <>
@@ -86,10 +96,10 @@ function Modals({ exampleModal, setExampleModal, postDetails }) {
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">
-                    Job Post Date: 
+                    Job Post Date:
                     </span>
               </th>
-              <td>12-12-2023</td>
+              <td>{date}</td>
             </tr>
           </tbody>
         </Table>

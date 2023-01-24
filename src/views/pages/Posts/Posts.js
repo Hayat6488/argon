@@ -70,8 +70,6 @@ function Posts() {
     getData();
   }, [users]);
 
-  console.log(users);
-
 
   if (loading) {
     return <Container>
@@ -130,7 +128,7 @@ function Posts() {
                       {post?.address?.houseNumber}, {post?.address?.street}, {post?.address?.city}
                     </td>
                     <td>
-                      {post?.notificationToken}
+                      {post?.category}
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
