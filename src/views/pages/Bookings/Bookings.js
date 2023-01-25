@@ -8,12 +8,19 @@ import {
   Col,
   Table
 } from "reactstrap";
-import { onSnapshot, collection } from "firebase/firestore";
+import { onSnapshot, collection, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Modals from "./Modal/Modals";
 import { db } from "Firebase/firebase.config";
 
 function Bookings() {
+
+  const userRef = collection(db, "/usersList/user/children");
+  const tradesmanRef = collection(db, "/usersList/provider/children");
+
+  const [bookings, setBookings] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
+  const [providers, setProviders] = React.useState([]);
 
   const [exampleModal, setExampleModal] = React.useState(false)
   const [bookingsDetails, setBookingsDetails] = React.useState(null)
@@ -23,38 +30,71 @@ function Bookings() {
     setBookingsDetails(user);
   }
 
-  const collectionRef = collection(db, "bookingRequest");
-
-  const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  // const q = query();
-
   React.useLayoutEffect(() => {
-    const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
+    const unSub = onSnapshot(userRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
 
-        items.push({ _id: doc.id, ...doc.data() });
+        items.push({ uid: doc.id, ...doc.data() });
       });
-      setPosts(items);
+      setUsers(items);
       setLoading(false);
     });
 
     return () => {
       unSub();
     };
-  }, [])
+  }, []);
 
-  console.log(posts);
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(tradesmanRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
 
-  // const Delete = (id) => {
-  //   console.log(id);
-  // }
+        items.push({ uid: doc.id, ...doc.data() });
+      });
+      setProviders(items);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
+
+  React.useLayoutEffect(() => {
+    const getData = async () => {
+      const querySnapshot = await getDocs(collection(db, "bookingRequest"));
+      let dataList = [];
+
+      querySnapshot.forEach(async (x) => {
+        const userId = x.data().userUid;
+        const providerId = x.data().providerUid;
+
+        const user = users?.find(user => user.uid === userId);
+        const provider = providers?.find(provider => provider.uid === providerId);
+        
+        dataList.push({
+          id: x.id,
+          ...x.data(),
+          ...user,
+          ...{provider},
+        });
+      });
+      setBookings(dataList);
+      setLoading(false)
+    };
+    getData();
+  }, [users, providers]);
 
   if (loading) {
     return <h1>Loading</h1>
   }
+
+
 
   else {
     return (
@@ -65,7 +105,7 @@ function Bookings() {
             <CardHeader className="border-0">
               <Row>
                 <Col xs="6">
-                  <h3 className="mb-0">JOB POSTS</h3>
+                  <h3 className="mb-0">BOOKINGS DETAILS</h3>
                 </Col>
               </Row>
             </CardHeader>
@@ -76,26 +116,34 @@ function Bookings() {
                   <th scope="col">User</th>
                   <th scope="col">Tradesman</th>
                   <th scope="col">Title</th>
-                  <th scope="col">Amount</th>
+                  <th scope="col">Starting Date</th>
+                  <th scope="col">End Date</th>
                   <th scope="col" />
                 </tr>
               </thead>
               <tbody>
                 {
-                  posts.map(post => <tr key={post._id}>
+                  bookings.map(booking => <tr key={booking._id}>
                     <th scope="row">
-                    <img className="avatar rounded-circle" alt="..." src={post.userPic} />
-                      <span className="ml-2">{post.user}</span>
+                      <img className="avatar rounded-circle" alt="..." src={booking?.photURL} />
+                      <span className="mb-0 ml-2 text-sm">
+                        {booking?.name}
+                      </span>
                     </th>
                     <td>
-                      <img className="avatar rounded-circle" alt="..." src={post.tradesmanPic} />
-                      <span className="ml-2">{post.tradesman}</span>
+                      <img className="avatar rounded-circle" alt="..." src={booking?.provider?.profilePhoto} />
+                      <span className="ml-2 text-sm">
+                        {booking?.provider?.name}
+                      </span>
                     </td>
                     <td>
-                      <span>{post.time}</span>
+                      <span>{booking?.title}</span>
                     </td>
                     <td>
-                      <span>{post.amount}</span>
+                      <span>{booking?.startDate}</span>
+                    </td>
+                    <td>
+                      <span>{booking?.endDate}</span>
                     </td>
                     <td className="table-actions">
                       <button
@@ -103,45 +151,11 @@ function Bookings() {
                         className="close"
                         data-dismiss="modal"
                         type="button"
-                        onClick={() => openModal(post.timeline)}
+                        onClick={() => openModal(booking?.status)}
                       >
                         <span aria-hidden={true}><i className="fas fa-eye" /></span>
                       </button>
                     </td>
-                    {/* <td className="text-right">
-                  <UncontrolledDropdown>
-                    <DropdownToggle
-                      className="btn-icon-only text-light"
-                      href="#pablo"
-                      role="button"
-                      size="sm"
-                      color=""
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="fas fa-ellipsis-v" />
-                    </DropdownToggle>
-                    <DropdownMenu className="dropdown-menu-arrow" right>
-                      <DropdownItem
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        Action
-                      </DropdownItem>
-                      <DropdownItem
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        Another action
-                      </DropdownItem>
-                      <DropdownItem
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                      >
-                        Something else here
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td> */}
                   </tr>)
                 }
               </tbody>

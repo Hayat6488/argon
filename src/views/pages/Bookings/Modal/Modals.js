@@ -13,6 +13,8 @@ import {
 
 function Modals({ exampleModal, setExampleModal, bookingsDetails }) {
 
+  console.log(bookingsDetails);
+
   return (
     <>
       <Modal
@@ -39,28 +41,12 @@ function Modals({ exampleModal, setExampleModal, bookingsDetails }) {
                     </span>
                     <div className="timeline-content">
                       <small className="text-muted font-weight-bold">
-                        10:30 AM
+                        {step?.time?.content}
                       </small>
-                      <h5 className="mt-3 mb-0">{step}</h5>
+                      <h5 className="mt-3 mb-0">{step?.description?.content}</h5>
                     </div>
                   </div>)
                   }
-                  {/* <div className="timeline-block">
-                    <span className="timeline-step badge-success">
-                      <i className="ni ni-bell-55" />
-                    </span>
-                    <div className="timeline-content">
-                      <small className="text-muted font-weight-bold">
-                        10:30 AM
-                      </small>
-                      <h5 className="mt-3 mb-0">New message</h5>
-                       {
-                        bookingsDetails.map(step => <p className="text-sm mt-1 mb-0">
-                          {step}
-                        </p>)
-                       }
-                    </div>
-                  </div> */}
                 </div>
               </CardBody>
             </Card>
