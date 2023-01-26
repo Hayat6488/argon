@@ -89,15 +89,17 @@ function Tradesman() {
 
   // Function to update data in database **************
 
-  const update = async (id, status) => {
+  const update = async (user, status) => {
     const updated = {
       profileVerified: status
     };
+    const id = user.id;
+    const notificationToken = user.notificationToken;
     try {
       const userRef = doc(db, `/usersList/provider/children/${id}`);
       await updateDoc(userRef, updated);
       Notify("success", `Profile ${status} successfully.`, "Profile Status Update");
-      await sendPushNotification();
+      await sendPushNotification(notificationToken, status);
       setSearch([]);
     } catch (error) {
       console.error(error);
@@ -142,7 +144,7 @@ function Tradesman() {
                   </Col>
                   <Col className="text-right" xs="6">
                     <form onSubmit={(event) => handleSearch(event)}>
-                      <div className="d-flex">
+                      <div className="d-flex justify-content-end">
                         <Input className="w-50" type="text" name="search" bsSize="sm" id="" />
                         <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
                       </div>
@@ -206,19 +208,19 @@ function Tradesman() {
                             <DropdownMenu>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={() => update(search[0]?.id, approve)}
+                                onClick={() => update(search[0], approve)}
                               >
                                 Approve
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={() => update(search[0]?.id, disapprove)}
+                                onClick={() => update(search[0], disapprove)}
                               >
                                 Disapprove
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={() => update(search[0]?.id, pending)}
+                                onClick={() => update(search[0], pending)}
                               >
                                 Pending
                               </DropdownItem>
@@ -279,7 +281,7 @@ function Tradesman() {
                   </Col>
                   <Col className="text-right" xs="6">
                     <form onSubmit={(event) => handleSearch(event)}>
-                      <div className="d-flex">
+                      <div className="d-flex justify-content-end">
                         <Input className="w-50" type="text" name="search" bsSize="sm" id="" />
                         <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
                       </div>
@@ -344,19 +346,19 @@ function Tradesman() {
                             <DropdownMenu>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={() => update(user?.id, approve)}
+                                onClick={() => update(user, approve)}
                               >
                                 Approve
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={() => update(user?.id, disapprove)}
+                                onClick={() => update(user, disapprove)}
                               >
                                 Disapprove
                               </DropdownItem>
                               <DropdownItem
                                 href="#pablo"
-                                onClick={() => update(user?.id, pending)}
+                                onClick={() => update(user, pending)}
                               >
                                 Pending
                               </DropdownItem>

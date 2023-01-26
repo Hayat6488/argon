@@ -40,12 +40,22 @@
     // } catch (error) {
     //     console.log(error.message)
     // }
-    export default async function sendPushNotification() {
+    export default async function sendPushNotification(token, status) {
         try {
+            let message = "";
+            if(status === "Approved"){
+                message = "Your account has been Approved by Locality. You can now send proposal and contact with the client."
+            } 
+            else if(status === "Disapproved"){
+                message = "Your account has been Disapproved by Locality."
+            }
+
+            else {
+                message = "We are going through your details. Please stay with Locality."
+            }
             const sendRequest = {
-                to: "ExponentPushToken[HUQeMiK_wvpDPbLzn-2qcX]",
-                title: "hello",
-                body: "world"
+                token: token,
+                message: message
             }
             // const { data } = axios.post("https://exp.host/--/api/v2/push/send", {
             //     headers: {
