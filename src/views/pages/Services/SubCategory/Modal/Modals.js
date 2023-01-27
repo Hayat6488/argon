@@ -8,11 +8,7 @@ import {
   Modal,
 } from "reactstrap";
 
-import {
-  Table
-} from "reactstrap";
-
-function Modals({ exampleModal, setExampleModal, serviceDetails }) {
+function Modals({ exampleModal, setExampleModal, serviceDetails, service }) {
 
   const { Notify } = React.useContext(NotifyContext);
 
@@ -21,13 +17,14 @@ function Modals({ exampleModal, setExampleModal, serviceDetails }) {
     const title = event.target.title.value;
     console.log(title);
     const updated = {
-      title: title
+      key: title,
+      value: title
     };
     const id = serviceDetails.id;
     try {
-      const serviceRef = doc(db, `serviceCategory/${id}`);
+      const serviceRef = doc(db, `serviceCategory/${service}/sub/${id}`);
       await updateDoc(serviceRef, updated);
-      Notify("success", `Service title updated successfully.`, "Service Title Update");
+      Notify("success", `Service sub category title updated successfully.`, "Service sub category title Update");
       setExampleModal(!exampleModal);
     } catch (error) {
       console.error(error);
@@ -47,7 +44,7 @@ function Modals({ exampleModal, setExampleModal, serviceDetails }) {
               <h2 className="modal-title mr-4" id="exampleModalLabel">
                 Edit Service Title:
               </h2>
-              <input placeholder={serviceDetails.title} type="text" name="title" required id="" />
+              <input placeholder={serviceDetails.key} type="text" name="title" required id="" />
             </div>
             <div className="d-flex justify-content-end">
             <Button color="info" type="submit">

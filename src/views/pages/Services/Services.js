@@ -17,6 +17,7 @@ import {
 } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Category from "./Category/Category";
+import SubCategory from "./SubCategory/SubCategory";
 
 const Services = () => {
 
@@ -40,6 +41,10 @@ const Services = () => {
             </Row>
             {
                 toggle && <Category></Category>
+            }
+
+            {
+                !toggle && <SubCategory></SubCategory>
             }
         </>
     );

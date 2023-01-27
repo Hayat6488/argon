@@ -30,7 +30,6 @@ function Services() {
     const [subServices, setSubServices] = React.useState([]);
 
     const servicesRef = collection(db, "serviceCategory");
-    // const imagesListRef = ref(storage, "images/");
 
     const addDataToFireStore = async(service, url) => {
         const data = {
