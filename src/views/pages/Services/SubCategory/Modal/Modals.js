@@ -38,31 +38,40 @@ function Modals({ exampleModal, setExampleModal, serviceDetails, service }) {
         isOpen={exampleModal}
         toggle={() => setExampleModal(!exampleModal)}
       >
-        <div className="modal-header mt-2 d-flex px-4 pt-5">
-          <form onSubmit={(event) => editService(event)}>
-            <div className="d-flex align-items-center mb-2">
-              <h2 className="modal-title mr-4" id="exampleModalLabel">
+        <div className="modal-header w-100 d-flex p-4">
+          <form className="w-100" onSubmit={(event) => editService(event)}>
+            <div className="d-flex flex-column align-items-center mb-3">
+              <h2 className="modal-title mb-2 w-100" id="exampleModalLabel">
                 Edit Service Title:
               </h2>
-              <input placeholder={serviceDetails.key} type="text" name="title" required id="" />
+              <input className="w-100" style={{ height: "43px" }} placeholder={serviceDetails.key} type="text" name="title" required id="" />
             </div>
-            <div className="d-flex justify-content-end">
-            <Button color="info" type="submit">
-              Update
-            </Button>
+            <div className="d-flex py-0 justify-content-end">
+              <Button className="w-100" color="primary" type="submit">
+                Update
+              </Button>
+              <Button
+                className="w-100" outlined
+                color="secondary"
+                data-dismiss="modal"
+                type="button"
+                onClick={() => setExampleModal(!exampleModal)}
+              >
+                Close
+              </Button>
             </div>
           </form>
         </div>
 
         <div className="modal-footer">
-          <Button
+          {/* <Button
             color="secondary"
             data-dismiss="modal"
             type="button"
             onClick={() => setExampleModal(!exampleModal)}
           >
             Close
-          </Button>
+          </Button> */}
         </div>
       </Modal>
     </>

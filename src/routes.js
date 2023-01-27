@@ -20,11 +20,10 @@ const routes = [
   },
   {
     path: "/dashboard",
-    name: "Dashboards",
+    name: "Home",
     icon: "ni ni-shop text-primary",
     component: Dashboard,
     layout: "/admin",
-    invisible: true
   },
   {
     collapse: true,

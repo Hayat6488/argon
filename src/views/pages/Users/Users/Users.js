@@ -242,17 +242,6 @@ function Users() {
                           >
                             <span aria-hidden={true}><i className="fas fa-eye" /></span>
                           </button>
-                          {/* <a
-                        className="table-action"
-                        href="#pablo"
-                        id="tooltip564981685"
-                        onClick={() => (!exampleModal)}
-                      >
-                        <i className="fas fa-eye" />
-                      </a>
-                      <UncontrolledTooltip delay={0} target="tooltip564981685">
-                        Edit product
-                      </UncontrolledTooltip> */}
                         </td>
                       </tr>
                     ))}
@@ -324,13 +313,13 @@ function Users() {
               </Pagination>
               <div className="d-flex align-items-center justify-content-between">
               <div className="d-flex align-items-center">
-                  <h4>Go to page: </h4>
+                  <h4 className="mr-1 mb-0">Go to page: </h4>
                   <form  onSubmit={(event) => {
                     event.preventDefault();
                     setCurrentPage(parseInt(event.target.page.value));
                   }}>
                     <input className="py-0" style={{ width: "25%" }} type="text" name="page" id="" />
-                    <Button className="py-1" color="secondary" type="submit">
+                    <Button className="py-0 px-2 ml-1" color="primary" type="submit">
                       Go
                     </Button>
                   </form>
