@@ -8,7 +8,15 @@ import {
   Row,
   Col,
   Table,
-  Button
+  Button,
+  Input,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
 import { onSnapshot, collection, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
@@ -18,7 +26,8 @@ import Modals from "./Modal/Modals";
 function Transactions() {
 
   const [exampleModal, setExampleModal] = React.useState(false)
-  const [transactioDetails, setTransactioDetails] = React.useState(null)
+  const [transactioDetails, setTransactioDetails] = React.useState(null);
+  const [search, setSearch] = React.useState([]);
   const [amount, setAmount] = React.useState(null)
 
   const openModal = (transaction) => {
@@ -32,6 +41,15 @@ function Transactions() {
   const [providers, setProviders] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [serviceFee, setServiceFee] = React.useState([]);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [postsPerPage, setPostsPerPage] = React.useState(10);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFastPost = indexOfLastPost - postsPerPage;
+
+  const currentTransactions = transactions.slice(indexOfFastPost, indexOfLastPost);
+
+  const lastPageNumber = Math.ceil(transactions.length / postsPerPage);
 
   const userRef = collection(db, "/usersList/user/children");
   const tradesmanRef = collection(db, "/usersList/provider/children");
@@ -108,7 +126,7 @@ function Transactions() {
         });
       });
       setTransactions(dataList);
-      setLoading(false)
+      setLoading(false);
     };
     getData();
   }, [users, providers, serviceFee]);
@@ -136,6 +154,17 @@ function Transactions() {
                 <Col xs="6">
                   <h3 className="mb-0">TRANSACTIONS</h3>
                 </Col>
+                {/* <Col className="text-right" xs="6">
+                    <form onSubmit={(event) => handleSearch(event)}>
+                      <div className="d-flex justify-content-end">
+                        <Input className="w-50" type="text" name="search" placeholder="Transaction ID" bsSize="sm" id="" />
+                        <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
+                        <Button className="py-0" color="default" onClick={() => setSearch([])}>
+                            View All
+                          </Button>
+                      </div>
+                    </form>
+                  </Col> */}
               </Row>
             </CardHeader>
 
@@ -144,15 +173,14 @@ function Transactions() {
                 <tr>
                   <th scope="col">User</th>
                   <th scope="col">Tradesman</th>
-                  <th scope="col">Amount</th>
                   <th scope="col">Time</th>
                   <th scope="col">Transaction ID</th>
-                  <th scope="col" />
+                  <th scope="col">Amount</th>
                 </tr>
               </thead>
               <tbody>
                 {
-                  transactions.map(transaction => <tr key={transaction?._id}>
+                  currentTransactions.map(transaction => <tr key={transaction?._id}>
                     <th scope="row">
                       <img className="avatar rounded-circle" alt="..." src={transaction?.photURL} />
                       <span className="mb-0 ml-2 text-sm">
@@ -166,8 +194,18 @@ function Transactions() {
                       </span>
                     </td>
                     <td>
+                      <Badge color="" className="badge-dot mr-4">
+                        {time(transaction?.time)}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Badge color="" className="badge-dot mr-4">
+                        {transaction?.trxID}
+                      </Badge>
+                    </td>
+                    <td>
                       <span color="" className="badge-dot mr-2">
-                        {transaction?.amount}
+                        ${transaction?.amount}
                       </span>
                       <Button  
                       className="px-1"
@@ -178,20 +216,119 @@ function Transactions() {
                       <i className="fas fa-eye" />
                       </Button>
                     </td>
-                    <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        {time(transaction?.time)}
-                      </Badge>
-                    </td>
-                    <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        {transaction?.trxID}
-                      </Badge>
-                    </td>
                   </tr>)
                 }
               </tbody>
             </Table>
+            <hr className="my-2" />
+            <div className="d-flex px-2 w-100 justify-content-between align-items-center">
+            <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {transactions.length} posts</h4>
+              <Pagination>
+                {
+                  currentPage - 1 !== 0 && <>
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={e => {
+                          e.preventDefault()
+                          setCurrentPage(currentPage - 1)
+                        }}
+                      >
+                        <i className="fa fa-angle-left" />
+                        <span className="sr-only">Previous</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo"
+                        onClick={e => {
+                          e.preventDefault()
+                          setCurrentPage(currentPage - 1)
+                        }}
+                      >
+                        {currentPage - 1}
+                      </PaginationLink>
+                    </PaginationItem></>
+                }
+                <PaginationItem className="active">
+                  <PaginationLink href="#pablo" onClick={e => {
+                    e.preventDefault()
+                    setCurrentPage(currentPage)
+                  }}
+                  >
+                    {currentPage} <span className="sr-only">(current)</span>
+                  </PaginationLink>
+                </PaginationItem>
+                {
+                  currentPage < lastPageNumber &&
+                  <>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo" onClick={e => {
+                        e.preventDefault()
+                        setCurrentPage(currentPage + 1)
+                      }}
+                      >
+                        {currentPage + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo" onClick={e => {
+                        e.preventDefault()
+                        setCurrentPage(currentPage + 1)
+                      }}
+                      >
+                        <i className="fa fa-angle-right" />
+                        <span className="sr-only">Next</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                  </>
+                }
+              </Pagination>
+              <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center">
+                  <h4>Go to page: </h4>
+                  <form  onSubmit={(event) => {
+                    event.preventDefault();
+                    setCurrentPage(parseInt(event.target.page.value));
+                  }}>
+                    <input className="py-0" style={{ width: "25%" }} type="text" name="page" id="" />
+                    <Button className="py-1" color="secondary" type="submit">
+                      Go
+                    </Button>
+                  </form>
+                </div>
+                <div className="d-flex align-items-center">
+                  <h4>Posts per page</h4>
+                  <UncontrolledDropdown className="py-2" size="sm" group>
+                    <DropdownToggle caret color="secondary">
+                      {postsPerPage}
+                    </DropdownToggle>
+                    <DropdownMenu className="py-2" >
+                      <DropdownItem className="py-2" href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(10);
+                        setCurrentPage(1);
+                      }}>
+                        10
+                      </DropdownItem>
+                      <DropdownItem href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(25);
+                        setCurrentPage(1);
+                      }}>
+                        25
+                      </DropdownItem>
+                      <DropdownItem href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(50);
+                        setCurrentPage(1);
+                      }}>
+                        50
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
+              </div>
+            </div>
           </Card>
         </Container>
         {

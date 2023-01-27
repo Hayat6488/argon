@@ -88,6 +88,14 @@ function Modals({ exampleModal, setExampleModal, postDetails }) {
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">
+                    Speciality: 
+                    </span>
+              </th>
+              <td>{postDetails?.specialties}</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
                     Job Type: 
                     </span>
               </th>
@@ -100,6 +108,30 @@ function Modals({ exampleModal, setExampleModal, postDetails }) {
                     </span>
               </th>
               <td>{date}</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
+                    Pay Type: 
+                    </span>
+              </th>
+              <td>{postDetails?.payType}</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
+                    Budget: 
+                    </span>
+              </th>
+              <td>${postDetails?.minimumBudget} - ${postDetails?.maximumBudget}</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
+                    Availability: 
+                    </span>
+              </th>
+              <td>{postDetails?.selectedTimeSlot}</td>
             </tr>
           </tbody>
         </Table>

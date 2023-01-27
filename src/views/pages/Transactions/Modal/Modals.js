@@ -37,6 +37,7 @@ function Modals({ exampleModal, setExampleModal, amount, serviceFee }) {
             <tr>
               <th scope="col"></th>
               <th scope="col"></th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -46,7 +47,8 @@ function Modals({ exampleModal, setExampleModal, amount, serviceFee }) {
                     Provider will get: 
                     </span>
               </th>
-              <td><h4>{providerGets}</h4></td>
+              <td>{100-fee}%</td>
+              <td><h4>${providerGets}</h4></td>
             </tr>
             <tr>
               <th scope="row">
@@ -54,7 +56,9 @@ function Modals({ exampleModal, setExampleModal, amount, serviceFee }) {
                     Locality will get: 
                     </span>
               </th>
-              <td><h4>{localityGets}</h4></td>
+              
+              <td>{fee}%</td>
+              <td><h4>${localityGets}</h4></td>
             </tr>
           </tbody>
         </Table>

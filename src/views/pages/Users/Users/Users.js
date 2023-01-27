@@ -9,6 +9,13 @@ import {
   Col,
   Input,
   Button,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader";
@@ -26,6 +33,19 @@ function Users() {
   const [exampleModal, setExampleModal] = React.useState(false);
   const [userDetails, setUserDetails] = React.useState(null);
   const [search, setSearch] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [postsPerPage, setPostsPerPage] = React.useState(10);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFastPost = indexOfLastPost - postsPerPage;
+
+  const currentUser = users.slice(indexOfFastPost, indexOfLastPost);
+
+  const lastPageNumber = Math.ceil(users.length / postsPerPage);
 
 
   const openModal = (user) => {
@@ -38,8 +58,7 @@ function Users() {
   // Database call to read Data ***************
 
 
-  const [users, setUsers] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+
 
 
   React.useLayoutEffect(() => {
@@ -78,83 +97,82 @@ function Users() {
 
   }, []);
 
-  console.log(search);
+  console.log(users);
 
-  // Database call to read Data ***************
-
-  // Loader to show Loading ***********
-
-  if(search.length !== 0) {
+  if (search.length !== 0) {
     return (
       <>
-      {loading ? 
-      <Loader></Loader> : 
-      <>
-        <SimpleHeader name="users" parentName="Users" />
-        <Container className="mt--6" fluid>
-          <Card>
-            <CardHeader className="border-0">
-              <Row>
-                <Col xs="6">
-                  <h3 className="mb-0">Users</h3>
-                </Col>
-                <Col className="text-right" xs="6">
-                  <form onSubmit={(event) => handleSearch(event)}>
-                    <div className="d-flex justify-content-end">
-                      <Input className="w-50" type="text" name="search" bsSize="sm" id="" />
-                      <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                    </div>
-                  </form>
-                </Col>
-              </Row>
-            </CardHeader>
+        {loading ?
+          <Loader></Loader> :
+          <>
+            <SimpleHeader name="users" parentName="Users" />
+            <Container className="mt--6" fluid>
+              <Card>
+                <CardHeader className="border-0">
+                  <Row>
+                    <Col xs="6">
+                      <h3 className="mb-0">Users</h3>
+                    </Col>
+                    <Col className="text-right" xs="6">
+                      <form onSubmit={(event) => handleSearch(event)}>
+                        <div className="d-flex justify-content-end">
+                          <Input placeholder="Enter Email" className="w-50" type="text" name="search" bsSize="sm" id="" />
+                          <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
+                          <Button className="py-0" color="default" onClick={() => setSearch([])}>
+                            View All
+                          </Button>
+                        </div>
+                      </form>
+                    </Col>
+                  </Row>
+                </CardHeader>
 
-            <Table className="align-items-center table-flush" responsive>
-              <thead className="thead-light">
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Location</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {search.map((user) => (
-                  <tr key={user?.id}>
-                    <td className="table-user">
-                      <img
-                        alt="..."
-                        className="avatar rounded-circle mr-3"
-                        src={user?.photoURL}
-                      />
-                      <b>{user?.name}</b>
-                    </td>
-                    <td>
-                      <span className="">{user?.email}</span>
-                    </td>
-                    <td>
-                      <span>{user?.location}</span>
-                    </td>
-                    <td className="table-actions">
-                      <button
-                        aria-label="Close"
-                        className="close"
-                        data-dismiss="modal"
-                        type="button"
-                        onClick={() => openModal(user)}
-                      >
-                        <span aria-hidden={true}><i className="fas fa-eye" /></span>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Card>
-        </Container>
-        {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
-      </>
-      }
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Location</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {search.map((user) => (
+                      <tr key={user?.id}>
+                        <td className="table-user">
+                          <img
+                            alt="..."
+                            className="avatar rounded-circle mr-3"
+                            src={user?.photoURL}
+                          />
+                          <b>{user?.name}</b>
+                        </td>
+                        <td>
+                          <span className="">{user?.email}</span>
+                        </td>
+                        <td>
+                          <span>{user?.location?.houseNumber}, {user?.location?.street}, {user?.location?.city}</span>
+                        </td>
+                        <td className="table-actions">
+                          <button
+                            aria-label="Close"
+                            className="close"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={() => openModal(user)}
+                          >
+                            <span aria-hidden={true}><i className="fas fa-eye" /></span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Card>
+            </Container>
+            {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
+          </>
+        }
       </>
     )
   }
@@ -165,65 +183,66 @@ function Users() {
   else {
     return (
       <>
-      {loading ? 
-      <Loader></Loader> : 
-      <>
-        <SimpleHeader name="users" parentName="Users" />
-        <Container className="mt--6" fluid>
-          <Card>
-            <CardHeader className="border-0">
-              <Row>
-                <Col xs="6">
-                  <h3 className="mb-0">Users</h3>
-                </Col>
-                <Col className="text-right" xs="6">
-                  <form onSubmit={(event) => handleSearch(event)}>
-                    <div className="d-flex justify-content-end">
-                      <Input className="w-50" type="text" name="search" bsSize="sm" id="" />
-                      <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                    </div>
-                  </form>
-                </Col>
-              </Row>
-            </CardHeader>
+        {loading ?
+          <Loader></Loader> :
+          <>
+            <SimpleHeader name="users" parentName="Users" />
+            <Container className="mt--6" fluid>
+              <Card>
+                <CardHeader className="border-0">
+                  <Row>
+                    <Col xs="6">
+                      <h3 className="mb-0">Users</h3>
+                    </Col>
+                    <Col className="text-right" xs="6">
+                      <form onSubmit={(event) => handleSearch(event)}>
+                        <div className="d-flex justify-content-end">
+                          <Input placeholder="Enter Email" className="w-50" type="text" name="search" bsSize="sm" id="" />
+                          <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
+                        </div>
+                      </form>
 
-            <Table className="align-items-center table-flush" responsive>
-              <thead className="thead-light">
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Location</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user?.id}>
-                    <td className="table-user">
-                      <img
-                        alt="..."
-                        className="avatar rounded-circle mr-3"
-                        src={user?.photoURL}
-                      />
-                      <b>{user?.name}</b>
-                    </td>
-                    <td>
-                      <span className="">{user?.email}</span>
-                    </td>
-                    <td>
-                      <span>{user?.location}</span>
-                    </td>
-                    <td className="table-actions">
-                      <button
-                        aria-label="Close"
-                        className="close"
-                        data-dismiss="modal"
-                        type="button"
-                        onClick={() => openModal(user)}
-                      >
-                        <span aria-hidden={true}><i className="fas fa-eye" /></span>
-                      </button>
-                      {/* <a
+                    </Col>
+                  </Row>
+                </CardHeader>
+
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Location</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentUser.map((user) => (
+                      <tr key={user?.id}>
+                        <td className="table-user">
+                          <img
+                            alt="..."
+                            className="avatar rounded-circle mr-3"
+                            src={user?.photoURL}
+                          />
+                          <b>{user?.name}</b>
+                        </td>
+                        <td>
+                          <span className="">{user?.email}</span>
+                        </td>
+                        <td>
+                          <span>{user?.location?.houseNumber}, {user?.location?.street}, {user?.location?.city}</span>
+                        </td>
+                        <td className="table-actions">
+                          <button
+                            aria-label="Close"
+                            className="close"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={() => openModal(user)}
+                          >
+                            <span aria-hidden={true}><i className="fas fa-eye" /></span>
+                          </button>
+                          {/* <a
                         className="table-action"
                         href="#pablo"
                         id="tooltip564981685"
@@ -234,16 +253,126 @@ function Users() {
                       <UncontrolledTooltip delay={0} target="tooltip564981685">
                         Edit product
                       </UncontrolledTooltip> */}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Card>
-        </Container>
-        {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
-      </>
-      }
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+
+                <hr className="my-2" />
+            <div className="d-flex px-2 w-100 justify-content-between align-items-center">
+            <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {users.length} posts</h4>
+              <Pagination>
+                {
+                  currentPage - 1 !== 0 && <>
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={e => {
+                          e.preventDefault()
+                          setCurrentPage(currentPage - 1)
+                        }}
+                      >
+                        <i className="fa fa-angle-left" />
+                        <span className="sr-only">Previous</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo"
+                        onClick={e => {
+                          e.preventDefault()
+                          setCurrentPage(currentPage - 1)
+                        }}
+                      >
+                        {currentPage - 1}
+                      </PaginationLink>
+                    </PaginationItem></>
+                }
+                <PaginationItem className="active">
+                  <PaginationLink href="#pablo" onClick={e => {
+                    e.preventDefault()
+                    setCurrentPage(currentPage)
+                  }}
+                  >
+                    {currentPage} <span className="sr-only">(current)</span>
+                  </PaginationLink>
+                </PaginationItem>
+                {
+                  currentPage < lastPageNumber &&
+                  <>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo" onClick={e => {
+                        e.preventDefault()
+                        setCurrentPage(currentPage + 1)
+                      }}
+                      >
+                        {currentPage + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo" onClick={e => {
+                        e.preventDefault()
+                        setCurrentPage(currentPage + 1)
+                      }}
+                      >
+                        <i className="fa fa-angle-right" />
+                        <span className="sr-only">Next</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                  </>
+                }
+              </Pagination>
+              <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center">
+                  <h4>Go to page: </h4>
+                  <form  onSubmit={(event) => {
+                    event.preventDefault();
+                    setCurrentPage(parseInt(event.target.page.value));
+                  }}>
+                    <input className="py-0" style={{ width: "25%" }} type="text" name="page" id="" />
+                    <Button className="py-1" color="secondary" type="submit">
+                      Go
+                    </Button>
+                  </form>
+                </div>
+                <div className="d-flex align-items-center">
+                  <h4>Posts per page</h4>
+                  <UncontrolledDropdown className="py-2" size="sm" group>
+                    <DropdownToggle caret color="secondary">
+                      {postsPerPage}
+                    </DropdownToggle>
+                    <DropdownMenu className="py-2" >
+                      <DropdownItem className="py-2" href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(10);
+                        setCurrentPage(1);
+                      }}>
+                        10
+                      </DropdownItem>
+                      <DropdownItem href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(25);
+                        setCurrentPage(1);
+                      }}>
+                        25
+                      </DropdownItem>
+                      <DropdownItem href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(50);
+                        setCurrentPage(1);
+                      }}>
+                        50
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
+              </div>
+            </div>
+              </Card>
+            </Container>
+            {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
+          </>
+        }
       </>
     );
   }

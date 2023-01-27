@@ -10,7 +10,6 @@ import {
 } from "reactstrap";
 
 function Modals ({exampleModal, setExampleModal, userDetails}) {
-  console.log(userDetails);
   return (
     <>
       <Modal
@@ -42,7 +41,7 @@ function Modals ({exampleModal, setExampleModal, userDetails}) {
                     Name: 
                     </span>
               </th>
-              <td>{userDetails.name}</td>
+              <td>{userDetails?.name}</td>
             </tr>
             <tr>
               <th scope="row">
@@ -50,7 +49,7 @@ function Modals ({exampleModal, setExampleModal, userDetails}) {
                     email: 
                     </span>
               </th>
-              <td>{userDetails.email}</td>
+              <td>{userDetails?.email}</td>
             </tr>
             <tr>
               <th scope="row">
@@ -58,7 +57,7 @@ function Modals ({exampleModal, setExampleModal, userDetails}) {
                       Location: 
                     </span>
               </th>
-              <td>{userDetails.loca}</td>
+              <td>{userDetails?.location?.houseNumber}, {userDetails?.location?.street}, {userDetails?.location?.city}</td>
             </tr>
           </tbody>
         </Table>

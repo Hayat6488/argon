@@ -1,9 +1,5 @@
-
-// import Charts from "views/pages/Charts.js";
-// import Messages from "views/pages/Reports/Inbox/Inbox";
 import Works from "views/pages/Reports/Work/WorkReports";
 import Transactions from "views/pages/Transactions/Transactions";
-// import Timeline from "views/pages/examples/Timeline";
 import Dashboard from "views/pages/dashboards/Dashboard.js";
 import Tradesman from "views/pages/Users/Tradesman/Tradesman";
 import ServiceFee from "views/pages/ServiceFee/ServiceFee";
@@ -58,6 +54,7 @@ const routes = [
     icon: "ni ni-bullet-list-67 text-info",
     component: Works,
     layout: "/admin",
+    invisible: true,
   },
   {
     path: "/bookings",

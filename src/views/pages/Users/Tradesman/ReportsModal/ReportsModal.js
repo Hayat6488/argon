@@ -3,6 +3,7 @@ import React from "react";
 import {
   Button,
   Modal,
+  Table,
 } from "reactstrap";
 import {
     ListGroupItem,
@@ -10,10 +11,12 @@ import {
   } from "reactstrap";
 
 function ReportsModals({ setReportModal, reportModal, reports }) {
+  console.log(reports);
   return (
     <>
       <Modal
         className="modal-dialog-centered"
+        size="lg"
         isOpen={reportModal}
         toggle={() => setReportModal(!reportModal)}
       >
@@ -23,11 +26,39 @@ function ReportsModals({ setReportModal, reportModal, reports }) {
           </h2>
         </div>
         <div className="mt-2">
-        <ListGroup>
+        <Table className="align-items-center" responsive>
+          <thead className="thead-light">
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              reports.map(report => <tr>
+                <th scope="row">
+                      <span className="mb-0 text-sm">
+                      {report?.title}
+                      </span>
+                </th>
+                <td>{report?.description}</td>
+                </tr>)
+            }
+            {/* <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
+                    Name: 
+                    </span>
+              </th>
+              <td>{postDetails?.name}</td>
+              </tr> */}
+          </tbody>
+        </Table>
+        {/* <ListGroup>
             {
                 reports.map(report => <ListGroupItem>{reports}</ListGroupItem>)
             }
-        </ListGroup>
+        </ListGroup> */}
         </div>
         <div className="modal-footer">
           <Button

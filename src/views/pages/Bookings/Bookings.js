@@ -6,7 +6,15 @@ import {
   CardHeader,
   Row,
   Col,
-  Table
+  Table,
+  UncontrolledDropdown,
+  Button,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
 import { onSnapshot, collection, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
@@ -21,6 +29,7 @@ function Bookings() {
   const [bookings, setBookings] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [providers, setProviders] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   const [exampleModal, setExampleModal] = React.useState(false)
   const [bookingsDetails, setBookingsDetails] = React.useState(null)
@@ -30,7 +39,18 @@ function Bookings() {
     setBookingsDetails(user);
   }
 
-  const [loading, setLoading] = React.useState(true);
+
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [postsPerPage, setPostsPerPage] = React.useState(10);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFastPost = indexOfLastPost - postsPerPage;
+
+  const currentBookings = bookings.slice(indexOfFastPost, indexOfLastPost);
+
+  const lastPageNumber = Math.ceil(bookings.length / postsPerPage);
+
 
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(userRef, (QuerySnapshot) => {
@@ -123,7 +143,7 @@ function Bookings() {
               </thead>
               <tbody>
                 {
-                  bookings.map(booking => <tr key={booking._id}>
+                  currentBookings.map(booking => <tr key={booking._id}>
                     <th scope="row">
                       <img className="avatar rounded-circle" alt="..." src={booking?.photURL} />
                       <span className="mb-0 ml-2 text-sm">
@@ -160,6 +180,115 @@ function Bookings() {
                 }
               </tbody>
             </Table>
+            <hr className="my-2" />
+            <div className="d-flex px-2 w-100 justify-content-between align-items-center">
+            <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {bookings.length} bookings</h4>
+              <Pagination>
+                {
+                  currentPage - 1 !== 0 && <>
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={e => {
+                          e.preventDefault()
+                          setCurrentPage(currentPage - 1)
+                        }}
+                      >
+                        <i className="fa fa-angle-left" />
+                        <span className="sr-only">Previous</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo"
+                        onClick={e => {
+                          e.preventDefault()
+                          setCurrentPage(currentPage - 1)
+                        }}
+                      >
+                        {currentPage - 1}
+                      </PaginationLink>
+                    </PaginationItem></>
+                }
+                <PaginationItem className="active">
+                  <PaginationLink href="#pablo" onClick={e => {
+                    e.preventDefault()
+                    setCurrentPage(currentPage)
+                  }}
+                  >
+                    {currentPage} <span className="sr-only">(current)</span>
+                  </PaginationLink>
+                </PaginationItem>
+                {
+                  currentPage < lastPageNumber &&
+                  <>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo" onClick={e => {
+                        e.preventDefault()
+                        setCurrentPage(currentPage + 1)
+                      }}
+                      >
+                        {currentPage + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo" onClick={e => {
+                        e.preventDefault()
+                        setCurrentPage(currentPage + 1)
+                      }}
+                      >
+                        <i className="fa fa-angle-right" />
+                        <span className="sr-only">Next</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                  </>
+                }
+              </Pagination>
+              <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center">
+                  <h4>Go to page: </h4>
+                  <form  onSubmit={(event) => {
+                    event.preventDefault();
+                    setCurrentPage(parseInt(event.target.page.value));
+                  }}>
+                    <input className="py-0" style={{ width: "25%" }} type="text" name="page" id="" />
+                    <Button className="py-1" color="secondary" type="submit">
+                      Go
+                    </Button>
+                  </form>
+                </div>
+                <div className="d-flex align-items-center">
+                  <h4>Posts per page</h4>
+                  <UncontrolledDropdown className="py-2" size="sm" group>
+                    <DropdownToggle caret color="secondary">
+                      {postsPerPage}
+                    </DropdownToggle>
+                    <DropdownMenu className="py-2" >
+                      <DropdownItem className="py-2" href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(10);
+                        setCurrentPage(1);
+                      }}>
+                        10
+                      </DropdownItem>
+                      <DropdownItem href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(25);
+                        setCurrentPage(1);
+                      }}>
+                        25
+                      </DropdownItem>
+                      <DropdownItem href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(50);
+                        setCurrentPage(1);
+                      }}>
+                        50
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
+              </div>
+            </div>
           </Card>
         </Container>
         {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} bookingsDetails={bookingsDetails}></Modals>}

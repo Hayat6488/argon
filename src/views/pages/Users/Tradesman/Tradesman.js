@@ -14,6 +14,9 @@ import {
   Col,
   Input,
   Button,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
 } from "reactstrap";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
@@ -31,8 +34,20 @@ function Tradesman() {
   // States for Modals **********
   const { Notify } = React.useContext(NotifyContext);
 
+  const [users, setUsers] = React.useState([]);
+  const [search, setSearch] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
   const [exampleModal, setExampleModal] = React.useState(false)
   const [userDetails, setUserDetails] = React.useState(null)
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [postsPerPage, setPostsPerPage] = React.useState(10);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFastPost = indexOfLastPost - postsPerPage;
+
+  const currentUsers = users.slice(indexOfFastPost, indexOfLastPost);
+
+  const lastPageNumber = Math.ceil(users.length / postsPerPage);
 
 
   const [reportModal, setReportModal] = React.useState(false)
@@ -58,10 +73,6 @@ function Tradesman() {
   const approve = "Approved";
   const disapprove = "Disapproved";
   const pending = "Pending";
-
-  const [users, setUsers] = React.useState([]);
-  const [search, setSearch] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
 
   // const q = query();
 
@@ -128,44 +139,47 @@ function Tradesman() {
 
 
 
-  if(search.length === 1){
+  if (search.length === 1) {
     return (
       <>
         <>
-        {loading ? <Loader></Loader> : <>
-          <SimpleHeader name="Tradesman" parentName="Users" />
-          <Container className="mt--6" fluid>
-  
-            <Card>
-              <CardHeader className="border-0">
-                <Row>
-                  <Col xs="6">
-                    <h3 className="mb-0">Tradesman</h3>
-                  </Col>
-                  <Col className="text-right" xs="6">
-                    <form onSubmit={(event) => handleSearch(event)}>
-                      <div className="d-flex justify-content-end">
-                        <Input className="w-50" type="text" name="search" bsSize="sm" id="" />
-                        <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                      </div>
-                    </form>
-                  </Col>
-                </Row>
-              </CardHeader>
-  
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th>Name</th>
-                    <th>Service Category</th>
-                    <th>Reports</th>
-                    <th>Business Location</th>
-                    <th>Profile Status</th>
-                    <th>Verification Status</th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
+          {loading ? <Loader></Loader> : <>
+            <SimpleHeader name="Tradesman" parentName="Users" />
+            <Container className="mt--6" fluid>
+
+              <Card>
+                <CardHeader className="border-0">
+                  <Row>
+                    <Col xs="6">
+                      <h3 className="mb-0">Tradesman</h3>
+                    </Col>
+                    <Col className="text-right" xs="6">
+                      <form onSubmit={(event) => handleSearch(event)}>
+                        <div className="d-flex justify-content-end">
+                          <Input placeholder="Enter email" className="w-50" type="text" name="search" bsSize="sm" id="" />
+                          <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
+                          <Button className="py-0" color="default" onClick={() => setSearch([])}>
+                            View All
+                          </Button>
+                        </div>
+                      </form>
+                    </Col>
+                  </Row>
+                </CardHeader>
+
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th>Name</th>
+                      <th>Service Category</th>
+                      <th>Business Location</th>
+                      <th>Profile Status</th>
+                      <th>Reports</th>
+                      <th>Verification Status</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
                     <tr key={search[0]?.id}>
                       <td className="table-user">
                         <img
@@ -193,7 +207,7 @@ function Tradesman() {
                         <span className="text-muted">{search[0]?.businessLocation}</span>
                       </td>
                       <td>
-                        <Badge color={search[0]?.profileStatus === "complete" ? "success" : "warning"} className="text-muted">{search[0]?.profileStatus}</Badge>
+                        <Badge color={search[0]?.profileStatus === "Complete" ? "success" : "warning"} className="text-muted">{search[0]?.profileStatus}</Badge>
                       </td>
                       <td>
                         <a
@@ -251,132 +265,141 @@ function Tradesman() {
                         </UncontrolledTooltip> */}
                       </td>
                     </tr>
-                </tbody>
-              </Table>
-            </Card>
-          </Container>
-          {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
-          {
-            reportModal && <ReportsModals setReportModal={setReportModal} reportModal={reportModal} reports={reports}></ReportsModals>
-          }
-        </>}
+                  </tbody>
+                </Table>
+              </Card>
+            </Container>
+            {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
+            {
+              reportModal && <ReportsModals setReportModal={setReportModal} reportModal={reportModal} reports={reports}></ReportsModals>
+            }
+          </>}
         </>
-        
+
       </>
     );
   }
-  else{
+
+  else {
     return (
       <>
         <>
-        {loading ? <Loader></Loader> : <>
-          <SimpleHeader name="Tradesman" parentName="Users" />
-          <Container className="mt--6" fluid>
-  
-            <Card>
-              <CardHeader className="border-0">
-                <Row>
-                  <Col xs="6">
-                    <h3 className="mb-0">Tradesman</h3>
-                  </Col>
-                  <Col className="text-right" xs="6">
-                    <form onSubmit={(event) => handleSearch(event)}>
-                      <div className="d-flex justify-content-end">
-                        <Input className="w-50" type="text" name="search" bsSize="sm" id="" />
-                        <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                      </div>
-                    </form>
-                  </Col>
-                </Row>
-              </CardHeader>
-  
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th>Name</th>
-                    <th>Service Category</th>
-                    <th>Reports</th>
-                    <th>Business Location</th>
-                    <th>Profile Status</th>
-                    <th>Verification Status</th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id}>
-                      <td className="table-user">
-                        <img
-                          alt="..."
-                          className="avatar rounded-circle mr-3"
-                          src={user?.profilePhoto}
-                        />
-                        <b>{user?.name}</b>
-                      </td>
-                      <td>
-                        <span className="text-muted">{user?.category}</span>
-                      </td>
-                      <td>
-                        <button
-                          aria-label="Close"
-                          className="border-0 rounded-lg px-2 primary"
-                          data-dismiss="modal"
-                          type="button"
-                          onClick={() => openreports(user?.reports)}
-                        >
-                          <h3 className="text-muted  fs-4">{user?.reports?.length}</h3>
-                        </button>
-                      </td>
-                      <td>
-                        <span className="text-muted">{user?.businessLocation}</span>
-                      </td>
-                      <td>
-                        <Badge color={user?.profileStatus === "complete" ? "success" : "warning"} className="text-muted">{user?.profileStatus}</Badge>
-                      </td>
-                      <td>
-                        <a
-                          className="font-weight-bold"
-                          href="#pablo"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          <UncontrolledDropdown>
-                            <DropdownToggle caret color="secondary">
-                              {user?.profileVerified}
-                            </DropdownToggle>
-                            <DropdownMenu>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={() => update(user, approve)}
-                              >
-                                Approve
-                              </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={() => update(user, disapprove)}
-                              >
-                                Disapprove
-                              </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={() => update(user, pending)}
-                              >
-                                Pending
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
-                        </a>
-                      </td>
-                      <td className="table-actions">
-                        <button
-                          aria-label="Close"
-                          className="close"
-                          data-dismiss="modal"
-                          type="button"
-                          onClick={() => openModal(user)}
-                        >
-                          <span aria-hidden={true}><i className="fas fa-eye" /></span>
-                        </button>
-                        {/* <a
+          {loading ? <Loader></Loader> : <>
+            <SimpleHeader name="Tradesman" parentName="Users" />
+            <Container className="mt--6" fluid>
+
+              <Card>
+                <CardHeader className="border-0">
+                  <Row>
+                    <Col xs="6">
+                      <h3 className="mb-0">Tradesman</h3>
+                    </Col>
+                    <Col className="text-right" xs="6">
+                      <form onSubmit={(event) => handleSearch(event)}>
+                        <div className="d-flex justify-content-end">
+                          <Input placeholder="Enter email" className="w-50" type="text" name="search" bsSize="sm" id="" />
+                          <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
+                        </div>
+                      </form>
+                    </Col>
+                  </Row>
+                </CardHeader>
+
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th>Name</th>
+                      <th>Service Category</th>
+                      <th>Business Location</th>
+                      <th>Profile Status</th>
+                      <th>Reports</th>
+                      <th>Verification Status</th>
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentUsers.map((user) => (
+                      <tr key={user.id}>
+                        <td className="table-user">
+                          <img
+                            alt="..."
+                            className="avatar rounded-circle mr-3"
+                            src={user?.profilePhoto}
+                          />
+                          <b>{user?.name}</b>
+                        </td>
+                        <td>
+                          <span className="text-muted">{user?.category}</span>
+                        </td>
+                        <td>
+                          <span className="text-muted">{user?.businessLocation}</span>
+                        </td>
+                        <td>
+                          <Badge color={user?.profileStatus === "Complete" ? "success" : "warning"} className="text-muted">{user?.profileStatus}</Badge>
+                        </td>
+                        <td>
+                          {
+                            user?.reports === undefined ?
+                              <>
+                                <span className="text-muted">0</span>
+                              </> :
+                              <>
+                                <span className="text-muted">{user?.reports?.length}</span>
+                                <Button
+                                  className="px-1"
+                                  color="secondary"
+                                  outline
+                                  type="button"
+                                  onClick={() => openreports(user?.reports)}>
+                                  <i className="fas fa-eye" />
+                                </Button>
+                              </>
+                          }
+                        </td>
+                        <td>
+                          <a
+                            className="font-weight-bold"
+                            href="#pablo"
+                            onClick={(e) => e.preventDefault()}
+                          >
+                            <UncontrolledDropdown>
+                              <DropdownToggle caret color="secondary">
+                                {user?.profileVerified}
+                              </DropdownToggle>
+                              <DropdownMenu>
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={() => update(user, approve)}
+                                >
+                                  Approve
+                                </DropdownItem>
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={() => update(user, disapprove)}
+                                >
+                                  Disapprove
+                                </DropdownItem>
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={() => update(user, pending)}
+                                >
+                                  Pending
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </a>
+                        </td>
+                        <td className="table-actions">
+                          <button
+                            aria-label="Close"
+                            className="close"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={() => openModal(user)}
+                          >
+                            <span aria-hidden={true}><i className="fas fa-eye" /></span>
+                          </button>
+                          {/* <a
                           className="table-action"
                           href="#pablo"
                           id="tooltip564981685"
@@ -387,20 +410,130 @@ function Tradesman() {
                         <UncontrolledTooltip delay={0} target="tooltip564981685">
                           Edit product
                         </UncontrolledTooltip> */}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Card>
-          </Container>
-          {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
-          {
-            reportModal && <ReportsModals setReportModal={setReportModal} reportModal={reportModal} reports={reports}></ReportsModals>
-          }
-        </>}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+
+                <hr className="my-2" />
+            <div className="d-flex px-2 w-100 justify-content-between align-items-center">
+            <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {users.length} posts</h4>
+              <Pagination>
+                {
+                  currentPage - 1 !== 0 && <>
+                    <PaginationItem>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={e => {
+                          e.preventDefault()
+                          setCurrentPage(currentPage - 1)
+                        }}
+                      >
+                        <i className="fa fa-angle-left" />
+                        <span className="sr-only">Previous</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo"
+                        onClick={e => {
+                          e.preventDefault()
+                          setCurrentPage(currentPage - 1)
+                        }}
+                      >
+                        {currentPage - 1}
+                      </PaginationLink>
+                    </PaginationItem></>
+                }
+                <PaginationItem className="active">
+                  <PaginationLink href="#pablo" onClick={e => {
+                    e.preventDefault()
+                    setCurrentPage(currentPage)
+                  }}
+                  >
+                    {currentPage} <span className="sr-only">(current)</span>
+                  </PaginationLink>
+                </PaginationItem>
+                {
+                  currentPage < lastPageNumber &&
+                  <>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo" onClick={e => {
+                        e.preventDefault()
+                        setCurrentPage(currentPage + 1)
+                      }}
+                      >
+                        {currentPage + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#pablo" onClick={e => {
+                        e.preventDefault()
+                        setCurrentPage(currentPage + 1)
+                      }}
+                      >
+                        <i className="fa fa-angle-right" />
+                        <span className="sr-only">Next</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                  </>
+                }
+              </Pagination>
+              <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center">
+                  <h4>Go to page: </h4>
+                  <form  onSubmit={(event) => {
+                    event.preventDefault();
+                    setCurrentPage(parseInt(event.target.page.value));
+                  }}>
+                    <input className="py-0" style={{ width: "25%" }} type="text" name="page" id="" />
+                    <Button className="py-1" color="secondary" type="submit">
+                      Go
+                    </Button>
+                  </form>
+                </div>
+                <div className="d-flex align-items-center">
+                  <h4>Posts per page</h4>
+                  <UncontrolledDropdown className="py-2" size="sm" group>
+                    <DropdownToggle caret color="secondary">
+                      {postsPerPage}
+                    </DropdownToggle>
+                    <DropdownMenu className="py-2" >
+                      <DropdownItem className="py-2" href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(10);
+                        setCurrentPage(1);
+                      }}>
+                        10
+                      </DropdownItem>
+                      <DropdownItem href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(25);
+                        setCurrentPage(1);
+                      }}>
+                        25
+                      </DropdownItem>
+                      <DropdownItem href="#pablo" onClick={e => {
+                        e.preventDefault();
+                        setPostsPerPage(50);
+                        setCurrentPage(1);
+                      }}>
+                        50
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
+              </div>
+            </div>
+              </Card>
+            </Container>
+            {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
+            {
+              reportModal && <ReportsModals setReportModal={setReportModal} reportModal={reportModal} reports={reports}></ReportsModals>
+            }
+          </>}
         </>
-        
+
       </>
     );
   }
