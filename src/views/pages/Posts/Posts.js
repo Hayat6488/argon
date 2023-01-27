@@ -75,7 +75,6 @@ function Posts() {
         const authorId = x.data().postedBy;
 
         const author = users?.find(user => user.uid === authorId);
-        console.log(author);
         
         dataList.push({
           id: x.id,
@@ -88,6 +87,7 @@ function Posts() {
     };
     getData();
   }, [users]);
+
 
 
   if (loading) {

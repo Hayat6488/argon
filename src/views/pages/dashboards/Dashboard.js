@@ -73,7 +73,7 @@ function Dashboard() {
     <>
       <CardsHeader name="Default" parentName="Dashboards" />
       <Container className="mt--6" fluid>
-        <Row>
+        {/* <Row>
           <Col xl="8">
             <Card className="bg-default">
               <CardHeader className="bg-transparent">
@@ -2371,7 +2371,7 @@ function Dashboard() {
               </Table>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
       </Container>
     </>
   );

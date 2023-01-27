@@ -22,7 +22,6 @@ import SubCategory from "./SubCategory/SubCategory";
 const Services = () => {
 
     const [toggle, setToggle] = React.useState(true);
-    console.log(toggle);
 
     return (
         <>

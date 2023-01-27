@@ -79,6 +79,7 @@ const SubCategory = () => {
     }, [service])
 
 
+
     const deleteService = (id) => {
         try {
             deleteDoc(doc(db, `serviceCategory/${service}/sub/${id}`));

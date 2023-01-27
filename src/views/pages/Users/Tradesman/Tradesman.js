@@ -94,7 +94,6 @@ function Tradesman() {
     };
   }, [])
 
-
   // Database call to read Data ***************
 
 

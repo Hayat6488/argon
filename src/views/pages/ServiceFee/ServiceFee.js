@@ -59,7 +59,6 @@ function ServicesFee() {
         }
     }
 
-    console.log(update);
 
     if (loading) {
         return <Container>

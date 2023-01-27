@@ -53,13 +53,7 @@ function Users() {
     setUserDetails(user);
   }
 
-  // States for Modals **********
-
   // Database call to read Data ***************
-
-
-
-
 
   React.useLayoutEffect(() => {
     const getData = async () => {
@@ -97,7 +91,6 @@ function Users() {
 
   }, []);
 
-  console.log(users);
 
   if (search.length !== 0) {
     return (

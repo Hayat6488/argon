@@ -15,7 +15,10 @@
 
 */
 // nodejs library to set properties for components
+import { db } from "Firebase/firebase.config";
+import { collection, onSnapshot } from "firebase/firestore";
 import PropTypes from "prop-types";
+import React from "react";
 // reactstrap components
 import {
   Breadcrumb,
@@ -28,10 +31,103 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import Loader from "utility/Loader";
 
 function CardsHeader({ name, parentName }) {
+
+  const userRef = collection(db, "/usersList/user/children");
+  const tradesmanRef = collection(db, "/usersList/provider/children");
+  const postsRef = collection(db, "/jobPosts");
+  const transactionRef = collection(db, "/transactions");
+
+  const [tradesman,setTradesman] = React.useState(null);
+  const [users, setUsers] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [posts, setPosts] = React.useState(null);
+  const [amount, setAmount] = React.useState(0);
+  const [transactions, setTransactions] = React.useState([]);
+
+
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(tradesmanRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+
+        items.push({ uid: doc.id, ...doc.data() });
+      });
+      setTradesman(items.length);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(userRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+
+        items.push({ uid: doc.id, ...doc.data() });
+      });
+      setUsers(items.length);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
+
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(postsRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+
+        items.push({ uid: doc.id, ...doc.data() });
+      });
+      setPosts(items.length);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(transactionRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+
+        items.push({ amount: doc.amount, ...doc.data() });
+      });
+      setTransactions(items);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
+  React.useLayoutEffect(() => {
+    let sum = 0;
+    transactions.map(transaction => {
+      sum  = sum + parseInt(transaction?.amount)
+    })
+    setAmount(sum);
+  },[transactions])
+
   return (
     <>
+      {
+        loading ?
+        <Loader></Loader>
+        :
+        <>
       <div className="header bg-info pb-6">
         <Container fluid>
           <div className="header-body">
@@ -57,7 +153,7 @@ function CardsHeader({ name, parentName }) {
                   </BreadcrumbItem>
                 </Breadcrumb>
               </Col>
-              <Col className="text-right" lg="6" xs="5">
+              {/* <Col className="text-right" lg="6" xs="5">
                 <Button
                   className="btn-neutral"
                   color="default"
@@ -76,7 +172,7 @@ function CardsHeader({ name, parentName }) {
                 >
                   Filters
                 </Button>
-              </Col>
+              </Col> */}
             </Row>
 
             <Row>
@@ -89,10 +185,10 @@ function CardsHeader({ name, parentName }) {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Total traffic
+                          Total Users
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          350,897
+                          {users}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -101,12 +197,6 @@ function CardsHeader({ name, parentName }) {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fa fa-arrow-up" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p>
                   </CardBody>
                 </Card>
               </Col>
@@ -119,9 +209,9 @@ function CardsHeader({ name, parentName }) {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          New users
+                          Total service providers
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">2,356</span>
+                        <span className="h2 font-weight-bold mb-0">{tradesman}</span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -129,12 +219,6 @@ function CardsHeader({ name, parentName }) {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fa fa-arrow-up" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p>
                   </CardBody>
                 </Card>
               </Col>
@@ -147,9 +231,9 @@ function CardsHeader({ name, parentName }) {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Sales
+                          Number of posts
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">924</span>
+                        <span className="h2 font-weight-bold mb-0">{posts}</span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -157,12 +241,6 @@ function CardsHeader({ name, parentName }) {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fa fa-arrow-up" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p>
                   </CardBody>
                 </Card>
               </Col>
@@ -175,9 +253,9 @@ function CardsHeader({ name, parentName }) {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Performance
+                          Total Amount
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">49,65%</span>
+                        <span className="h2 font-weight-bold mb-0">${amount}</span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-gradient-primary text-white rounded-circle shadow">
@@ -185,12 +263,12 @@ function CardsHeader({ name, parentName }) {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-sm">
+                    {/* <p className="mt-3 mb-0 text-sm">
                       <span className="text-success mr-2">
                         <i className="fa fa-arrow-up" /> 3.48%
                       </span>{" "}
                       <span className="text-nowrap">Since last month</span>
-                    </p>
+                    </p> */}
                   </CardBody>
                 </Card>
               </Col>
@@ -198,6 +276,8 @@ function CardsHeader({ name, parentName }) {
           </div>
         </Container>
       </div>
+    </>
+      }
     </>
   );
 }
