@@ -9,14 +9,14 @@ import {
   Col,
   Table,
   Button,
-  Input,
   Pagination,
   PaginationItem,
   PaginationLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  UncontrolledTooltip
 } from "reactstrap";
 import { onSnapshot, collection, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
@@ -54,25 +54,25 @@ function Transactions() {
   const userRef = collection(db, "/usersList/user/children");
   const tradesmanRef = collection(db, "/usersList/provider/children");
 
-  
+
   const serviceFeeRef = collection(db, "serviceFee");
 
   React.useLayoutEffect(() => {
-      const unSub = onSnapshot(serviceFeeRef, (QuerySnapshot) => {
-          const items = [];
-          QuerySnapshot.forEach((doc) => {
+    const unSub = onSnapshot(serviceFeeRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
 
-              items.push({ id: doc.id, ...doc.data() });
-          });
-          setServiceFee(items);
-          setLoading(false);
+        items.push({ id: doc.id, ...doc.data() });
       });
+      setServiceFee(items);
+      setLoading(false);
+    });
 
-      return () => {
-          unSub();
-      };
+    return () => {
+      unSub();
+    };
   }, [])
-  
+
 
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(userRef, (QuerySnapshot) => {
@@ -117,12 +117,12 @@ function Transactions() {
 
         const user = users?.find(user => user.uid === userId);
         const provider = providers?.find(provider => provider.uid === providerId);
-        
+
         dataList.push({
           id: x.id,
           ...x.data(),
           ...user,
-          ...{provider},
+          ...{ provider },
         });
       });
       setTransactions(dataList);
@@ -131,12 +131,12 @@ function Transactions() {
     getData();
   }, [users, providers, serviceFee]);
 
- const time = (date) => {
-  const formatDate = new Date(
-    date.seconds * 1000 + date.nanoseconds / 1000000
-  );
-  return formatDate.toLocaleTimeString('en-us', { day: 'numeric', month: 'long', });
- }
+  const time = (date) => {
+    const formatDate = new Date(
+      date.seconds * 1000 + date.nanoseconds / 1000000
+    );
+    return formatDate.toLocaleTimeString('en-us', { day: 'numeric', month: 'long', });
+  }
 
 
   if (loading) {
@@ -175,23 +175,31 @@ function Transactions() {
                   <th scope="col">Tradesman</th>
                   <th scope="col">Time</th>
                   <th scope="col">Transaction ID</th>
+                  <th scope="col">Booking ID</th>
                   <th scope="col">Amount</th>
                 </tr>
               </thead>
               <tbody>
                 {
                   currentTransactions.map(transaction => <tr key={transaction?._id}>
-                    <th scope="row">
+                    <th scope="row" className="d-flex align-items-center">
                       <img className="avatar rounded-circle" alt="..." src={transaction?.photURL} />
-                      <span className="mb-0 ml-2 text-sm">
-                        {transaction?.name}
-                      </span>
+                      <div className="d-flex flex-column">
+                        <span className="mb-0 ml-2 text-sm">{transaction?.name}</span>
+                        <span className="mb-0 ml-2 text-sm">{transaction?.email}</span>
+                      </div>
+
                     </th>
                     <td>
-                      <img className="avatar rounded-circle" alt="..." src={transaction?.provider?.profilePhoto} />
-                      <span className="ml-2 text-sm">
-                        {transaction?.provider?.name}
-                      </span>
+                      <div className="d-flex align-items-center">
+                        <img className="avatar rounded-circle" alt="..." src={transaction?.provider?.profilePhoto} />
+                        <div className="d-flex flex-column">
+                          <span className="ml-2 text-sm">
+                            {transaction?.provider?.name}
+                          </span>
+                          <span className="ml-2">{transaction?.provider?.email}</span>
+                        </div>
+                      </div>
                     </td>
                     <td>
                       <Badge color="" className="badge-dot mr-4">
@@ -200,20 +208,39 @@ function Transactions() {
                     </td>
                     <td>
                       <Badge color="" className="badge-dot mr-4">
-                        {transaction?.trxID}
+                        {
+                          transaction?.trxID.length > 20 ?
+                            <>
+                              <span id={transaction?.id}>{transaction?.trxID.slice(0, 14)}...</span>
+                              <UncontrolledTooltip
+                                delay={0}
+                                placement="top"
+                                target={transaction?.id}
+                              >
+                                {transaction?.trxID}
+                              </UncontrolledTooltip>
+                            </>
+                            :
+                            <span>{transaction?.trxID}</span>
+                        }
+                      </Badge>
+                    </td>
+                    <td>
+                      <Badge color="" className="badge-dot mr-4">
+                        {transaction?.bookingId}
                       </Badge>
                     </td>
                     <td>
                       <span color="" className="badge-dot mr-2">
                         ${transaction?.amount}
                       </span>
-                      <Button  
-                      className="px-1"
-                      color="secondary"
-                      outline
-                      type="button"
-                      onClick={() => openModal(transaction)}>
-                      <i className="fas fa-eye" />
+                      <Button
+                        className="px-1"
+                        color="secondary"
+                        outline
+                        type="button"
+                        onClick={() => openModal(transaction)}>
+                        <i className="fas fa-eye" />
                       </Button>
                     </td>
                   </tr>)
@@ -222,7 +249,7 @@ function Transactions() {
             </Table>
             <hr className="my-2" />
             <div className="d-flex px-2 w-100 justify-content-between align-items-center">
-            <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {transactions.length} posts</h4>
+              <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {transactions.length} posts</h4>
               <Pagination>
                 {
                   currentPage - 1 !== 0 && <>
@@ -284,9 +311,9 @@ function Transactions() {
                 }
               </Pagination>
               <div className="d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center">
                   <h4>Go to page: </h4>
-                  <form  onSubmit={(event) => {
+                  <form onSubmit={(event) => {
                     event.preventDefault();
                     setCurrentPage(parseInt(event.target.page.value));
                   }}>
