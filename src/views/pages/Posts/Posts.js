@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 // reactstrap components
 import {
@@ -17,7 +18,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
+import { collection, getDocs, onSnapshot} from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Modals from "./Modal/Modals";
 import { db } from "Firebase/firebase.config";
@@ -25,6 +26,8 @@ import Loader from "utility/Loader";
 
 function Posts() {
 
+  // All states and database paths ***************
+  
   const [exampleModal, setExampleModal] = React.useState(false);
   const [postDetails, setPostDetails] = React.useState(null);
   const [posts, setPosts] = React.useState([]);
@@ -32,15 +35,22 @@ function Posts() {
   const [users, setUsers] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [postsPerPage, setPostsPerPage] = React.useState(10);
+  
+  // All states and database paths ***************
 
+  // Pagination setup******************
+  
+  
+  
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFastPost = indexOfLastPost - postsPerPage;
-
+  
   const currentPosts = posts.slice(indexOfFastPost, indexOfLastPost);
-
+  
   const lastPageNumber = Math.ceil(posts.length / postsPerPage);
-
-
+  
+  
+  // Pagination setup******************
 
   const openModal = (user) => {
     setExampleModal(!exampleModal);
@@ -48,24 +58,26 @@ function Posts() {
   }
 
 
+  // Fetch Data from DB*************
+  
   const userRef = collection(db, "/usersList/user/children");
-
+  
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(userRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
-
+        
         items.push({ uid: doc.id, ...doc.data() });
       });
       setUsers(items);
       setLoading(false);
     });
-
+    
     return () => {
       unSub();
     };
   }, []);
-
+  
   React.useLayoutEffect(() => {
     const getData = async () => {
       const querySnapshot = await getDocs(collection(db, "jobPosts"));
@@ -73,7 +85,7 @@ function Posts() {
 
       querySnapshot.forEach(async (x) => {
         const authorId = x.data().postedBy;
-
+        
         const author = users?.find(user => user.uid === authorId);
         
         dataList.push({
@@ -87,9 +99,10 @@ function Posts() {
     };
     getData();
   }, [users]);
-
-
-
+  
+  
+  // Fetch Data from DB*************
+  
   if (loading) {
     return <Container>
       <Loader></Loader>

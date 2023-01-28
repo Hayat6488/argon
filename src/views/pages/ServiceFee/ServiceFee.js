@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 // reactstrap components
 import {
@@ -18,25 +19,32 @@ import { db } from "Firebase/firebase.config";
 import NotifyContext from "context/NotifyContext";
 
 function ServicesFee() {
-    const { Notify } = React.useContext(NotifyContext);
 
+    // all states *********************
+    
+    const { Notify } = React.useContext(NotifyContext);
+    
     const [update, setUpdate] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [serviceFee, setServiceFee] = React.useState([]);
+    
+    // all states *********************
 
+    // fetch data from fire store ***************
+    
     const collectionRef = collection(db, "serviceFee");
-
+    
     React.useLayoutEffect(() => {
         const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
             const items = [];
             QuerySnapshot.forEach((doc) => {
-
+                
                 items.push({ id: doc.id, ...doc.data() });
             });
             setServiceFee(items);
             setLoading(false);
         });
-
+        
         return () => {
             unSub();
         };
@@ -53,13 +61,14 @@ function ServicesFee() {
             await updateDoc(userRef, updated);
             setUpdate(!update);
             Notify("success", `Service Fee Updated successfully.`, "Service Fee Update");
-
+            
         } catch (error) {
             console.error(error);
         }
     }
-
-
+    
+    // fetch data from fire store ***************
+    
     if (loading) {
         return <Container>
             <Loader></Loader>

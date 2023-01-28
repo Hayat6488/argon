@@ -28,25 +28,29 @@ import Loader from "utility/Loader";
 
 function Users() {
 
-  // States for Modals **********
-
+  // All States for   **********
+  
   const [exampleModal, setExampleModal] = React.useState(false);
   const [userDetails, setUserDetails] = React.useState(null);
   const [search, setSearch] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-
+  
+  // All States for   **********
+  
+  // Pagination setup **************
   
   const [currentPage, setCurrentPage] = React.useState(1);
   const [postsPerPage, setPostsPerPage] = React.useState(10);
-
+  
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFastPost = indexOfLastPost - postsPerPage;
-
+  
   const currentUser = users.slice(indexOfFastPost, indexOfLastPost);
-
+  
   const lastPageNumber = Math.ceil(users.length / postsPerPage);
-
+  
+  // Pagination setup **************
 
   const openModal = (user) => {
     setExampleModal(!exampleModal)

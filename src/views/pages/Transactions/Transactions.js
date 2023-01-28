@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 // reactstrap components
 import {
@@ -22,12 +23,14 @@ import { onSnapshot, collection, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import { db } from "Firebase/firebase.config";
 import Modals from "./Modal/Modals";
+import Loader from "utility/Loader";
 
 function Transactions() {
 
+  // All states and paths********************
+  
   const [exampleModal, setExampleModal] = React.useState(false)
   const [transactioDetails, setTransactioDetails] = React.useState(null);
-  const [search, setSearch] = React.useState([]);
   const [amount, setAmount] = React.useState(null)
 
   const openModal = (transaction) => {
@@ -35,27 +38,37 @@ function Transactions() {
     setTransactioDetails(transaction);
     setAmount(transaction?.amount);
   }
-
+  
   const [transactions, setTransactions] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [providers, setProviders] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [serviceFee, setServiceFee] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [postsPerPage, setPostsPerPage] = React.useState(10);
 
+  // All states and paths********************
+
+  // Pagination setup************
+  
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFastPost = indexOfLastPost - postsPerPage;
-
+  
   const currentTransactions = transactions.slice(indexOfFastPost, indexOfLastPost);
-
+  
   const lastPageNumber = Math.ceil(transactions.length / postsPerPage);
 
+  // Pagination setup************
+
+  // Loading data from db***********
+  
   const userRef = collection(db, "/usersList/user/children");
   const tradesmanRef = collection(db, "/usersList/provider/children");
 
 
   const serviceFeeRef = collection(db, "serviceFee");
+
+  // Service fee*************
 
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(serviceFeeRef, (QuerySnapshot) => {
@@ -73,6 +86,7 @@ function Transactions() {
     };
   }, [])
 
+  // Users data ***********
 
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(userRef, (QuerySnapshot) => {
@@ -90,6 +104,8 @@ function Transactions() {
     };
   }, []);
 
+  // Providers Data **************
+
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(tradesmanRef, (QuerySnapshot) => {
       const items = [];
@@ -105,6 +121,8 @@ function Transactions() {
       unSub();
     };
   }, []);
+
+  // Transactions details ***************
 
   React.useLayoutEffect(() => {
     const getData = async () => {
@@ -139,13 +157,13 @@ function Transactions() {
   }
 
 
-  if (loading) {
-    return <h1>Loading</h1>
-  }
-
-  else {
     return (
       <>
+      {
+        loading ?
+        <Loader></Loader>
+        :
+        <>
         <SimpleHeader name="Transactions" parentName="Transactions" />
         <Container className="mt--6" fluid>
           <Card>
@@ -154,17 +172,6 @@ function Transactions() {
                 <Col xs="6">
                   <h3 className="mb-0">TRANSACTIONS</h3>
                 </Col>
-                {/* <Col className="text-right" xs="6">
-                    <form onSubmit={(event) => handleSearch(event)}>
-                      <div className="d-flex justify-content-end">
-                        <Input className="w-50" type="text" name="search" placeholder="Transaction ID" bsSize="sm" id="" />
-                        <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                        <Button className="py-0" color="default" onClick={() => setSearch([])}>
-                            View All
-                          </Button>
-                      </div>
-                    </form>
-                  </Col> */}
               </Row>
             </CardHeader>
 
@@ -362,8 +369,9 @@ function Transactions() {
           exampleModal && <Modals key={transactioDetails?._id} serviceFee={serviceFee} setExampleModal={setExampleModal} exampleModal={exampleModal} amount={amount}></Modals>
         }
       </>
+      }
+      </>
     );
   }
-}
 
 export default Transactions

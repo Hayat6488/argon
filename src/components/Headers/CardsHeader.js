@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /*!
 
 =========================================================
@@ -23,7 +24,6 @@ import React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  Button,
   Card,
   CardBody,
   CardTitle,
@@ -34,6 +34,8 @@ import {
 import Loader from "utility/Loader";
 
 function CardsHeader({ name, parentName }) {
+
+  // All states and db paths ******************
 
   const userRef = collection(db, "/usersList/user/children");
   const tradesmanRef = collection(db, "/usersList/provider/children");
@@ -47,6 +49,12 @@ function CardsHeader({ name, parentName }) {
   const [amount, setAmount] = React.useState(0);
   const [transactions, setTransactions] = React.useState([]);
 
+    // All states and db paths ******************
+
+
+    // Fetching Data from firestore ********************
+
+  // Tradesmans data *****************
 
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(tradesmanRef, (QuerySnapshot) => {
@@ -64,6 +72,8 @@ function CardsHeader({ name, parentName }) {
     };
   }, []);
 
+  // users data **********************
+
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(userRef, (QuerySnapshot) => {
       const items = [];
@@ -79,6 +89,8 @@ function CardsHeader({ name, parentName }) {
       unSub();
     };
   }, []);
+
+  // Posts data *********************
 
 
   React.useLayoutEffect(() => {
@@ -96,6 +108,8 @@ function CardsHeader({ name, parentName }) {
       unSub();
     };
   }, []);
+
+  // Transactions data ***************
 
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(transactionRef, (QuerySnapshot) => {
@@ -117,9 +131,13 @@ function CardsHeader({ name, parentName }) {
     let sum = 0;
     transactions.map(transaction => {
       sum  = sum + parseInt(transaction?.amount)
+      return sum;
     })
     setAmount(sum);
   },[transactions])
+
+
+      // Fetching Data from firestore ********************
 
   return (
     <>
@@ -153,28 +171,7 @@ function CardsHeader({ name, parentName }) {
                   </BreadcrumbItem>
                 </Breadcrumb>
               </Col>
-              {/* <Col className="text-right" lg="6" xs="5">
-                <Button
-                  className="btn-neutral"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  size="sm"
-                >
-                  New
-                </Button>
-                <Button
-                  className="btn-neutral"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  size="sm"
-                >
-                  Filters
-                </Button>
-              </Col> */}
             </Row>
-
             <Row>
               <Col md="6" xl="3">
                 <Card className="card-stats">
@@ -209,7 +206,7 @@ function CardsHeader({ name, parentName }) {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Total service providers
+                          Total tradesman
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">{tradesman}</span>
                       </div>

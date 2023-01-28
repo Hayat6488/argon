@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import NotifyContext from 'context/NotifyContext';
 import { db } from 'Firebase/firebase.config';
 import { storage } from 'Firebase/firebase.config';
@@ -8,23 +9,27 @@ import { Button, Card, CardBody, CardHeader, Col, Form, Input, ListGroup, ListGr
 import Loader from 'utility/Loader';
 import Modals from './Modal/Modals';
 
-const Category = () => {
+const Category = ({setLoading, loading}) => {
 
+    // All states *******************
+    
     const { Notify } = React.useContext(NotifyContext);
     const servicesRef = collection(db, "serviceCategory");
-
-
-    const [loading, setLoading] = React.useState(false);
     const [services, setServices] = React.useState([]);
     const [serviceDetails, setServiceDetails] = React.useState(null);
     const [exampleModal, setExampleModal] = React.useState(false)
-
-
+    
+    
     const openModal = (service) => {
         setExampleModal(!exampleModal);
         setServiceDetails(service);
     }
+    
+    // All states *******************
 
+
+    // Adding service to db function ***************
+    
     const addDataToFireStore = async (service, url) => {
         const data = {
             title: service,
@@ -34,7 +39,7 @@ const Category = () => {
             const serviceRef = collection(db, "serviceCategory");
             await addDoc(serviceRef, data);
             Notify("success", `Service added successfully.`, "Add Service");
-
+            
         } catch (error) {
             console.error(error);
         }
@@ -58,8 +63,11 @@ const Category = () => {
             console.error(error);
         }
     }
+    
+    // Adding service to db function ***************
 
-
+    // Delete any service from db functiom **************
+    
     const deleteService = (service) => {
         try {
             deleteDoc(doc(db, `serviceCategory/${service?.id}`));
@@ -68,9 +76,12 @@ const Category = () => {
         catch (error) {
             
         }
-      };
+    };
+    
+    // Delete any service from db functiom **************
 
-
+    // Fetch services data from db *************
+    
     React.useLayoutEffect(() => {
         const unSub = onSnapshot(servicesRef, (QuerySnapshot) => {
             const items = [];
@@ -81,12 +92,15 @@ const Category = () => {
             setServices(items);
             setLoading(false);
         });
-
+        
         return () => {
             unSub();
         };
     }, [])
 
+    
+    // Fetch services data from db *************
+    
     return (
         <>
             {

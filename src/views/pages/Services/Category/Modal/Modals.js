@@ -12,6 +12,8 @@ function Modals({ exampleModal, setExampleModal, serviceDetails }) {
 
   const { Notify } = React.useContext(NotifyContext);
 
+  // Edit any service from db function ***************
+  
   const editService = async (event) => {
     event.preventDefault();
     const title = event.target.title.value;
@@ -28,7 +30,11 @@ function Modals({ exampleModal, setExampleModal, serviceDetails }) {
       console.error(error);
     }
   };
+  
 
+  // Edit any service from db function ***************
+
+  
   return (
     <>
       <Modal
@@ -60,17 +66,6 @@ function Modals({ exampleModal, setExampleModal, serviceDetails }) {
             </div>
           </form>
         </div>
-
-        {/* <div className="modal-footer">
-          <Button
-            color="secondary"
-            data-dismiss="modal"
-            type="button"
-            onClick={() => setExampleModal(!exampleModal)}
-          >
-            Close
-          </Button>
-        </div> */}
       </Modal>
     </>
   );

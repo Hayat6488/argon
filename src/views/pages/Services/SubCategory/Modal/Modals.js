@@ -10,6 +10,8 @@ import {
 
 function Modals({ exampleModal, setExampleModal, serviceDetails, service }) {
 
+  // Edit any sub service in db*********
+
   const { Notify } = React.useContext(NotifyContext);
 
   const editService = async (event) => {

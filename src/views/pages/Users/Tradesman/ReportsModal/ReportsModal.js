@@ -5,10 +5,6 @@ import {
   Modal,
   Table,
 } from "reactstrap";
-import {
-    ListGroupItem,
-    ListGroup,
-  } from "reactstrap";
 
 function ReportsModals({ setReportModal, reportModal, reports }) {
   console.log(reports);
@@ -44,21 +40,8 @@ function ReportsModals({ setReportModal, reportModal, reports }) {
                 <td>{report?.description}</td>
                 </tr>)
             }
-            {/* <tr>
-              <th scope="row">
-                    <span className="mb-0 text-sm">
-                    Name: 
-                    </span>
-              </th>
-              <td>{postDetails?.name}</td>
-              </tr> */}
           </tbody>
         </Table>
-        {/* <ListGroup>
-            {
-                reports.map(report => <ListGroupItem>{reports}</ListGroupItem>)
-            }
-        </ListGroup> */}
         </div>
         <div className="modal-footer">
           <Button

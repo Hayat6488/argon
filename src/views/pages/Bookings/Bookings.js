@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 // reactstrap components
 import {
@@ -20,54 +21,68 @@ import { onSnapshot, collection, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Modals from "./Modal/Modals";
 import { db } from "Firebase/firebase.config";
+import Loader from "utility/Loader";
 
 function Bookings() {
 
+  // All states and DB paths ****************
+  
   const userRef = collection(db, "/usersList/user/children");
   const tradesmanRef = collection(db, "/usersList/provider/children");
-
+  
   const [bookings, setBookings] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [providers, setProviders] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
+
+  // All states and DB paths ****************
+
+  // State to open Modal************
+  
   const [exampleModal, setExampleModal] = React.useState(false)
   const [bookingsDetails, setBookingsDetails] = React.useState(null)
-
+  
   const openModal= (user) => {
     setExampleModal(!exampleModal)
     setBookingsDetails(user);
   }
+  
+  
+  // State to open Modal************
 
-
-
+  // Pagination setup*************
+  
   const [currentPage, setCurrentPage] = React.useState(1);
   const [postsPerPage, setPostsPerPage] = React.useState(10);
-
+  
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFastPost = indexOfLastPost - postsPerPage;
-
+  
   const currentBookings = bookings.slice(indexOfFastPost, indexOfLastPost);
-
+  
   const lastPageNumber = Math.ceil(bookings.length / postsPerPage);
+  
+  // Pagination setup*************
 
-
+  // Fetch Data from firestore ******************
+  
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(userRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
-
+        
         items.push({ uid: doc.id, ...doc.data() });
       });
       setUsers(items);
       setLoading(false);
     });
-
+    
     return () => {
       unSub();
     };
   }, []);
-
+  
   React.useLayoutEffect(() => {
     const unSub = onSnapshot(tradesmanRef, (QuerySnapshot) => {
       const items = [];
@@ -78,7 +93,7 @@ function Bookings() {
       setProviders(items);
       setLoading(false);
     });
-
+    
     return () => {
       unSub();
     };
@@ -89,11 +104,11 @@ function Bookings() {
     const getData = async () => {
       const querySnapshot = await getDocs(collection(db, "bookingRequest"));
       let dataList = [];
-
+      
       querySnapshot.forEach(async (x) => {
         const userId = x.data().userUid;
         const providerId = x.data().providerUid;
-
+        
         const user = users?.find(user => user.uid === userId);
         const provider = providers?.find(provider => provider.uid === providerId);
         
@@ -109,16 +124,16 @@ function Bookings() {
     };
     getData();
   }, [users, providers]);
-
-  if (loading) {
-    return <h1>Loading</h1>
-  }
-
-
-
-  else {
-    return (
-      <>
+  
+  // Fetch Data from firestore ******************
+  
+  return (
+    <>
+      {
+        loading ? 
+        <Loader></Loader>
+        :
+        <>
         <SimpleHeader name="Job Posts" parentName="Job Posts" />
         <Container className="mt--6" fluid>
           <Card>
@@ -293,8 +308,9 @@ function Bookings() {
         </Container>
         {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} bookingsDetails={bookingsDetails}></Modals>}
       </>
+      }
+      </>
     );
   }
-}
 
 export default Bookings

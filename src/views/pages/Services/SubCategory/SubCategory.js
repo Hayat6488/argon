@@ -1,15 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import NotifyContext from 'context/NotifyContext';
 import { db } from 'Firebase/firebase.config';
 import { addDoc, collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
 import React from 'react';
-import { Button, ButtonDropdown, Card, CardBody, CardHeader, Col, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, ListGroup, ListGroupItem, Row, UncontrolledDropdown } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Col,  Form, FormGroup, Input, ListGroup, ListGroupItem, Row } from 'reactstrap';
 import Loader from 'utility/Loader';
 import Modals from './Modal/Modals';
 
-const SubCategory = () => {
-    const { Notify } = React.useContext(NotifyContext);
+const SubCategory = ({loading, setLoading}) => {
 
-    const [loading, setLoading] = React.useState(false);
+    // All states and db paths ***********
+    const { Notify } = React.useContext(NotifyContext);
+    
     const [subservices, setSubservices] = React.useState([]);
     const [services, setServices] = React.useState([]);
     const [service, setService] = React.useState(null);
@@ -17,29 +19,40 @@ const SubCategory = () => {
 
     const [serviceDetails, setServiceDetails] = React.useState(null);
     const [exampleModal, setExampleModal] = React.useState(false)
-
-
+    
+    
     const openModal = (service) => {
         setExampleModal(!exampleModal);
         setServiceDetails(service);
     }
 
+    // All states and db paths ***********
+
+    // Fetching data from db***********
+    
     React.useLayoutEffect(() => {
         const unSub = onSnapshot(servicesRef, (QuerySnapshot) => {
             const items = [];
             QuerySnapshot.forEach((doc) => {
-
+                
                 items.push({ id: doc.id, ...doc.data() });
             });
             setServices(items);
             setLoading(false);
         });
-
+        
         return () => {
             unSub();
         };
     }, [])
+    
 
+    // Fetching data from db***********
+
+
+    // Add any sub service to db function **************
+    
+    
     const addSubService = async (event) => {
         event.preventDefault();
         const category = event.target.category.value;
@@ -57,8 +70,8 @@ const SubCategory = () => {
             console.error(error);
         }
     }
-
-    // console.log(service);
+    
+    // Add any sub service to db function **************
 
 
     React.useLayoutEffect(() => {
@@ -78,7 +91,7 @@ const SubCategory = () => {
         };
     }, [service])
 
-
+// Delete any sub service from db ***********
 
     const deleteService = (id) => {
         try {
@@ -136,7 +149,7 @@ const SubCategory = () => {
                                 <CardHeader>
                                     <Row>
                                         <Col lg="6">
-                                            <CardHeader>Sub Service Category</CardHeader>
+                                            <CardHeader className='ml--3'>Sub Service Category</CardHeader>
                                         </Col>
                                         <Col lg="6">
                                             <form className='mt-2'>

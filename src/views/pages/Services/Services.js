@@ -1,17 +1,7 @@
 import React from "react";
 // reactstrap components
 import {
-    Button,
     Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    CardImg,
-    CardImgOverlay,
-    CardTitle,
-    CardText,
-    ListGroupItem,
-    ListGroup,
     Row,
     Col
 } from "reactstrap";
@@ -20,6 +10,8 @@ import Category from "./Category/Category";
 import SubCategory from "./SubCategory/SubCategory";
 
 const Services = () => {
+
+    const [loading, setLoading] = React.useState(true);
 
     const [toggle, setToggle] = React.useState(true);
 
@@ -39,11 +31,11 @@ const Services = () => {
                 </Col>
             </Row>
             {
-                toggle && <Category></Category>
+                toggle && <Category loading={loading} setLoading={setLoading}></Category>
             }
 
             {
-                !toggle && <SubCategory></SubCategory>
+                !toggle && <SubCategory setLoading={setLoading}></SubCategory>
             }
         </>
     );

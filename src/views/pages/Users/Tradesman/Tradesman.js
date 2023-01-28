@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 // reactstrap components
 import {
@@ -115,6 +116,8 @@ function Tradesman() {
       console.error(error);
     }
   };
+
+  // Serach function **************
 
   const handleSearch = React.useCallback(async (event) => {
     event.preventDefault();
