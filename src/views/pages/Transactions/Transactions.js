@@ -130,8 +130,8 @@ function Transactions() {
       let dataList = [];
 
       querySnapshot.forEach(async (x) => {
-        const userId = x.data().userUID;
-        const providerId = x.data().providerUID;
+        const userId = x.data().userUid;
+        const providerId = x.data().providerUid;
 
         const user = users?.find(user => user.uid === userId);
         const provider = providers?.find(provider => provider.uid === providerId);
