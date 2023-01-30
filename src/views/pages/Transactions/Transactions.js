@@ -218,11 +218,11 @@ function Transactions() {
                         {
                           transaction?.trxID.length > 20 ?
                             <>
-                              <span id={transaction?.id}>{transaction?.trxID.slice(0, 14)}...</span>
+                              <span id={transaction?.trxID}>{transaction?.trxID.slice(0, 14)}...</span>
                               <UncontrolledTooltip
                                 delay={0}
                                 placement="top"
-                                target={transaction?.id}
+                                target={transaction?.trxID}
                               >
                                 {transaction?.trxID}
                               </UncontrolledTooltip>
