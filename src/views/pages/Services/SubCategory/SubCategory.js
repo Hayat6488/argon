@@ -93,13 +93,17 @@ const SubCategory = ({loading, setLoading}) => {
 
 // Delete any sub service from db ***********
 
-    const deleteService = (id) => {
-        try {
-            deleteDoc(doc(db, `serviceCategory/${service}/sub/${id}`));
-            Notify("danger", `Service sub category ${service.title} deleted successfully.`, "Delete service sub category");
-        }
-        catch (error) {  
-            console.error(error);
+    const deleteService = (subService) => {
+        const id = subService?.id;
+        const proceed = window.confirm(`Are you sure you want to delete service ${subService?.key}?`);
+        if(proceed){
+            try {
+                deleteDoc(doc(db, `serviceCategory/${service}/sub/${id}`));
+                Notify("danger", `Service sub category ${subService?.key} deleted successfully.`, "Delete service sub category");
+            }
+            catch (error) {  
+                console.error(error);
+            }
         }
       };
 
@@ -198,7 +202,7 @@ const SubCategory = ({loading, setLoading}) => {
                                                                             onClick={() => openModal(service)}>
                                                                             Edit
                                                                         </Button>
-                                                                        <Button onClick={() => deleteService(service?.id)} color="danger" type="button">
+                                                                        <Button onClick={() => deleteService(service)} color="danger" type="button">
                                                                             Delete
                                                                         </Button>
                                                                     </div>

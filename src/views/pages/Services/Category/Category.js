@@ -69,12 +69,14 @@ const Category = ({setLoading, loading}) => {
     // Delete any service from db functiom **************
     
     const deleteService = (service) => {
-        try {
-            deleteDoc(doc(db, `serviceCategory/${service?.id}`));
-            Notify("danger", `Service ${service.title} deleted successfully.`, "Delete Service");
-        }
-        catch (error) {
-            
+        const proceed = window.confirm(`Are you sure you want to delete service ${service?.title}?`);
+        if(proceed){
+            try {
+                deleteDoc(doc(db, `serviceCategory/${service?.id}`));
+                Notify("danger", `Service ${service.title} deleted successfully.`, "Delete Service");
+            }
+            catch (error) { 
+            }
         }
     };
     
