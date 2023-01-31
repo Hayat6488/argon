@@ -178,7 +178,7 @@ function Transactions() {
             <Table className="align-items-center table-flush" responsive>
               <thead className="thead-light">
                 <tr>
-                  <th scope="col">User</th>
+                  <th scope="col">User </th>
                   <th scope="col">Tradesman</th>
                   <th scope="col">Time</th>
                   <th scope="col">Transaction ID</th>
