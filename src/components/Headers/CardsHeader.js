@@ -20,6 +20,7 @@ import { db } from "Firebase/firebase.config";
 import { collection, onSnapshot } from "firebase/firestore";
 import PropTypes from "prop-types";
 import React from "react";
+import { NavLink } from "react-router-dom";
 // reactstrap components
 import {
   Breadcrumb,
@@ -175,6 +176,7 @@ function CardsHeader({ name, parentName }) {
             <Row>
               <Col md="6" xl="3">
                 <Card className="card-stats">
+                  <NavLink to="/admin/users/users">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -195,10 +197,12 @@ function CardsHeader({ name, parentName }) {
                       </Col>
                     </Row>
                   </CardBody>
+                  </NavLink>
                 </Card>
               </Col>
               <Col md="6" xl="3">
                 <Card className="card-stats">
+                  <NavLink to="/admin/users/tradesman">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -206,7 +210,7 @@ function CardsHeader({ name, parentName }) {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Total tradesman
+                          Total providers
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">{tradesman}</span>
                       </div>
@@ -217,10 +221,12 @@ function CardsHeader({ name, parentName }) {
                       </Col>
                     </Row>
                   </CardBody>
+                  </NavLink>
                 </Card>
               </Col>
               <Col md="6" xl="3">
                 <Card className="card-stats">
+                  <NavLink to="/admin/posts">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -239,10 +245,12 @@ function CardsHeader({ name, parentName }) {
                       </Col>
                     </Row>
                   </CardBody>
+                  </NavLink>
                 </Card>
               </Col>
               <Col md="6" xl="3">
                 <Card className="card-stats">
+                  <NavLink to="/admin/transactions">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -267,6 +275,7 @@ function CardsHeader({ name, parentName }) {
                       <span className="text-nowrap">Since last month</span>
                     </p> */}
                   </CardBody>
+                  </NavLink>
                 </Card>
               </Col>
             </Row>
