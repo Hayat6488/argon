@@ -203,7 +203,7 @@ const Login = () => {
                       />
                     </InputGroup>
                   </FormGroup>
-                  <div className="custom-control custom-control-alternative custom-checkbox">
+                  {/* <div className="custom-control custom-control-alternative custom-checkbox">
                     <input
                       className="custom-control-input"
                       id=" customCheckLogin"
@@ -215,7 +215,7 @@ const Login = () => {
                     >
                       <span className="text-muted">Remember me</span>
                     </label>
-                  </div>
+                  </div> */}
                   <div className="text-center">
                     <Button className="my-4" color="info" type="submit">
                       Sign in
