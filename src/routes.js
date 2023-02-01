@@ -8,6 +8,7 @@ import Bookings from "views/pages/Bookings/Bookings";
 import Users from "views/pages/Users/Users/Users";
 import Posts from "views/pages/Posts/Posts";
 import Login from "views/pages/examples/Login";
+import Admins from "views/pages/Admins/Admins";
 
 
 const routes = [
@@ -111,6 +112,13 @@ const routes = [
     name: "Service Fee",
     icon: "ni ni-money-coins text-info",
     component: ServiceFee,
+    layout: "/admin",
+  },
+  {
+    path: "/admins",
+    name: "Admins List",
+    icon: "ni ni-money-coins text-info",
+    component: Admins,
     layout: "/admin",
   }
 ];
