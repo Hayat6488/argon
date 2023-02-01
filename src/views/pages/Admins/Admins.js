@@ -22,7 +22,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader";
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "Firebase/firebase.config";
 import NotifyContext from "context/NotifyContext";
 
@@ -50,27 +50,37 @@ const Admins = () => {
 
   console.log(admins);
 
-  const addAdmin = async(event, admins) => {
+  const addAdmin = async (event, admins) => {
     event.preventDefault();
     const email = event.target.service.value;
     const res = admins.some((admin) => admin?.email === email);
     if (res) {
-        Notify("warning", `Email is already in the admin list.`, "Add Admin");
-    }
-    else{
-        const data = {
-            email: email
-        }
-        try {
-            const serviceRef = collection(db, "adminList");
-            await addDoc(serviceRef, data);
-            Notify("success", `Email added successfully.`, "Add Admin");
-            
-        } catch (error) {
-            console.error(error);
-        }
+      Notify("warning", `Email is already in the admin list.`, "Add Admin");
+    } else {
+      const data = {
+        email: email,
+      };
+      try {
+        const serviceRef = collection(db, "adminList");
+        await addDoc(serviceRef, data);
+        Notify("success", `Email added successfully.`, "Add Admin");
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
+
+  const deleteService = (admin) => {
+    const proceed = window.confirm(`Are you sure you want to delete admin ${admin?.email}?`);
+        if(proceed){
+            try {
+                deleteDoc(doc(db, `adminList/${admin?.id}`));
+                Notify("danger", `Admin ${admin.email} deleted successfully.`, "Delete admin");
+            }
+            catch (error) { 
+            }
+        }
+  }
 
   return (
     <>
@@ -117,7 +127,12 @@ const Admins = () => {
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">Admin Email</th>
-                      <th scope="col" />
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -126,7 +141,20 @@ const Admins = () => {
                         <th scope="row">
                           <span className="mb-0 text-sm">{admin?.email}</span>
                         </th>
-                        <td>$2,500 USD</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <Button
+                            onClick={() => deleteService(admin)}
+                            color="danger"
+                            type="button"
+                          >
+                            Delete
+                          </Button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

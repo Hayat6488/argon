@@ -9,6 +9,7 @@ import Users from "views/pages/Users/Users/Users";
 import Posts from "views/pages/Posts/Posts";
 import Login from "views/pages/examples/Login";
 import Admins from "views/pages/Admins/Admins";
+import Register from "views/pages/examples/Register";
 
 
 const routes = [
@@ -17,9 +18,48 @@ const routes = [
     name: "Home",
     icon: "ni ni-archive-2 text-green",
     component: Login,
-    layout: "/auth",
-    invisible: true
+    invisible: true,
+    layout: "/home",
   },
+
+  {
+    collapse: true,
+    name: "Authentication",
+    icon: "ni ni-single-02 text-default",
+    state: "tablesCollapse",
+    invisible:true,
+    views: [
+      {
+        path: "/login",
+        name: "Log In",
+        miniName: "L",
+        component: Login,
+        layout: "/auth",
+      },
+      {
+        path: "/register",
+        name: "Register",
+        miniName: "R",
+        component: Register,
+        layout: "/auth",
+      }
+    ],
+  },
+  // {
+  //   path: "/",
+  //   name: "Home",
+  //   icon: "ni ni-archive-2 text-green",
+  //   component: Login,
+  //   layout: "/auth",
+  //   invisible: true
+  // },
+  // {
+  //   path: "/register",
+  //   name: "Register",
+  //   icon: "ni ni-archive-2 text-green",
+  //   component: Register,
+  //   layout: "/auth",
+  // },
   {
     path: "/dashboard",
     name: "Home",
@@ -64,28 +104,6 @@ const routes = [
     component: Bookings,
     layout: "/admin",
   },
-  // // {
-  // //   collapse: true,
-  // //   name: "Reports List",
-  // //   icon: "ni ni-bullet-list-67 text-default",
-  // //   state: "reportsCollapse",
-  // //   views: [
-  // //     {
-  // //       path: "/reports/messages",
-  // //       name: "Messages",
-  // //       miniName: "M",
-  // //       component: Messages,
-  // //       layout: "/admin",
-  // //     },
-  // //     {
-  // //       path: "/reports/works",
-  // //       name: "Works",
-  // //       miniName: "W",
-  // //       component: Works,
-  // //       layout: "/admin",
-  // //     }
-  // //   ],
-  // // },
   {
     path: "/posts",
     name: "Posts",

@@ -40,8 +40,8 @@ import {
 } from "reactstrap";
 // core components
 import AuthHeader from "components/Headers/AuthHeader.js";
-import { useHistory } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { NavLink, useHistory } from "react-router-dom";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import NotifyContext from "context/NotifyContext";
 
 
@@ -52,56 +52,61 @@ import NotifyContext from "context/NotifyContext";
 
 const Login = () => {
 
+  
+  const [admins, setAdmins] = React.useState([]);
   const { Notify } = React.useContext(NotifyContext);
-
+  const [loading, setLoading] = React.useState(true);
   const history = useHistory();
   // const [user, setUser] = React.useState(null);
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
 
+  const adminsRef = collection(db, "adminList");
+
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(adminsRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+        items.push({ id: doc.id, ...doc.data() });
+      });
+      setAdmins(items);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
   const handleLogIn = async (event) => {
-    try {
-      event.preventDefault();
+    event.preventDefault();
       const form = event.target;
       const password = form.password.value;
       const email = form.email.value;
 
-
-      // SignUp Function
-
-      // await createUserWithEmailAndPassword(auth, email, password);
-
-      // await updateProfile(auth.currentUser, {
-      //   displayName: "Admin",
-      // });
-      // await setDoc(
-      //   doc(db, `usersList/admin/children/${auth.currentUser.uid}`),
-      //   {
-      //     name: "Admin",
-      //     email: email,
-      //     uid: auth.currentUser.uid,
-      //   }
-      // );
-      // history.push("/admin/dashboard")
-
-      // sign in function
-
-      await signInWithEmailAndPassword(auth, email, password);
-      const docRef = doc(
-        db,
-        `usersList/admin/children/${auth.currentUser.uid}`
-      );
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        history.push("/admin/dashboard");
-        Notify("success", "Log in successful", "Log In")
-      } else {
-
-      Notify("error", "User Don't Exist", "Log In")
+    const res = admins.some((admin) => admin?.email === email);
+    if(res){
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        const docRef = doc(
+          db,
+          `usersList/admin/children/${auth.currentUser.uid}`
+        );
+        const docSnap = await getDoc(docRef);
+  
+        if (docSnap.exists()) {
+          history.push("/admin/dashboard");
+          Notify("success", "Log in successful", "Log In")
+        } else {
+  
+        Notify("error", "User Don't Exist", "Log In")
+        }
+      } catch (error) {
+        Notify("error", error.message, "Log In")
       }
-    } catch (error) {
-      Notify("error", error.message, "Log In")
+    }
+    else{
+      Notify("danger", "You are not a admin", "Log In")
     }
   }
 
@@ -222,6 +227,7 @@ const Login = () => {
                     </Button>
                   </div>
                 </Form>
+                <span>Register as a <NavLink to="/auth/register">Admin</NavLink></span>
               </CardBody>
             </Card>
           </Col>

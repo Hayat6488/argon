@@ -66,7 +66,7 @@ const Category = ({setLoading, loading}) => {
     
     // Adding service to db function ***************
 
-    // Delete any service from db functiom **************
+    // Delete any service from db function **************
     
     const deleteService = (service) => {
         const proceed = window.confirm(`Are you sure you want to delete service ${service?.title}?`);

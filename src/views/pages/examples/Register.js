@@ -35,86 +35,103 @@ import {
 } from "reactstrap";
 // core components
 import AuthHeader from "components/Headers/AuthHeader.js";
-
-
+import Loader from 'utility/Loader';
+import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
+import { db } from "Firebase/firebase.config";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "Firebase/firebase.config";
+import { useHistory } from "react-router-dom";
+import NotifyContext from "context/NotifyContext";
 
 function Register() {
+
+  const history = useHistory();
+
+  const { Notify } = React.useContext(NotifyContext);
+  const [admins, setAdmins] = React.useState([]);
   const [focusedName, setfocusedName] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
+  const adminsRef = collection(db, "adminList");
+
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(adminsRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+        items.push({ id: doc.id, ...doc.data() });
+      });
+      setAdmins(items);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
+  const register = async(email, password) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password)
+      .then(async(res) => {
+        await updateProfile(auth.currentUser, {
+          displayName: "Admin",
+        });
+        await setDoc(
+          doc(db, `usersList/admin/children/${auth.currentUser.uid}`),
+          {
+            name: "Admin",
+            email: email,
+            uid: auth.currentUser.uid,
+          }
+        );
+        history.push("/auth/login");
+        Notify("success", "Singed up as a admin successful", "Sign up");
+      })
+    }
+    catch (error) {
+     console.log(error); 
+    }
+  }
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const password = form.password.value;
+    const email = form.email.value;
+    const res = admins.some((admin) => admin?.email === email);
+    if(res){
+      register(email,password)
+    }
+    else{
+      Notify("warning", "You are not eligible to be an admin", "Sign up")
+    }
+
+  };
+
   return (
     <>
+    {
+      loading ? 
+      <Loader></Loader>
+      :
+      <>
       <AuthHeader
-        title="Create an account"
-        lead="Use these awesome forms to login or create new account in your project for free."
       />
       <Container className="mt--8 pb-5">
         <Row className="justify-content-center">
           <Col lg="6" md="8">
             <Card className="bg-secondary border-0">
               <CardHeader className="bg-transparent pb-5">
-                <div className="text-muted text-center mt-2 mb-4">
-                  <small>Sign up with</small>
-                </div>
-                <div className="text-center">
-                  <Button
-                    className="btn-neutral btn-icon mr-4"
-                    color="default"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <span className="btn-inner--icon mr-1">
-                      <img
-                        alt="..."
-                        src={
-                          require("assets/img/icons/common/github.svg").default
-                        }
-                      />
-                    </span>
-                    <span className="btn-inner--text">Github</span>
-                  </Button>
-                  <Button
-                    className="btn-neutral btn-icon"
-                    color="default"
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <span className="btn-inner--icon mr-1">
-                      <img
-                        alt="..."
-                        src={
-                          require("assets/img/icons/common/google.svg").default
-                        }
-                      />
-                    </span>
-                    <span className="btn-inner--text">Google</span>
-                  </Button>
+              <div className="d-flex justify-content-center">
+                <img className="w-50 rounded-circle" src="https://firebasestorage.googleapis.com/v0/b/locality-tradesmen.appspot.com/o/logo.jpg?alt=media&token=01658242-f931-4a42-b70c-149bac12dc49" alt="" />
                 </div>
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-5">
                 <div className="text-center text-muted mb-4">
-                  <small>Or sign up with credentials</small>
+                  <small>Sign Up</small>
                 </div>
-                <Form role="form">
-                  <FormGroup
-                    className={classnames({
-                      focused: focusedName,
-                    })}
-                  >
-                    <InputGroup className="input-group-merge input-group-alternative mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="ni ni-hat-3" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        placeholder="Name"
-                        type="text"
-                        onFocus={() => setfocusedName(true)}
-                        onBlur={() => setfocusedName(false)}
-                      />
-                    </InputGroup>
-                  </FormGroup>
+                <Form onSubmit={handleRegister}>
                   <FormGroup
                     className={classnames({
                       focused: focusedEmail,
@@ -129,6 +146,8 @@ function Register() {
                       <Input
                         placeholder="Email"
                         type="email"
+                        name="email"
+                        required
                         onFocus={() => setfocusedEmail(true)}
                         onBlur={() => setfocusedEmail(false)}
                       />
@@ -147,47 +166,16 @@ function Register() {
                       </InputGroupAddon>
                       <Input
                         placeholder="Password"
+                        name="password"
+                        required
                         type="password"
                         onFocus={() => setfocusedPassword(true)}
                         onBlur={() => setfocusedPassword(false)}
                       />
                     </InputGroup>
                   </FormGroup>
-                  <div className="text-muted font-italic">
-                    <small>
-                      password strength:{" "}
-                      <span className="text-success font-weight-700">
-                        strong
-                      </span>
-                    </small>
-                  </div>
-                  <Row className="my-4">
-                    <Col xs="12">
-                      <div className="custom-control custom-control-alternative custom-checkbox">
-                        <input
-                          className="custom-control-input"
-                          id="customCheckRegister"
-                          type="checkbox"
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="customCheckRegister"
-                        >
-                          <span className="text-muted">
-                            I agree with the{" "}
-                            <a
-                              href="#pablo"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              Privacy Policy
-                            </a>
-                          </span>
-                        </label>
-                      </div>
-                    </Col>
-                  </Row>
                   <div className="text-center">
-                    <Button className="mt-4" color="info" type="button">
+                    <Button className="mt-4" color="info" type="submit">
                       Create account
                     </Button>
                   </div>
@@ -197,6 +185,8 @@ function Register() {
           </Col>
         </Row>
       </Container>
+    </>
+    }
     </>
   );
 }
