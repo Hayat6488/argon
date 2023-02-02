@@ -23,6 +23,7 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
+import RestrictedRoutes from "views/pages/PrivateRoutes/RestrictedRoutes";
 
 function Admin() {
   const [sidenavOpen, setSidenavOpen] = React.useState(true);
@@ -40,7 +41,7 @@ function Admin() {
       }
       if (prop.layout === "/admin") {
         return (
-          <Route
+          <RestrictedRoutes
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
@@ -78,6 +79,7 @@ function Admin() {
 
   return (
     <>
+    <RestrictedRoutes></RestrictedRoutes>
       <Sidebar
         routes={routes}
         toggleSidenav={toggleSidenav}

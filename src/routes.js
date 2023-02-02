@@ -21,7 +21,6 @@ const routes = [
     invisible: true,
     layout: "/home",
   },
-
   {
     collapse: true,
     name: "Authentication",
@@ -70,7 +69,7 @@ const routes = [
   {
     collapse: true,
     name: "Users",
-    icon: "ni ni-single-02 text-default",
+    icon: "ni ni-circle-08 text-default",
     state: "tablesCollapse",
     views: [
       {
@@ -135,7 +134,7 @@ const routes = [
   {
     path: "/admins",
     name: "Admins List",
-    icon: "ni ni-money-coins text-info",
+    icon: "ni ni-single-02 text-info",
     component: Admins,
     layout: "/admin",
   }

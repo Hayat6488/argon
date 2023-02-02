@@ -43,6 +43,8 @@ import AuthHeader from "components/Headers/AuthHeader.js";
 import { NavLink, useHistory } from "react-router-dom";
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import NotifyContext from "context/NotifyContext";
+import { useContext } from "preact/hooks";
+import { AuthContext } from "context/AuthProvider";
 
 
 
@@ -51,7 +53,6 @@ import NotifyContext from "context/NotifyContext";
 // Handle Login
 
 const Login = () => {
-
   
   const [admins, setAdmins] = React.useState([]);
   const { Notify } = React.useContext(NotifyContext);
