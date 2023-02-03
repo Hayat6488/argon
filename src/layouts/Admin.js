@@ -79,7 +79,7 @@ function Admin() {
 
   return (
     <>
-    {/* <RestrictedRoutes></RestrictedRoutes> */}
+    <RestrictedRoutes></RestrictedRoutes>
       <Sidebar
         routes={routes}
         toggleSidenav={toggleSidenav}

@@ -88,6 +88,7 @@ const Login = () => {
     if(res){
       try {
         await signInWithEmailAndPassword(auth, email, password);
+        localStorage.setItem("user", auth.currentUser?.displayName);
         const docRef = doc(
           db,
           `usersList/admin/children/${auth.currentUser.uid}`

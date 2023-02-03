@@ -10,10 +10,14 @@ const RestrictedRoutes = ({children, ...rest}) => {
 
     React.useLayoutEffect(() => {
         setLoading(true)
-        const currentUser = auth?.currentUser
+        // const currentUser = auth?.currentUser
+        const currentUser = localStorage.getItem("user");
+        console.log(currentUser);
         setUser(currentUser)
         setLoading(false)
     }, [])
+
+    console.log(user);
 
     if(loading){
         return <Loader></Loader>

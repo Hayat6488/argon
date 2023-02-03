@@ -15,6 +15,7 @@
 
 */
 // nodejs library that concatenates classes
+import React from "react";
 import classnames from "classnames";
 import { signOut } from "firebase/auth";
 // nodejs library to set properties for components
@@ -62,13 +63,22 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
   //   }, 500);
   // };
 
+
   const history = useHistory();
+
+  const [userName, setUserName] = React.useState(null);
+
+  React.useLayoutEffect(() => {
+    const userName = localStorage.getItem("user");
+    setUserName(userName);
+  },[])
 
 
   const logOut = () => {
     signOut(auth)
       .then(result => {
-        history.push('/home')
+        history.push('/home');
+        localStorage.removeItem("user");
       })
       .catch(error => console.error('error: ', error))
   }
@@ -106,7 +116,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                 <DropdownToggle className="nav-link pr-0" color="" tag="a">
                   <div className="d-flex justify-content-center align-items-center">
                     <h1 className="text-secondary "><i className="ni ni-circle-08"></i><span className="text-secondary text-lg font-weight-bold ml-2">
-                      {auth?.currentUser?.displayName}
+                      {userName}
                     </span></h1>
                     
                   </div>
