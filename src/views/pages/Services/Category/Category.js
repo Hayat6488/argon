@@ -53,7 +53,6 @@ const Category = ({setLoading, loading}) => {
             const imageRef = ref(storage, `services/${image.name}`);
             uploadBytes(imageRef, image).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then((url) => {
-                    console.log(url);
                     addDataToFireStore(service, url);
                 });
             });

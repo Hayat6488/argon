@@ -17,7 +17,6 @@ function Modals({ exampleModal, setExampleModal, serviceDetails, service }) {
   const editService = async (event) => {
     event.preventDefault();
     const title = event.target.title.value;
-    console.log(title);
     const updated = {
       key: title,
       value: title

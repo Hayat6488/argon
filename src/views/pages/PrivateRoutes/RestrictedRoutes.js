@@ -1,6 +1,7 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom'
 import Loader from 'utility/Loader';
+import useTimeout from 'utility/useTimeOut';
 import { auth } from "../../../Firebase/firebase.config";
 
 const RestrictedRoutes = ({children, ...rest}) => {
@@ -8,16 +9,15 @@ const RestrictedRoutes = ({children, ...rest}) => {
     const [loading, setLoading] = React.useState(true);
     const [user, setUser] = React.useState(null);
 
+    useTimeout(() => localStorage.removeItem("user"), 3600000)
+
     React.useLayoutEffect(() => {
         setLoading(true)
-        // const currentUser = auth?.currentUser
         const currentUser = localStorage.getItem("user");
-        console.log(currentUser);
         setUser(currentUser)
         setLoading(false)
     }, [])
 
-    console.log(user);
 
     if(loading){
         return <Loader></Loader>

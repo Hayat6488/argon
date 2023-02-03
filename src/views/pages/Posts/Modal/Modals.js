@@ -11,7 +11,6 @@ import {
 
 function Modals({ exampleModal, setExampleModal, postDetails }) {
 
-  console.log(postDetails);
   const dateObj = postDetails?.jobPostedDate;
   function formatDate(date) {
     const formatDate = new Date(

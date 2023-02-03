@@ -13,7 +13,6 @@ import {
 
 function Modals({ exampleModal, setExampleModal, bookingsDetails }) {
 
-  console.log(bookingsDetails);
 
   return (
     <>

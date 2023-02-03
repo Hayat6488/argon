@@ -7,7 +7,6 @@ import {
 } from "reactstrap";
 
 function ReportsModals({ setReportModal, reportModal, reports }) {
-  console.log(reports);
   return (
     <>
       <Modal
