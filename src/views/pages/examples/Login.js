@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /*!
 
 =========================================================
@@ -43,8 +44,6 @@ import AuthHeader from "components/Headers/AuthHeader.js";
 import { NavLink, useHistory } from "react-router-dom";
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import NotifyContext from "context/NotifyContext";
-import { useContext } from "preact/hooks";
-import { AuthContext } from "context/AuthProvider";
 
 
 

@@ -22,7 +22,6 @@ import AdminLayout from "layouts/Admin.js";
 import RTLLayout from "layouts/RTL.js";
 import AuthLayout from "layouts/Auth.js";
 import { NotifyProvider } from "./context/NotifyContext";
-import RestrictedRoutes from "views/pages/PrivateRoutes/RestrictedRoutes";
 
 ReactDOM.render(
   // <Provider store={store}>

@@ -17,7 +17,6 @@ import Loader from "utility/Loader";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "Firebase/firebase.config";
 import NotifyContext from "context/NotifyContext";
-import RestrictedRoutes from "../PrivateRoutes/RestrictedRoutes";
 
 function ServicesFee() {
   // all states *********************
@@ -80,7 +79,6 @@ function ServicesFee() {
   } else {
     return (
       <>
-        {/* <RestrictedRoutes></RestrictedRoutes> */}
         <SimpleHeader name="Service Fee" />
         <Container className="mt--6" fluid>
           <Card>

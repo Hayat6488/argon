@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /*!
 
 =========================================================
@@ -49,7 +50,6 @@ function Register() {
 
   const { Notify } = React.useContext(NotifyContext);
   const [admins, setAdmins] = React.useState([]);
-  const [focusedName, setfocusedName] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [focusedEmail, setfocusedEmail] = React.useState(false);
   const [focusedPassword, setfocusedPassword] = React.useState(false);
@@ -129,7 +129,7 @@ function Register() {
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-5">
                 <div className="text-center text-muted mb-4">
-                  <small>Sign Up</small>
+                  <h2>Sign Up</h2>
                 </div>
                 <Form onSubmit={handleRegister}>
                   <FormGroup

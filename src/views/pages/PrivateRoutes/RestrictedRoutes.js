@@ -9,18 +9,17 @@ const RestrictedRoutes = ({children, ...rest}) => {
     const [user, setUser] = React.useState(null);
 
     React.useLayoutEffect(() => {
+        setLoading(true)
         const currentUser = auth?.currentUser
         setUser(currentUser)
         setLoading(false)
     }, [])
 
-    console.log(user)
-
     if(loading){
         return <Loader></Loader>
     }
     return (
-        <Route {...rest} render = {() => user ? (children) : (<Redirect to={'/auth/login'}/>)}/>
+        <Route {...rest} render = {() => user && !loading ? (children) : (<Redirect to={'/auth/login'}/>)}/>
 );
 };
 

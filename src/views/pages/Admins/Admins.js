@@ -9,24 +9,22 @@ import {
   CardBody,
   Form,
   Input,
-  ListGroup,
-  ListGroupItem,
   Table,
-  Media,
-  Badge,
-  UncontrolledTooltip,
-  Progress,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
 } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader";
-import { addDoc, collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "Firebase/firebase.config";
 import NotifyContext from "context/NotifyContext";
+import ReactBSAlert from "react-bootstrap-sweetalert";
 
 const Admins = () => {
+  const [alert, setAlert] = React.useState(false);
   const { Notify } = React.useContext(NotifyContext);
   const [loading, setLoading] = React.useState(true);
   const [admins, setAdmins] = React.useState([]);
@@ -48,8 +46,6 @@ const Admins = () => {
     };
   }, []);
 
-  console.log(admins);
-
   const addAdmin = async (event, admins) => {
     event.preventDefault();
     const email = event.target.service.value;
@@ -70,21 +66,44 @@ const Admins = () => {
     }
   };
 
-  const deleteService = (admin) => {
-    const proceed = window.confirm(`Are you sure you want to delete admin ${admin?.email}?`);
-        if(proceed){
-            try {
-                deleteDoc(doc(db, `adminList/${admin?.id}`));
-                Notify("danger", `Admin ${admin.email} deleted successfully.`, "Delete admin");
-            }
-            catch (error) { 
-            }
-        }
+  const deleteEmail = (admin) => {
+    try {
+      deleteDoc(doc(db, `adminList/${admin?.id}`));
+      Notify(
+        "danger",
+        `Admin ${admin.email} deleted successfully.`,
+        "Delete admin"
+      );
+      setAlert(false)
+    } catch (error) {}
   }
+
+
+
+  const deleteService = (admin) => {
+    setAlert(
+      <ReactBSAlert
+      warning
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Warning"
+      onConfirm={() => deleteEmail(admin)}
+      onCancel={() => setAlert(null)}
+      showCancel
+      confirmBtnBsStyle="danger"
+      confirmBtnText="Yes"
+      cancelBtnBsStyle="info"
+      cancelBtnText="Cancel"
+      btnSize=""
+      >
+        {`Sure you want to delete ${admin?.email} as a admin?`}
+      </ReactBSAlert>
+    );
+  };
 
   return (
     <>
-      <SimpleHeader name="Services" />
+    {alert}
+      <SimpleHeader name="Admins List" />
       <div className="mb-4 mt-4 mx-4">
         <>
           <div className="mx-6">
