@@ -90,7 +90,8 @@ function Register() {
       })
     }
     catch (error) {
-     console.log(error); 
+     const length = error.message.length;
+     Notify("warning", `${error.message.slice(22, length-2)}`, "Sign up");
     }
   }
 
