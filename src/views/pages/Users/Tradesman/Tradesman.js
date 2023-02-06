@@ -42,6 +42,8 @@ function Tradesman() {
   const [userDetails, setUserDetails] = React.useState(null)
   const [currentPage, setCurrentPage] = React.useState(1);
   const [postsPerPage, setPostsPerPage] = React.useState(10);
+  const [showAll, setShowAll] = React.useState(false);
+  const [rendered, setRenderer] = React.useState(1);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFastPost = indexOfLastPost - postsPerPage;
@@ -93,7 +95,7 @@ function Tradesman() {
     return () => {
       unSub();
     };
-  }, [])
+  }, [rendered])
 
   // Database call to read Data ***************
 
@@ -120,6 +122,7 @@ function Tradesman() {
   // Serach function **************
 
   const handleSearch = React.useCallback(async (event) => {
+    setShowAll(true);
     event.preventDefault();
     const id = event.target.search.value;
     try {
@@ -290,6 +293,19 @@ function Tradesman() {
                         <div className="d-flex justify-content-end">
                           <Input placeholder="Enter email" className="w-50" type="text" name="search" bsSize="sm" id="" />
                           <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
+                          {showAll && (
+                          <Button
+                            className="py-0"
+                            color="default"
+                            onClick={() => {
+                              // window.location.reload(false);
+                              setShowAll(false);
+                              setRenderer(2);
+                            }}
+                          >
+                            View All
+                          </Button>
+                        )}
                         </div>
                       </form>
                     </Col>

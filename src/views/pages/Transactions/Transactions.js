@@ -18,7 +18,7 @@ import {
   DropdownMenu,
   DropdownItem,
   UncontrolledTooltip,
-  Input
+  Input,
 } from "reactstrap";
 import { onSnapshot, collection, getDocs } from "firebase/firestore";
 import SimpleHeader from "components/Headers/SimpleHeader";
@@ -27,19 +27,18 @@ import Modals from "./Modal/Modals";
 import Loader from "utility/Loader";
 
 function Transactions() {
-
   // All states and paths********************
-  
-  const [exampleModal, setExampleModal] = React.useState(false)
+
+  const [exampleModal, setExampleModal] = React.useState(false);
   const [transactionDetails, setTransactionDetails] = React.useState(null);
-  const [amount, setAmount] = React.useState(null)
+  const [amount, setAmount] = React.useState(null);
 
   const openModal = (transaction) => {
     setExampleModal(!exampleModal);
     setTransactionDetails(transaction);
     setAmount(transaction?.amount);
-  }
-  
+  };
+
   const [transactions, setTransactions] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [providers, setProviders] = React.useState([]);
@@ -47,26 +46,29 @@ function Transactions() {
   const [serviceFee, setServiceFee] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [postsPerPage, setPostsPerPage] = React.useState(10);
-  const [search, setSearch] = React.useState([]);
+  const [showAll, setShowAll] = React.useState(false);
+  const [rendered, setRenderer] = React.useState(1);
 
   // All states and paths********************
 
   // Pagination setup************
-  
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFastPost = indexOfLastPost - postsPerPage;
-  
-  const currentTransactions = transactions.slice(indexOfFastPost, indexOfLastPost);
-  
+
+  const currentTransactions = transactions.slice(
+    indexOfFastPost,
+    indexOfLastPost
+  );
+
   const lastPageNumber = Math.ceil(transactions.length / postsPerPage);
 
   // Pagination setup************
 
   // Loading data from db***********
-  
+
   const userRef = collection(db, "/usersList/user/children");
   const tradesmanRef = collection(db, "/usersList/provider/children");
-
 
   const serviceFeeRef = collection(db, "serviceFee");
 
@@ -76,7 +78,6 @@ function Transactions() {
     const unSub = onSnapshot(serviceFeeRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
-
         items.push({ id: doc.id, ...doc.data() });
       });
       setServiceFee(items);
@@ -86,7 +87,7 @@ function Transactions() {
     return () => {
       unSub();
     };
-  }, [])
+  }, []);
 
   // Users data ***********
 
@@ -94,7 +95,6 @@ function Transactions() {
     const unSub = onSnapshot(userRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
-
         items.push({ uid: doc.id, ...doc.data() });
       });
       setUsers(items);
@@ -112,7 +112,6 @@ function Transactions() {
     const unSub = onSnapshot(tradesmanRef, (QuerySnapshot) => {
       const items = [];
       QuerySnapshot.forEach((doc) => {
-
         items.push({ uid: doc.id, ...doc.data() });
       });
       setProviders(items);
@@ -135,8 +134,10 @@ function Transactions() {
         const userId = x.data().userUid;
         const providerId = x.data().providerUid;
 
-        const user = users?.find(user => user.uid === userId);
-        const provider = providers?.find(provider => provider.uid === providerId);
+        const user = users?.find((user) => user.uid === userId);
+        const provider = providers?.find(
+          (provider) => provider.uid === providerId
+        );
 
         dataList.push({
           id: x.id,
@@ -149,264 +150,39 @@ function Transactions() {
       setLoading(false);
     };
     getData();
-  }, [users, providers, serviceFee]);
+  }, [users, providers, serviceFee, rendered]);
 
   const time = (date) => {
     const formatDate = new Date(
       date.seconds * 1000 + date.nanoseconds / 1000000
     );
-    return formatDate.toLocaleTimeString('en-us', { day: 'numeric', month: 'long', });
-  }
-
+    return formatDate.toLocaleTimeString("en-us", {
+      day: "numeric",
+      month: "long",
+    });
+  };
 
   const handleSearch = (event, transactionsData) => {
+    setShowAll(true);
     const dataList = [];
     event.preventDefault();
     const trxId = event.target.search.value;
     setLoading(true);
-    const data = transactionsData.find(post => post?.trxID === trxId);
-      dataList.push(data);
-      setSearch(dataList);
-      setLoading(false);
-  }
+    const data = transactionsData.find((post) => post?.trxID === trxId);
+    dataList.push(data);
+    setTransactions(dataList);
+    setLoading(false);
+  };
 
-  console.log(search);
+  console.log(transactions);
 
-  if(search.length !==0){
-    return (
-      <>
-      {
-        loading ?
+  return (
+    <>
+      {loading ? (
         <Loader></Loader>
-        :
+      ) : (
         <>
-        <SimpleHeader name="Transactions"/>
-        <Container className="mt--6" fluid>
-          <Card>
-            <CardHeader className="border-0">
-              <Row>
-                <Col xs="6">
-                  <h3 className="mb-0">TRANSACTIONS</h3>
-                </Col>
-                <Col className="text-right" xs="6">
-                      <form onSubmit={(event) => handleSearch(event, transactions)}>
-                        <div className="d-flex justify-content-end">
-                          <Input placeholder="Enter User Email" className="w-50" type="text" name="search" bsSize="sm" id="" />
-                          <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                        </div>
-                      </form>
-                    </Col>
-              </Row>
-            </CardHeader>
-
-            <Table className="align-items-center table-flush" responsive>
-              <thead className="thead-light">
-                <tr>
-                  <th scope="col">User </th>
-                  <th scope="col">Tradesman</th>
-                  <th scope="col">Time</th>
-                  <th scope="col">Transaction ID</th>
-                  <th scope="col">Booking ID</th>
-                  <th scope="col">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  search.map(transaction => <tr key={transaction?.id}>
-                    <th scope="row" className="d-flex align-items-center">
-                      <img className="avatar rounded-circle" alt="..." src={transaction?.photURL} />
-                      <div className="d-flex flex-column">
-                        <span className="mb-0 ml-2 text-sm">{transaction?.name}</span>
-                        <span className="mb-0 ml-2 text-sm">{transaction?.email}</span>
-                      </div>
-
-                    </th>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <img className="avatar rounded-circle" alt="..." src={transaction?.provider?.profilePhoto} />
-                        <div className="d-flex flex-column">
-                          <span className="ml-2 text-sm">
-                            {transaction?.provider?.name}
-                          </span>
-                          <span className="ml-2">{transaction?.provider?.email}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        {time(transaction?.time)}
-                      </Badge>
-                    </td>
-                    <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        {
-                          transaction?.trxID.length > 20 ?
-                            <>
-                              <span id={transaction?.trxID}>{transaction?.trxID.slice(0, 14)}...</span>
-                              <UncontrolledTooltip
-                                delay={0}
-                                placement="top"
-                                target={transaction?.trxID}
-                              >
-                                {transaction?.trxID}
-                              </UncontrolledTooltip>
-                            </>
-                            :
-                            <span>{transaction?.trxID}</span>
-                        }
-                      </Badge>
-                    </td>
-                    <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        {transaction?.bookingId}
-                      </Badge>
-                    </td>
-                    <td>
-                      <span color="" className="badge-dot mr-2">
-                        ${transaction?.amount}
-                      </span>
-                      <Button
-                        className="px-1"
-                        color="secondary"
-                        outline
-                        type="button"
-                        onClick={() => openModal(transaction)}>
-                        <i className="fas fa-eye" />
-                      </Button>
-                    </td>
-                  </tr>)
-                }
-              </tbody>
-            </Table>
-            <hr className="my-2" />
-            <div className="d-flex px-2 w-100 justify-content-between align-items-center">
-              <h4 className="text-muted">Showing {indexOfFastPost + 1} to {indexOfLastPost} from {transactions.length} posts</h4>
-              <Pagination>
-                {
-                  currentPage - 1 !== 0 && <>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={e => {
-                          e.preventDefault()
-                          setCurrentPage(currentPage - 1)
-                        }}
-                      >
-                        <i className="fa fa-angle-left" />
-                        <span className="sr-only">Previous</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#pablo"
-                        onClick={e => {
-                          e.preventDefault()
-                          setCurrentPage(currentPage - 1)
-                        }}
-                      >
-                        {currentPage - 1}
-                      </PaginationLink>
-                    </PaginationItem></>
-                }
-                <PaginationItem className="active">
-                  <PaginationLink href="#pablo" onClick={e => {
-                    e.preventDefault()
-                    setCurrentPage(currentPage)
-                  }}
-                  >
-                    {currentPage} <span className="sr-only">(current)</span>
-                  </PaginationLink>
-                </PaginationItem>
-                {
-                  currentPage < lastPageNumber &&
-                  <>
-                    <PaginationItem>
-                      <PaginationLink href="#pablo" onClick={e => {
-                        e.preventDefault()
-                        setCurrentPage(currentPage + 1)
-                      }}
-                      >
-                        {currentPage + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink href="#pablo" onClick={e => {
-                        e.preventDefault()
-                        setCurrentPage(currentPage + 1)
-                      }}
-                      >
-                        <i className="fa fa-angle-right" />
-                        <span className="sr-only">Next</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                  </>
-                }
-              </Pagination>
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center">
-                  <h4 className="mr-1 mb-0">Go to page: </h4>
-                  <form onSubmit={(event) => {
-                    event.preventDefault();
-                    setCurrentPage(parseInt(event.target.page.value));
-                  }}>
-                    <input className="py-0" style={{ width: "25%" }} type="text" name="page" id="" />
-                    <Button className="py-0 px-2 ml-1" color="primary" type="submit">
-                      Go
-                    </Button>
-                  </form>
-                </div>
-                <div className="d-flex align-items-center">
-                  <h4>Posts per page</h4>
-                  <UncontrolledDropdown className="py-2" size="sm" group>
-                    <DropdownToggle caret color="secondary">
-                      {postsPerPage}
-                    </DropdownToggle>
-                    <DropdownMenu className="py-2" >
-                      <DropdownItem className="py-2" href="#pablo" onClick={e => {
-                        e.preventDefault();
-                        setPostsPerPage(10);
-                        setCurrentPage(1);
-                      }}>
-                        10
-                      </DropdownItem>
-                      <DropdownItem href="#pablo" onClick={e => {
-                        e.preventDefault();
-                        setPostsPerPage(25);
-                        setCurrentPage(1);
-                      }}>
-                        25
-                      </DropdownItem>
-                      <DropdownItem href="#pablo" onClick={e => {
-                        e.preventDefault();
-                        setPostsPerPage(50);
-                        setCurrentPage(1);
-                      }}>
-                        50
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </Container>
-        {
-          exampleModal && <Modals key={transactionDetails?._id} serviceFee={serviceFee} setExampleModal={setExampleModal} transactionDetails={transactionDetails} exampleModal={exampleModal} amount={amount}></Modals>
-        }
-      </>
-      }
-      </>
-    );
-  }
-
-    else{
-      return (
-        <>
-        {
-          loading ?
-          <Loader></Loader>
-          :
-          <>
-          <SimpleHeader name="Transactions"/>
+          <SimpleHeader name="Transactions" />
           <Container className="mt--6" fluid>
             <Card>
               <CardHeader className="border-0">
@@ -415,16 +191,43 @@ function Transactions() {
                     <h3 className="mb-0">TRANSACTIONS</h3>
                   </Col>
                   <Col className="text-right" xs="6">
-                        <form onSubmit={(event) => handleSearch(event, transactions)}>
-                          <div className="d-flex justify-content-end">
-                            <Input placeholder="Enter User Email" className="w-50" type="text" name="search" bsSize="sm" id="" />
-                            <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                          </div>
-                        </form>
-                      </Col>
+                    <form
+                      onSubmit={(event) => handleSearch(event, transactions)}
+                    >
+                      <div className="d-flex justify-content-end">
+                        <Input
+                          placeholder="Enter User Email"
+                          className="w-50"
+                          type="text"
+                          name="search"
+                          bsSize="sm"
+                          id=""
+                        />
+                        <Button
+                          className="py-0 rounded-end"
+                          color="info"
+                          type="submit"
+                        >
+                          Search
+                        </Button>
+                        {showAll && (
+                          <Button
+                            className="py-0"
+                            color="default"
+                            onClick={() => {
+                              setShowAll(false);
+                              setRenderer(2);
+                            }}
+                          >
+                            View All
+                          </Button>
+                        )}
+                      </div>
+                    </form>
+                  </Col>
                 </Row>
               </CardHeader>
-  
+
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
@@ -437,24 +240,37 @@ function Transactions() {
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    currentTransactions.map(transaction => <tr key={transaction?._id}>
+                  {currentTransactions.map((transaction) => (
+                    <tr key={transaction?.id}>
                       <th scope="row" className="d-flex align-items-center">
-                        <img className="avatar rounded-circle" alt="..." src={transaction?.photURL} />
+                        <img
+                          className="avatar rounded-circle"
+                          alt="..."
+                          src={transaction?.photURL}
+                        />
                         <div className="d-flex flex-column">
-                          <span className="mb-0 ml-2 text-sm">{transaction?.name}</span>
-                          <span className="mb-0 ml-2 text-sm">{transaction?.email}</span>
+                          <span className="mb-0 ml-2 text-sm">
+                            {transaction?.name}
+                          </span>
+                          <span className="mb-0 ml-2 text-sm">
+                            {transaction?.email}
+                          </span>
                         </div>
-  
                       </th>
                       <td>
                         <div className="d-flex align-items-center">
-                          <img className="avatar rounded-circle" alt="..." src={transaction?.provider?.profilePhoto} />
+                          <img
+                            className="avatar rounded-circle"
+                            alt="..."
+                            src={transaction?.provider?.profilePhoto}
+                          />
                           <div className="d-flex flex-column">
                             <span className="ml-2 text-sm">
                               {transaction?.provider?.name}
                             </span>
-                            <span className="ml-2">{transaction?.provider?.email}</span>
+                            <span className="ml-2">
+                              {transaction?.provider?.email}
+                            </span>
                           </div>
                         </div>
                       </td>
@@ -465,21 +281,22 @@ function Transactions() {
                       </td>
                       <td>
                         <Badge color="" className="badge-dot mr-4">
-                          {
-                            transaction?.trxID.length > 20 ?
-                              <>
-                                <span id={transaction?.trxID}>{transaction?.trxID.slice(0, 14)}...</span>
-                                <UncontrolledTooltip
-                                  delay={0}
-                                  placement="top"
-                                  target={transaction?.trxID}
-                                >
-                                  {transaction?.trxID}
-                                </UncontrolledTooltip>
-                              </>
-                              :
-                              <span>{transaction?.trxID}</span>
-                          }
+                          {transaction?.trxID.length > 20 ? (
+                            <>
+                              <span id={transaction?.trxID}>
+                                {transaction?.trxID.slice(0, 14)}...
+                              </span>
+                              <UncontrolledTooltip
+                                delay={0}
+                                placement="top"
+                                target={transaction?.trxID}
+                              >
+                                {transaction?.trxID}
+                              </UncontrolledTooltip>
+                            </>
+                          ) : (
+                            <span>{transaction?.trxID}</span>
+                          )}
                         </Badge>
                       </td>
                       <td>
@@ -496,26 +313,30 @@ function Transactions() {
                           color="secondary"
                           outline
                           type="button"
-                          onClick={() => openModal(transaction)}>
+                          onClick={() => openModal(transaction)}
+                        >
                           <i className="fas fa-eye" />
                         </Button>
                       </td>
-                    </tr>)
-                  }
+                    </tr>
+                  ))}
                 </tbody>
               </Table>
               <hr className="my-2" />
               <div className="d-flex px-2 w-100 justify-content-between align-items-center">
-                <h4 className="text-muted">Showing {indexOfFastPost + 1} to {indexOfLastPost} from {transactions.length} posts</h4>
+                <h4 className="text-muted">
+                  Showing {indexOfFastPost + 1} to {indexOfLastPost} from{" "}
+                  {transactions.length} posts
+                </h4>
                 <Pagination>
-                  {
-                    currentPage - 1 !== 0 && <>
+                  {currentPage - 1 !== 0 && (
+                    <>
                       <PaginationItem>
                         <PaginationLink
                           href="#pablo"
-                          onClick={e => {
-                            e.preventDefault()
-                            setCurrentPage(currentPage - 1)
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(currentPage - 1);
                           }}
                         >
                           <i className="fa fa-angle-left" />
@@ -523,59 +344,78 @@ function Transactions() {
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationLink href="#pablo"
-                          onClick={e => {
-                            e.preventDefault()
-                            setCurrentPage(currentPage - 1)
+                        <PaginationLink
+                          href="#pablo"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(currentPage - 1);
                           }}
                         >
                           {currentPage - 1}
                         </PaginationLink>
-                      </PaginationItem></>
-                  }
+                      </PaginationItem>
+                    </>
+                  )}
                   <PaginationItem className="active">
-                    <PaginationLink href="#pablo" onClick={e => {
-                      e.preventDefault()
-                      setCurrentPage(currentPage)
-                    }}
+                    <PaginationLink
+                      href="#pablo"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage(currentPage);
+                      }}
                     >
                       {currentPage} <span className="sr-only">(current)</span>
                     </PaginationLink>
                   </PaginationItem>
-                  {
-                    currentPage < lastPageNumber &&
+                  {currentPage < lastPageNumber && (
                     <>
                       <PaginationItem>
-                        <PaginationLink href="#pablo" onClick={e => {
-                          e.preventDefault()
-                          setCurrentPage(currentPage + 1)
-                        }}
+                        <PaginationLink
+                          href="#pablo"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(currentPage + 1);
+                          }}
                         >
                           {currentPage + 1}
                         </PaginationLink>
                       </PaginationItem>
                       <PaginationItem>
-                        <PaginationLink href="#pablo" onClick={e => {
-                          e.preventDefault()
-                          setCurrentPage(currentPage + 1)
-                        }}
+                        <PaginationLink
+                          href="#pablo"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(currentPage + 1);
+                          }}
                         >
                           <i className="fa fa-angle-right" />
                           <span className="sr-only">Next</span>
                         </PaginationLink>
                       </PaginationItem>
                     </>
-                  }
+                  )}
                 </Pagination>
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center">
                     <h4 className="mr-1 mb-0">Go to page: </h4>
-                    <form onSubmit={(event) => {
-                      event.preventDefault();
-                      setCurrentPage(parseInt(event.target.page.value));
-                    }}>
-                      <input className="py-0" style={{ width: "25%" }} type="text" name="page" id="" />
-                      <Button className="py-0 px-2 ml-1" color="primary" type="submit">
+                    <form
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        setCurrentPage(parseInt(event.target.page.value));
+                      }}
+                    >
+                      <input
+                        className="py-0"
+                        style={{ width: "25%" }}
+                        type="text"
+                        name="page"
+                        id=""
+                      />
+                      <Button
+                        className="py-0 px-2 ml-1"
+                        color="primary"
+                        type="submit"
+                      >
                         Go
                       </Button>
                     </form>
@@ -586,26 +426,36 @@ function Transactions() {
                       <DropdownToggle caret color="secondary">
                         {postsPerPage}
                       </DropdownToggle>
-                      <DropdownMenu className="py-2" >
-                        <DropdownItem className="py-2" href="#pablo" onClick={e => {
-                          e.preventDefault();
-                          setPostsPerPage(10);
-                          setCurrentPage(1);
-                        }}>
+                      <DropdownMenu className="py-2">
+                        <DropdownItem
+                          className="py-2"
+                          href="#pablo"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setPostsPerPage(10);
+                            setCurrentPage(1);
+                          }}
+                        >
                           10
                         </DropdownItem>
-                        <DropdownItem href="#pablo" onClick={e => {
-                          e.preventDefault();
-                          setPostsPerPage(25);
-                          setCurrentPage(1);
-                        }}>
+                        <DropdownItem
+                          href="#pablo"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setPostsPerPage(25);
+                            setCurrentPage(1);
+                          }}
+                        >
                           25
                         </DropdownItem>
-                        <DropdownItem href="#pablo" onClick={e => {
-                          e.preventDefault();
-                          setPostsPerPage(50);
-                          setCurrentPage(1);
-                        }}>
+                        <DropdownItem
+                          href="#pablo"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setPostsPerPage(50);
+                            setCurrentPage(1);
+                          }}
+                        >
                           50
                         </DropdownItem>
                       </DropdownMenu>
@@ -615,14 +465,20 @@ function Transactions() {
               </div>
             </Card>
           </Container>
-          {
-            exampleModal && <Modals key={transactionDetails?._id} serviceFee={serviceFee} transactionDetails={transactionDetails} setExampleModal={setExampleModal} exampleModal={exampleModal} amount={amount}></Modals>
-          }
+          {exampleModal && (
+            <Modals
+              key={transactionDetails?._id}
+              serviceFee={serviceFee}
+              transactionDetails={transactionDetails}
+              setExampleModal={setExampleModal}
+              exampleModal={exampleModal}
+              amount={amount}
+            ></Modals>
+          )}
         </>
-        }
-        </>
-      );
-    }
-  }
+      )}
+    </>
+  );
+}
 
-export default Transactions
+export default Transactions;

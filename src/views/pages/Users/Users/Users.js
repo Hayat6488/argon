@@ -35,6 +35,8 @@ function Users() {
   const [search, setSearch] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [showAll, setShowAll] = React.useState(false);
+  const [rendered, setRenderer] = React.useState(1);
   
   // All States for   **********
   
@@ -73,9 +75,10 @@ function Users() {
       setLoading(false);
     };
     getData();
-  }, []);
+  }, [rendered]);
 
   const handleSearch = React.useCallback(async (event) => {
+    setShowAll(true);
     event.preventDefault();
     const id = event.target.search.value;
     try {
@@ -87,7 +90,7 @@ function Users() {
       querySnapshot.forEach((doc) => {
         data.push({ id: doc.id, ...doc.data() });
       });
-      setSearch(data);
+      setUsers(data);
       setLoading(false);
     } catch (error) {
       console.log({ error });
@@ -95,8 +98,6 @@ function Users() {
 
   }, []);
 
-
-  if (search.length !== 0) {
     return (
       <>
         {loading ?
@@ -115,87 +116,19 @@ function Users() {
                         <div className="d-flex justify-content-end">
                           <Input placeholder="Enter Email" className="w-50" type="text" name="search" bsSize="sm" id="" />
                           <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                          <Button className="py-0" color="default" onClick={() => setSearch([])}>
+                          {showAll && (
+                          <Button
+                            className="py-0"
+                            color="default"
+                            onClick={() => {
+                              // window.location.reload(false);
+                              setShowAll(false);
+                              setRenderer(2);
+                            }}
+                          >
                             View All
                           </Button>
-                        </div>
-                      </form>
-                    </Col>
-                  </Row>
-                </CardHeader>
-
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Location</th>
-                      <th />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {search.map((user) => (
-                      <tr key={user?.id}>
-                        <td className="table-user">
-                          <img
-                            alt="..."
-                            className="avatar rounded-circle mr-3"
-                            src={user?.photoURL}
-                          />
-                          <b>{user?.name}</b>
-                        </td>
-                        <td>
-                          <span className="">{user?.email}</span>
-                        </td>
-                        <td>
-                          <span>{user?.location?.houseNumber}, {user?.location?.street}, {user?.location?.city}</span>
-                        </td>
-                        <td className="table-actions">
-                          <button
-                            aria-label="Close"
-                            className="close"
-                            data-dismiss="modal"
-                            type="button"
-                            onClick={() => openModal(user)}
-                          >
-                            <span aria-hidden={true}><i className="fas fa-eye" /></span>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </Card>
-            </Container>
-            {exampleModal && <Modals setExampleModal={setExampleModal} exampleModal={exampleModal} userDetails={userDetails}></Modals>}
-          </>
-        }
-      </>
-    )
-  }
-
-
-  // Loader to show Loading ***********
-
-  else {
-    return (
-      <>
-        {loading ?
-          <Loader></Loader> :
-          <>
-            <SimpleHeader name="users" parentName="Users" />
-            <Container className="mt--6" fluid>
-              <Card>
-                <CardHeader className="border-0">
-                  <Row>
-                    <Col xs="6">
-                      <h3 className="mb-0">Users</h3>
-                    </Col>
-                    <Col className="text-right" xs="6">
-                      <form onSubmit={(event) => handleSearch(event)}>
-                        <div className="d-flex justify-content-end">
-                          <Input placeholder="Enter Email" className="w-50" type="text" name="search" bsSize="sm" id="" />
-                          <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
+                        )}
                         </div>
                       </form>
 
@@ -362,6 +295,5 @@ function Users() {
       </>
     );
   }
-}
 
 export default Users;
