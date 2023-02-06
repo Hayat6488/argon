@@ -128,7 +128,7 @@ function Posts() {
         <Loader></Loader>
         :
         <>
-        <SimpleHeader name="Job Posts" parentName="Job Posts" />
+        <SimpleHeader name="Job Posts"/>
         <Container className="mt--6" fluid>
           <Card>
             <CardHeader className="border-0">
@@ -206,7 +206,7 @@ function Posts() {
             </Table>
             <hr className="my-2" />
             <div className="d-flex px-2 w-100 justify-content-between align-items-center">
-            <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {posts.length} posts</h4>
+            <h4 className="text-muted">Showing {indexOfFastPost + 1} to {indexOfLastPost} from {posts.length} posts</h4>
               <Pagination>
                 {
                   currentPage - 1 !== 0 && <>
@@ -334,7 +334,7 @@ function Posts() {
       <Loader></Loader>
       :
       <>
-      <SimpleHeader name="Job Posts" parentName="Job Posts" />
+      <SimpleHeader name="Job Posts"/>
       <Container className="mt--6" fluid>
         <Card>
           <CardHeader className="border-0">
@@ -347,9 +347,6 @@ function Posts() {
                         <div className="d-flex justify-content-end">
                           <Input placeholder="Enter User Email" className="w-50" type="text" name="search" bsSize="sm" id="" />
                           <Button className="py-0 rounded-end" color="info" type="submit">Search</Button>
-                          {/* <Button className="py-0" color="default" onClick={() => setSearch([])}>
-                            View All
-                          </Button> */}
                         </div>
                       </form>
                     </Col>
@@ -412,7 +409,7 @@ function Posts() {
           </Table>
           <hr className="my-2" />
           <div className="d-flex px-2 w-100 justify-content-between align-items-center">
-          <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {posts.length} posts</h4>
+          <h4 className="text-muted">Showing {indexOfFastPost + 1} to {indexOfLastPost} from {posts.length} posts</h4>
             <Pagination>
               {
                 currentPage - 1 !== 0 && <>

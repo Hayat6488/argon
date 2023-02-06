@@ -9,9 +9,7 @@ import {
   Table
 } from "reactstrap";
 
-function Modals({ exampleModal, setExampleModal, amount, serviceFee }) {
-
-
+function Modals({ exampleModal, transactionDetails, setExampleModal, amount, serviceFee }) {
   
   const { fee } = serviceFee[0];
 
@@ -40,6 +38,15 @@ function Modals({ exampleModal, setExampleModal, amount, serviceFee }) {
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <th scope="row">
+                    <span className="mb-0 text-sm">
+                    Transaction Id:
+                    </span>
+              </th>
+              <td> </td>
+              <td><h4>{transactionDetails?.trxID}</h4></td>
+            </tr>
             <tr>
               <th scope="row">
                     <span className="mb-0 text-sm">

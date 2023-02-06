@@ -398,7 +398,7 @@ function Tradesman() {
 
                 <hr className="my-2" />
             <div className="d-flex px-2 w-100 justify-content-between align-items-center">
-            <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {users.length} posts</h4>
+            <h4 className="text-muted">Showing {indexOfFastPost + 1} to {indexOfLastPost} from {users.length} posts</h4>
               <Pagination>
                 {
                   currentPage - 1 !== 0 && <>

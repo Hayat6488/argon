@@ -149,7 +149,7 @@ function Bookings() {
           <Loader></Loader>
           :
           <>
-          <SimpleHeader name="Job Posts" parentName="Job Posts" />
+          <SimpleHeader name="" parentName="Bookings" />
           <Container className="mt--6" fluid>
             <Card>
               <CardHeader className="border-0">
@@ -223,7 +223,7 @@ function Bookings() {
               </Table>
               <hr className="my-2" />
               <div className="d-flex px-2 w-100 justify-content-between align-items-center">
-              <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {bookings.length} bookings</h4>
+              <h4 className="text-muted">Showing {indexOfFastPost + 1} to {indexOfLastPost} from {bookings.length} bookings</h4>
                 <Pagination>
                   {
                     currentPage - 1 !== 0 && <>
@@ -347,7 +347,7 @@ else{
         <Loader></Loader>
         :
         <>
-        <SimpleHeader name="Job Posts" parentName="Job Posts" />
+        <SimpleHeader name="Bookings" parentName="" />
         <Container className="mt--6" fluid>
           <Card>
             <CardHeader className="border-0">
@@ -418,7 +418,7 @@ else{
             </Table>
             <hr className="my-2" />
             <div className="d-flex px-2 w-100 justify-content-between align-items-center">
-            <h4>Showing {indexOfFastPost + 1} to {indexOfLastPost} from {bookings.length} bookings</h4>
+            <h4 className="text-muted">Showing {indexOfFastPost + 1} to {indexOfLastPost} from {bookings.length} bookings</h4>
               <Pagination>
                 {
                   currentPage - 1 !== 0 && <>
