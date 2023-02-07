@@ -172,7 +172,7 @@ function Posts() {
                 </thead>
                 <tbody>
                   {currentPosts.map((post) => (
-                    <tr key={post.id}>
+                    <tr key={post?.id}>
                       <th scope="row">
                         <Media className="align-items-center">
                           <Media>

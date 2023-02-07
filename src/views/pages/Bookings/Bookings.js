@@ -194,7 +194,7 @@ function Bookings() {
               </thead>
               <tbody>
                 {
-                  currentBookings.map(booking => <tr key={booking.id}>
+                  currentBookings.map(booking => <tr key={booking?.id}>
                     <th scope="row">
                       <img className="avatar rounded-circle" alt="..." src={booking?.photURL} />
                       <span className="mb-0 ml-2 text-sm">

@@ -8,6 +8,7 @@ import React from 'react';
 import { Button, Card, CardBody, CardHeader, Col, Form, Input, ListGroup, ListGroupItem, Row } from 'reactstrap';
 import Loader from 'utility/Loader';
 import Modals from './Modal/Modals';
+import ReactBSAlert from "react-bootstrap-sweetalert";
 
 const Category = ({setLoading, loading}) => {
 
@@ -18,6 +19,7 @@ const Category = ({setLoading, loading}) => {
     const [services, setServices] = React.useState([]);
     const [serviceDetails, setServiceDetails] = React.useState(null);
     const [exampleModal, setExampleModal] = React.useState(false)
+    const [alert, setAlert] = React.useState(false);
     
     
     const openModal = (service) => {
@@ -68,16 +70,35 @@ const Category = ({setLoading, loading}) => {
     // Delete any service from db function **************
     
     const deleteService = (service) => {
-        const proceed = window.confirm(`Are you sure you want to delete service ${service?.title}?`);
-        if(proceed){
             try {
                 deleteDoc(doc(db, `serviceCategory/${service?.id}`));
                 Notify("danger", `Service ${service.title} deleted successfully.`, "Delete Service");
+                
+      setAlert(false)
             }
             catch (error) { 
             }
-        }
     };
+
+    const deleteCall = (service) => {
+        setAlert(
+          <ReactBSAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Warning"
+          onConfirm={() => deleteService(service)}
+          onCancel={() => setAlert(null)}
+          showCancel
+          confirmBtnBsStyle="danger"
+          confirmBtnText="Yes"
+          cancelBtnBsStyle="info"
+          cancelBtnText="Cancel"
+          btnSize=""
+          >
+            {`Sure you want to delete ${service?.title} as a admin?`}
+          </ReactBSAlert>
+        );
+      };
     
     // Delete any service from db functiom **************
 
@@ -108,6 +129,7 @@ const Category = ({setLoading, loading}) => {
                 loading ? <Loader></Loader>
                     :
                     <>
+                    {alert}
                         <div className='mx-6'>
                             <Card>
                                 <CardHeader>
@@ -181,7 +203,7 @@ const Category = ({setLoading, loading}) => {
                                                                 onClick={() => openModal(service)}>
                                                                     Edit
                                                                 </Button>
-                                                                <Button onClick={() => deleteService(service)} color="danger" type="button">
+                                                                <Button onClick={() => deleteCall(service)} color="danger" type="button">
                                                                     Delete
                                                                 </Button>
                                                             </div>

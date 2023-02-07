@@ -6,6 +6,7 @@ import React from 'react';
 import { Button, Card, CardBody, CardHeader, Col,  Form, FormGroup, Input, ListGroup, ListGroupItem, Row } from 'reactstrap';
 import Loader from 'utility/Loader';
 import Modals from './Modal/Modals';
+import ReactBSAlert from "react-bootstrap-sweetalert";
 
 const SubCategory = ({loading, setLoading}) => {
 
@@ -16,6 +17,7 @@ const SubCategory = ({loading, setLoading}) => {
     const [services, setServices] = React.useState([]);
     const [service, setService] = React.useState(null);
     const servicesRef = collection(db, "serviceCategory");
+    const [alert, setAlert] = React.useState(false);
 
     const [serviceDetails, setServiceDetails] = React.useState(null);
     const [exampleModal, setExampleModal] = React.useState(false)
@@ -95,16 +97,34 @@ const SubCategory = ({loading, setLoading}) => {
 
     const deleteService = (subService) => {
         const id = subService?.id;
-        const proceed = window.confirm(`Are you sure you want to delete service ${subService?.key}?`);
-        if(proceed){
             try {
                 deleteDoc(doc(db, `serviceCategory/${service}/sub/${id}`));
                 Notify("danger", `Service sub category ${subService?.key} deleted successfully.`, "Delete service sub category");
+                setAlert(false)
             }
             catch (error) {  
                 console.error(error);
             }
-        }
+      };
+
+      const deleteCall = (subService) => {
+        setAlert(
+          <ReactBSAlert
+          warning
+          style={{ display: "block", marginTop: "-100px" }}
+          title="Warning"
+          onConfirm={() => deleteService(subService)}
+          onCancel={() => setAlert(null)}
+          showCancel
+          confirmBtnBsStyle="danger"
+          confirmBtnText="Yes"
+          cancelBtnBsStyle="info"
+          cancelBtnText="Cancel"
+          btnSize=""
+          >
+            {`Sure you want to delete ${subService?.key} as a admin?`}
+          </ReactBSAlert>
+        );
       };
 
     return (
@@ -113,6 +133,7 @@ const SubCategory = ({loading, setLoading}) => {
                 loading ? <Loader></Loader>
                     :
                     <>
+                    {alert}
                         <div className='mx-6'>
                             <Card>
                                 <CardHeader>
@@ -202,7 +223,7 @@ const SubCategory = ({loading, setLoading}) => {
                                                                             onClick={() => openModal(service)}>
                                                                             Edit
                                                                         </Button>
-                                                                        <Button onClick={() => deleteService(service)} color="danger" type="button">
+                                                                        <Button onClick={() => deleteCall(service)} color="danger" type="button">
                                                                             Delete
                                                                         </Button>
                                                                     </div>

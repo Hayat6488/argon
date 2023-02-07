@@ -153,13 +153,15 @@ function Transactions() {
   }, [users, providers, serviceFee, rendered]);
 
   const time = (date) => {
-    const formatDate = new Date(
-      date.seconds * 1000 + date.nanoseconds / 1000000
-    );
-    return formatDate.toLocaleTimeString("en-us", {
-      day: "numeric",
-      month: "long",
-    });
+    if(date){
+      const formatDate = new Date(
+        date.seconds * 1000 + date.nanoseconds / 1000000
+      );
+      return formatDate.toLocaleTimeString("en-us", {
+        day: "numeric",
+        month: "long",
+      });
+    }
   };
 
   const handleSearch = (event, transactionsData) => {
@@ -173,8 +175,6 @@ function Transactions() {
     setTransactions(dataList);
     setLoading(false);
   };
-
-  console.log(transactions);
 
   return (
     <>
