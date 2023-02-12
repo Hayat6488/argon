@@ -75,7 +75,9 @@ const Admins = () => {
         "Delete admin"
       );
       setAlert(false)
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 

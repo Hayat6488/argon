@@ -4,7 +4,9 @@ import {
     Card,
     Row,
     Col,
-    CardBody
+    CardBody,
+    Container,
+    Button
 } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import Category from "./Category/Category";
@@ -19,34 +21,23 @@ const Services = () => {
     return (
         <>
             <SimpleHeader name="Services" />
-            {/* <Row className="mb-4 mt--6 mx-4">
-            <Col lg="6">
-                    <Card color="primary text-white" onClick={() => setToggle(true)} className="card-stats text-center">
-                                <h2 className="my-2">Categories</h2>
-                    </Card>
-                </Col>
-                <Col lg="6">
-                    <Card onClick={() => setToggle(false)} className="card-stats text-center">
-                                <h2 className="my-2">SubCategories</h2>
-                    </Card>
-                </Col>
-            </Row> */}
-            <Card className="mt-6">
+            <Container  className="mt--6" fluid>
+            <Card>
                 <CardBody className="py-2">
                 <Row className="mx-4">
             <Col lg="6">
-                    <Card color={toggle ? "info" : ""} onClick={() => setToggle(true)} className="card-stats text-center mb-0 my-1">
-                                <h2 className="my-1">Categories</h2>
-                    </Card>
+                    <Button color={toggle ? "primary" : ""} onClick={() => setToggle(true)} className="card-stats text-center mb-0 my-1 py-1 w-100">
+                                <h2 className={toggle ? "my-1 text-white" : "my-1"}>Categories</h2>
+                    </Button>
                 </Col>
                 <Col lg="6">
-                    <Card color={!toggle ? "info" : ""} onClick={() => setToggle(false)} className="card-stats text-center mb-0 my-1">
-                                <h2 className="my-1">SubCategories</h2>
-                    </Card>
+                    <Button color={!toggle ? "primary" : ""} onClick={() => setToggle(false)} className="card-stats text-center mb-0 my-1 py-1 w-100">
+                                <h2 className={!toggle ? "my-1 text-white" : "my-1"}>SubCategories</h2>
+                    </Button>
                 </Col>
             </Row>
-                </CardBody>
-            </Card>
+            <Row className="mt-4">
+            <Col lg="12">
             {
                 toggle && <Category loading={loading} setLoading={setLoading}></Category>
             }
@@ -54,6 +45,11 @@ const Services = () => {
             {
                 !toggle && <SubCategory setLoading={setLoading}></SubCategory>
             }
+            </Col>
+            </Row>
+                </CardBody>
+            </Card>
+            </Container>
         </>
     );
 }
