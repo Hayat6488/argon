@@ -55,11 +55,11 @@ function AddSubService({ addSubServiceModal, setAddSubServiceModal, service}) {
               <input className="w-100" style={{height: "43px"}}type="text" name="title" required id="" />
             </div>
             <div className="d-flex py-0 justify-content-end">
-            <Button className="" color="primary" type="submit">
+            <Button className="w-100" color="primary" type="submit">
               Add Service
             </Button>
             <Button
-            className="" outlined
+            className="w-100" outlined
             color="secondary"
             data-dismiss="modal"
             type="button"

@@ -103,8 +103,15 @@ const Accordion = ({ service }) => {
   return (
       <div className={`category-accordion ${accordion ? "active" : ""}`}>
       {alert}
-      <div className="mb-1 border rounded p-2 d-flex justify-content-between align-items-center accordion-header">
+      <div className="mb-1 border rounded px-3 py-2 d-flex justify-content-between align-items-center accordion-header">
+      <div className="d-flex align-items-center">
+      <img
+                            alt="..."
+                            className="avatar rounded-circle mr-3"
+                            src={service?.imageURL}
+                          />
         <h4 className="mb-0">{service?.title}</h4>
+      </div>
         <div>
           <Button
             color="primary"

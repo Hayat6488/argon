@@ -1,54 +1,97 @@
-.fixed-accordion{
-    overflow-y: hidden;
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
 }
-.responsive-accordion{
-    min-width: 600px;
-    overflow-y: hidden;
+.custom-file-input::before {
+    padding-left: 3rem !important;
+    display: flex !important;
+    align-items: center;
+  width: 100%;
+  height: 100%;
+  content: "Upload Image";
+  color: white !important;
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: #11cdef !important;
 }
-
-.accordion-body{
-    width: 100%;
+.custom-file-input:hover::before {
+  border-color: black;
 }
-
-.category-accordion .accordion-body{
-    max-height: 0px;
-    visibility: hidden;
-    opacity: 0;
-    transition: all 0.9s ease;
-    background-color: #f5f7ff;
-}
-.category-accordion.active .accordion-body{
-    max-height: 300px;
-    visibility: visible;
-    opacity: 1;
-    background-color: #f5f7ff;
-}
-
-.category-accordion .accordion-body div{
-   height: 100%;
-}
-
-.category-accordion.active .accordion-body div{
-   height: 100%;
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #11cdef, #11cdef);
 }
 
-.category-accordion .accordion-body::-webkit-scrollbar{
-    width: 5px;
+.fixed-accordion {
+  overflow-y: hidden;
 }
-.category-accordion .accordion-body::-webkit-scrollbar-thumb{
-    border-radius: 5px;
-    background-color: #11cdef;
-}
-.category-accordion .accordion-body::-webkit-scrollbar-track{
-    border-radius: 5px;
-    box-shadow: inset 0 0 5px #11cdef;
+.responsive-accordion {
+  min-width: 600px;
+  overflow-y: hidden;
 }
 
-.category-accordion .accordion-header .arrow-icon{
-    transform: rotate(0deg);
-    transition: all 0.4s ease;
+.input-div{
+    position: relative;
+}
+.input-icon{
+    position: absolute;
+    top: 14px;
+    left: 10px;
+    color: white;
+    z-index: 4;
 }
 
-.category-accordion.active .accordion-header .arrow-icon{
-    transform: rotate(90deg);
+.accordion-body {
+  width: 100%;
+}
+
+.category-accordion .accordion-body {
+  max-height: 0px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.9s ease;
+  background-color: #f5f7ff;
+}
+.category-accordion.active .accordion-body {
+  max-height: 300px;
+  visibility: visible;
+  opacity: 1;
+  background-color: #f5f7ff;
+}
+
+.category-accordion .accordion-body div {
+  height: 100%;
+}
+
+.category-accordion.active .accordion-body div {
+  height: 100%;
+}
+
+.category-accordion .accordion-body::-webkit-scrollbar {
+  width: 5px;
+}
+.category-accordion .accordion-body::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #11cdef;
+}
+.category-accordion .accordion-body::-webkit-scrollbar-track {
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px #11cdef;
+}
+
+.category-accordion .accordion-header .arrow-icon {
+  transform: rotate(0deg);
+  transition: all 0.4s ease;
+}
+
+.category-accordion.active .accordion-header .arrow-icon {
+  transform: rotate(90deg);
 }
