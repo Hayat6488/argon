@@ -22,6 +22,7 @@ import AdminLayout from "layouts/Admin.js";
 import RTLLayout from "layouts/RTL.js";
 import AuthLayout from "layouts/Auth.js";
 import { NotifyProvider } from "./context/NotifyContext";
+import './index.css';
 
 ReactDOM.render(
   // <Provider store={store}>

@@ -1,181 +1,310 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import NotifyContext from 'context/NotifyContext';
-import { db } from 'Firebase/firebase.config';
-import { storage } from 'Firebase/firebase.config';
-import { addDoc, collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import React from 'react';
-import { Button, Card, CardBody, CardHeader, Col, Form, Input, ListGroup, ListGroupItem, Row } from 'reactstrap';
-import Loader from 'utility/Loader';
-import Modals from './Modal/Modals';
+import NotifyContext from "context/NotifyContext";
+import { db } from "Firebase/firebase.config";
+import { storage } from "Firebase/firebase.config";
+import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import React from "react";
+import { Button, Card, CardBody, CardHeader, ListGroupItem } from "reactstrap";
+import Loader from "utility/Loader";
 import ReactBSAlert from "react-bootstrap-sweetalert";
+import "./Accordion.css";
+import EditSubServiceModals from "../Category/Modal/EditSubServiceModals";
+import AddService from "../Category/Modal/AddService";
+import AddSubService from "../Category/Modal/AddSubService";
+import EditServiceModal from "./Modal/EditServiceModal";
 
-const Category = ({setLoading, loading}) => {
+const Accordion = ({ service }) => {
+  const [accordion, setAccordion] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [subServices, setSubServices] = React.useState([]);
+  const [serviceName, setServiceName] = React.useState(null);
+  const [alert, setAlert] = React.useState(false);
 
-    // All states *******************
-    
-    const { Notify } = React.useContext(NotifyContext);
-    const servicesRef = collection(db, "serviceCategory");
-    const [services, setServices] = React.useState([]);
-    const [serviceDetails, setServiceDetails] = React.useState(null);
-    const [exampleModal, setExampleModal] = React.useState(false)
-    const [alert, setAlert] = React.useState(false);
-    
-    
-    const openModal = (service) => {
-        setExampleModal(!exampleModal);
-        setServiceDetails(service);
-    }
-    
-    // All states *******************
+  const { Notify } = React.useContext(NotifyContext);
 
+  const [subService, setSubService] = React.useState(null);
+  const [editSubServiceModal, setEditSubServiceModal] = React.useState(false);
 
-    // Adding service to db function ***************
-    
-    const addDataToFireStore = async (service, url) => {
-        const data = {
-            title: service,
-            imageURL: url
-        }
-        try {
-            const serviceRef = collection(db, "serviceCategory");
-            await addDoc(serviceRef, data);
-            Notify("success", `Service added successfully.`, "Add Service");
-            
-        } catch (error) {
-            console.error(error);
-        }
-    }
+  const openEditSubServiceModal = (subService) => {
+    setEditSubServiceModal(!editSubServiceModal);
+    setSubService(subService);
+  };
 
-    const AddService = async (event) => {
-        event.preventDefault();
-        const service = event.target.service.value;
-        const image = event.target.image.files[0];
-        try {
-            const imageRef = ref(storage, `services/${image.name}`);
-            uploadBytes(imageRef, image).then((snapshot) => {
-                getDownloadURL(snapshot.ref).then((url) => {
-                    addDataToFireStore(service, url);
-                });
-            });
-            event.target.reset()
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-    
-    // Adding service to db function ***************
+  const [addSubServiceModal, setAddSubServiceModal] = React.useState(false);
 
-    // Delete any service from db function **************
-    
-    const deleteService = (service) => {
-            try {
-                deleteDoc(doc(db, `serviceCategory/${service?.id}`));
-                Notify("danger", `Service ${service.title} deleted successfully.`, "Delete Service");
-                
-      setAlert(false)
-            }
-            catch (error) { 
-            }
+  const openAddSubServiceModal = () => {
+    setAddSubServiceModal(!addSubServiceModal);
+  };
+
+  const [serviceDetails, setServiceDetails] = React.useState(null);
+  const [editServiceModal, setEditServiceModal] = React.useState(false);
+
+  const openEditServiceModal = (service) => {
+    setEditServiceModal(!editServiceModal)
+    setServiceDetails(service)
+  }
+
+  React.useLayoutEffect(() => {
+    const servicesRef = collection(db, `serviceCategory/${service?.id}/sub`);
+    const unSub = onSnapshot(servicesRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+        items.push({ id: doc.id, ...doc.data() });
+      });
+      setSubServices(items);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
     };
+  }, [serviceName]);
 
-    const deleteCall = (service) => {
-        setAlert(
-          <ReactBSAlert
-          warning
-          style={{ display: "block", marginTop: "-100px" }}
-          title="Warning"
-          onConfirm={() => deleteService(service)}
-          onCancel={() => setAlert(null)}
-          showCancel
-          confirmBtnBsStyle="danger"
-          confirmBtnText="Yes"
-          cancelBtnBsStyle="info"
-          cancelBtnText="Cancel"
-          btnSize=""
+  const showSubServices = (service) => {
+    setAccordion(!accordion);
+    setServiceName(service);
+  };
+
+  const deleteService = (service) => {
+    const id = service?.id;
+    try {
+      deleteDoc(doc(db, `serviceCategory/${id}`));
+      Notify(
+        "danger",
+        `Service sub category ${service?.title} deleted successfully.`,
+        "Delete service sub category"
+      );
+      setAlert(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteCall = (service) => {
+    setAlert(
+      <ReactBSAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Warning"
+        onConfirm={() => deleteService(service)}
+        onCancel={() => setAlert(null)}
+        showCancel
+        confirmBtnBsStyle="danger"
+        confirmBtnText="Yes"
+        cancelBtnBsStyle="info"
+        cancelBtnText="Cancel"
+        btnSize=""
+      >
+        {`Sure you want to delete ${service?.title}?`}
+      </ReactBSAlert>
+    );
+  };
+
+  return (
+    <div className={`category-accordion ${accordion ? "active" : ""}`}>
+      {alert}
+      <div className="mb-1 border rounded p-2 d-flex justify-content-between align-items-center accordion-header">
+        <h4 className="mb-0">{service?.title}</h4>
+        <div>
+          <Button
+            color="primary"
+            type="button"
+            onClick={() => openEditServiceModal(service)}
           >
-            {`Sure you want to delete ${service?.title} as a admin?`}
-          </ReactBSAlert>
-        );
-      };
-    
-    // Delete any service from db functiom **************
+            Edit
+          </Button>
+          <Button
+            onClick={() => deleteCall(service)}
+            color="danger"
+            type="button"
+          >
+            Delete
+          </Button>
+          <Button
+            onClick={() => showSubServices(service)}
+            color="secondary"
+            type="button"
+            className="py-1 px-2"
+          >
+            <i className="ni ni-bold-right arrow-icon" />
+          </Button>
+        </div>
+      </div>
+      <div className="accordion-body rounded-lg">
+        {loading ? (
+          <Loader></Loader>
+        ) : (
+          <div className="p-4">
+            <Button
+              color="info"
+              onClick={() => openAddSubServiceModal()}
+              type="button"
+              className="mb-4"
+            >
+              Add Sub Service
+            </Button>
+            {subServices?.length === 0 ? (
+              <div className="d-flex justify-content-center">
+                <h3>No Data To Show</h3>
+              </div>
+            ) : (
+              subServices.map((subService) => (
+                <ListGroupItem
+                  key={subService?.id}
+                  className="list-group-item-action p-2 mb-3"
+                  href="#pablo"
+                  onClick={(e) => e.preventDefault()}
+                  tag="a"
+                >
+                  <div className="align-items-center">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div className="d-flex align-items-center">
+                        <div className="col ml-2">
+                          <h4 className="mb-0 text-sm">{subService?.key}</h4>
+                        </div>
+                      </div>
+                      <div>
+                        <Button
+                          color="primary"
+                          type="button"
+                          onClick={() => openEditSubServiceModal(subService)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          onClick={() => deleteCall(subService)}
+                          color="danger"
+                          type="button"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </ListGroupItem>
+              ))
+            )}
+            <div className="mt-1 d-flex justify-content-center"></div>
+          </div>
+        )}
+      </div>
+      {editSubServiceModal && (
+        <EditSubServiceModals
+          subService={subService}
+          setEditSubServiceModal={setEditSubServiceModal}
+          editSubServiceModal={editSubServiceModal}
+          serviceName={serviceName}
+        ></EditSubServiceModals>
+      )}
+      {addSubServiceModal && (
+        <AddSubService
+          addSubServiceModal={addSubServiceModal}
+          setAddSubServiceModal={setAddSubServiceModal}
+          service={service}
+        ></AddSubService>
+      )}
+      {
+        editServiceModal && <EditServiceModal editServiceModal={editServiceModal} serviceDetails={serviceDetails} setEditServiceModal={setEditServiceModal}></EditServiceModal>
+      }
+    </div>
+  );
+};
 
-    // Fetch services data from db *************
-    
-    React.useLayoutEffect(() => {
-        const unSub = onSnapshot(servicesRef, (QuerySnapshot) => {
-            const items = [];
-            QuerySnapshot.forEach((doc) => {
+const Category = ({ setLoading, loading }) => {
+  // All states *******************
 
-                items.push({ id: doc.id, ...doc.data() });
-            });
-            setServices(items);
-            setLoading(false);
-        });
-        
-        return () => {
-            unSub();
-        };
-    }, [])
+  const { Notify } = React.useContext(NotifyContext);
+  const servicesRef = collection(db, "serviceCategory");
+  const [services, setServices] = React.useState([]);
+  const [alert, setAlert] = React.useState(false);
+  const [addService, setAddService] = React.useState(false);
 
-    
-    // Fetch services data from db *************
-    
-    return (
+  const openAddServiceModal = () => {
+    setAddService(!addService);
+  };
+
+  // All states *******************
+
+  // Delete any service from db function **************
+
+  const deleteService = (service) => {
+    try {
+      deleteDoc(doc(db, `serviceCategory/${service?.id}`));
+      Notify(
+        "danger",
+        `Service ${service.title} deleted successfully.`,
+        "Delete Service"
+      );
+
+      setAlert(false);
+    } catch (error) {}
+  };
+
+  const deleteCall = (service) => {
+    setAlert(
+      <ReactBSAlert
+        warning
+        style={{ display: "block", marginTop: "-100px" }}
+        title="Warning"
+        onConfirm={() => deleteService(service)}
+        onCancel={() => setAlert(null)}
+        showCancel
+        confirmBtnBsStyle="danger"
+        confirmBtnText="Yes"
+        cancelBtnBsStyle="info"
+        cancelBtnText="Cancel"
+        btnSize=""
+      >
+        {`Sure you want to delete ${service?.title} as a admin?`}
+      </ReactBSAlert>
+    );
+  };
+
+  // Delete any service from db functiom **************
+
+  // Fetch services data from db *************
+
+  React.useLayoutEffect(() => {
+    const unSub = onSnapshot(servicesRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+        items.push({ id: doc.id, ...doc.data() });
+      });
+      setServices(items);
+      setLoading(false);
+    });
+
+    return () => {
+      unSub();
+    };
+  }, []);
+
+  // Fetch services data from db *************
+
+  return (
+    <>
+      {loading ? (
+        <Loader></Loader>
+      ) : (
         <>
-            {
-                loading ? <Loader></Loader>
-                    :
-                    <>
-                    {alert}
-                        <div className='mx-6'>
-                            <Card>
-                                <CardHeader>
-                                    <h3 className="mb-0">ADD CATEGORY</h3>
-                                </CardHeader>
-                                <CardBody>
-                                    <Form onSubmit={(event) => AddService(event)}>
-                                        <Row className="custom-file d-flex align-items-center">
-                                            <Col lg="6">
-                                                <Input className="w-75 py-3 mb-2" placeholder="Name of Category" type="text" name="service" bsSize="sm" id="" required />
-                                            </Col>
-                                            <Col lg="6">
-
-                                                <div>
-                                                    <label
-                                                        className="custom-file-label"
-                                                        htmlFor="customFileLang"
-                                                    >
-
-                                                    </label>
-                                                    <input
-                                                        className="custom-file-input"
-                                                        id="customFileLang"
-                                                        name='image'
-                                                        lang="en"
-                                                        type="file"
-                                                        required
-                                                    />
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                        <div className='d-flex justify-content-end mt-2 mr-3'>
-                                            <Button color="info" type="submit">
-                                                ADD
-                                            </Button>
-                                        </div>
-                                    </Form>
-                                </CardBody>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    SERVICES CATEGORY
-                                </CardHeader>
-                                <CardBody>
-                                    <ListGroup flush>
+          {alert}
+          <div className="">
+            <Card>
+              <CardHeader className="d-flex justify-content-between align-items-center">
+                <h3 className="mb-0">SERVICES CATEGORY</h3>
+                <Button
+                  onClick={() => openAddServiceModal()}
+                  color="secondary"
+                  type="button"
+                >
+                  Add Services
+                </Button>
+              </CardHeader>
+              <CardBody>
+                {services.map((service, i) => (
+                  <Accordion key={i} service={service} />
+                ))}
+                {/* <ListGroup flush>
                                         {
                                             services.map(service =>
                                                 <ListGroupItem key={service.id}
@@ -212,17 +341,21 @@ const Category = ({setLoading, loading}) => {
                                                 </ListGroupItem>
                                             )
                                         }
-                                    </ListGroup>
-                                </CardBody>
-                            </Card>
-                        </div>
-                    </>
-            }
-            {
-                exampleModal && <Modals serviceDetails={serviceDetails} setExampleModal={setExampleModal} exampleModal={exampleModal}></Modals>
-            }
+                                    </ListGroup> */}
+              </CardBody>
+            </Card>
+          </div>
         </>
-    );
+      )}
+      {addService && (
+        <AddService
+          addService={addService}
+          setAddService={setAddService}
+        ></AddService>
+      )}
+      {}
+    </>
+  );
 };
 
 export default Category;
