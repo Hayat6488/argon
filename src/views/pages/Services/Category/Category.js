@@ -101,7 +101,7 @@ const Accordion = ({ service }) => {
   };
 
   return (
-    <div className={`category-accordion ${accordion ? "active" : ""}`}>
+      <div className={`category-accordion ${accordion ? "active" : ""}`}>
       {alert}
       <div className="mb-1 border rounded p-2 d-flex justify-content-between align-items-center accordion-header">
         <h4 className="mb-0">{service?.title}</h4>
@@ -301,9 +301,13 @@ const Category = ({ setLoading, loading }) => {
                 </Button>
               </CardHeader>
               <CardBody>
+                <div className="fixed-accordion">
+                <div className="responsive-accordion">
                 {services.map((service, i) => (
                   <Accordion key={i} service={service} />
                 ))}
+                </div>
+                </div>
                 {/* <ListGroup flush>
                                         {
                                             services.map(service =>
