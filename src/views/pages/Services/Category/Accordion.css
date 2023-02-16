@@ -92,6 +92,14 @@
   transition: all 0.4s ease;
 }
 
+.arrow-icon{
+  font-size: 24px;
+}
+
+.icon{
+  font-size: 16px;
+}
+
 .category-accordion.active .accordion-header .arrow-icon {
-  transform: rotate(90deg);
+  transform: rotate(45deg);
 }

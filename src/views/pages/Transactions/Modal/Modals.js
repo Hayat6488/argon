@@ -45,7 +45,7 @@ function Modals({ exampleModal, transactionDetails, setExampleModal, amount, ser
                     </span>
               </th>
               <td> </td>
-              <td><h4>{transactionDetails?.trxID}</h4></td>
+              <td className="text-wrap">{transactionDetails?.trxID}</td>
             </tr>
             <tr>
               <th scope="row">

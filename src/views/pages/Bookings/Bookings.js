@@ -296,7 +296,7 @@ function Bookings() {
               </Pagination>
               <div className="d-flex align-items-center justify-content-between">
               <div className="d-flex align-items-center">
-                  <h4 className="mb-0 mr-1">Go to page: </h4>
+                  <h4 className="mb-0 mr-1 text-muted">Go to page: </h4>
                   <form  onSubmit={(event) => {
                     event.preventDefault();
                     setCurrentPage(parseInt(event.target.page.value));
@@ -308,7 +308,7 @@ function Bookings() {
                   </form>
                 </div>
                 <div className="d-flex align-items-center">
-                  <h4>Posts per page</h4>
+                  <h4 className="text-muted">Posts per page</h4>
                   <UncontrolledDropdown className="py-2" size="sm" group>
                     <DropdownToggle caret color="secondary">
                       {postsPerPage}

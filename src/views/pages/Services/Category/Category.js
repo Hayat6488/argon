@@ -107,7 +107,7 @@ const Accordion = ({ service }) => {
       <div className="d-flex align-items-center">
       <img
                             alt="..."
-                            className="avatar rounded-circle mr-3"
+                            className="avatar mr-3"
                             src={service?.imageURL}
                           />
         <h4 className="mb-0">{service?.title}</h4>
@@ -118,6 +118,7 @@ const Accordion = ({ service }) => {
             type="button"
             onClick={() => openEditServiceModal(service)}
           >
+            <i className="ni ni-ruler-pencil mr-2" />
             Edit
           </Button>
           <Button
@@ -125,6 +126,7 @@ const Accordion = ({ service }) => {
             color="danger"
             type="button"
           >
+            <i className="ni ni-basket mr-2" />
             Delete
           </Button>
           <Button
@@ -133,7 +135,7 @@ const Accordion = ({ service }) => {
             type="button"
             className="py-1 px-2"
           >
-            <i className="ni ni-bold-right arrow-icon" />
+            <i className="ni ni-fat-add arrow-icon" />
           </Button>
         </div>
       </div>
@@ -142,6 +144,7 @@ const Accordion = ({ service }) => {
           <Loader></Loader>
         ) : (
           <div className="p-4">
+            <div className="d-flex justify-content-end">
             <Button
               color="info"
               onClick={() => openAddSubServiceModal()}
@@ -150,6 +153,7 @@ const Accordion = ({ service }) => {
             >
               Add Sub Service
             </Button>
+            </div>
             {subServices?.length === 0 ? (
               <div className="d-flex justify-content-center">
                 <h3>No Data To Show</h3>

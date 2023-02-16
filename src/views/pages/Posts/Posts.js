@@ -166,7 +166,7 @@ function Posts() {
                     <th scope="col">POSTED BY</th>
                     <th scope="col">address</th>
                     <th scope="col">Category</th>
-                    <th scope="col">DESCRIPTION</th>
+                    {/* <th scope="col">DESCRIPTION</th> */}
                     <th scope="col" />
                   </tr>
                 </thead>
@@ -186,11 +186,10 @@ function Posts() {
                         {post?.address?.city}
                       </td>
                       <td>{post?.category}</td>
-                      <td>
-                        <div className="d-flex align-items-center">
+                      {/* <td>
                           <span className="mr-2">{post?.description}</span>
-                        </div>
-                      </td>
+                        
+                      </td> */}
                       <td className="table-actions">
                         <button
                           aria-label="Close"
@@ -283,7 +282,7 @@ function Posts() {
                 </Pagination>
                 <div className="d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center">
-                    <h4 className="mr-1 mb-0">Go to page: </h4>
+                    <h4 className="mr-1 mb-0 text-muted">Go to page: </h4>
                     <form
                       onSubmit={(event) => {
                         event.preventDefault();
@@ -307,7 +306,7 @@ function Posts() {
                     </form>
                   </div>
                   <div className="d-flex align-items-center">
-                    <h4>Posts per page</h4>
+                    <h4 className="text-muted">Posts per page</h4>
                     <UncontrolledDropdown className="py-2" size="sm" group>
                       <DropdownToggle caret color="secondary">
                         {postsPerPage}

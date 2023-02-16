@@ -73,7 +73,7 @@ function Modals({ exampleModal, setExampleModal, postDetails }) {
                     Description: 
                     </span>
               </th>
-              <td>{postDetails?.description}</td>
+              <td className="text-wrap">{postDetails?.description}</td>
             </tr>
             <tr>
               <th scope="row">

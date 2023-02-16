@@ -10,6 +10,7 @@ import {
   Form,
   Input,
   Table,
+  Container,
 } from "reactstrap";
 import SimpleHeader from "components/Headers/SimpleHeader";
 import {
@@ -106,9 +107,11 @@ const Admins = () => {
     <>
     {alert}
       <SimpleHeader name="Admins List" />
-      <div className="mb-4 mt-4 mx-4">
+      <Container className="mt--6" fluid>
+      <Card>
+      <div className="mb-4 mt-4">
         <>
-          <div className="mx-6">
+          <div className="mx-4">
             <Card>
               <CardHeader>
                 <h3 className="mb-0">ADD ADMIN</h3>
@@ -185,6 +188,8 @@ const Admins = () => {
           </div>
         </>
       </div>
+      </Card>
+      </Container>
     </>
   );
 };

@@ -21,6 +21,7 @@ import {
 } from "reactstrap";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
+import {deleteUser} from 'firebase/auth';
 
 import {
   onSnapshot,
@@ -39,6 +40,7 @@ import NotifyContext from "context/NotifyContext";
 import sendPushNotification from "utility/notification";
 import Loader from "utility/Loader";
 import ReactBSAlert from "react-bootstrap-sweetalert";
+import { auth } from "Firebase/firebase.config";
 
 function Tradesman() {
   // States for Modals **********
@@ -56,6 +58,7 @@ function Tradesman() {
   const [rendered, setRenderer] = React.useState(1);
   const [deleteBtn, setDeleteBtn] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
+  const [statusName, setStatusName] = React.useState(null);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFastPost = indexOfLastPost - postsPerPage;
@@ -97,7 +100,6 @@ function Tradesman() {
       });
       setUsers(items);
       setLoading(false);
-      setRenderer(1);
       setShowAll2(false);
       setDeleteBtn(false);
     });
@@ -133,6 +135,7 @@ function Tradesman() {
   };
 
   const filterData = (status) => {
+    setStatusName(status);
     setShowAll2(true);
     if (status === "Disapproved") {
       setDeleteBtn(true);
@@ -143,11 +146,15 @@ function Tradesman() {
     setUsers(filteredData);
   };
 
-  const deleteUser = (event, user) => {
+  // const deleteUserFromFirebase = async(uid) => {
+  //   await deleteUser(auth, uid);
+  // }
+
+  const deleteUserFromDb = (user) => {
         try {
             deleteDoc(doc(db, `/usersList/provider/children/${user?.id}`));
-            Notify("danger", `Service ${user?.name} deleted successfully.`, "Delete Service");
             setAlert(false)
+            // deleteUserFromFirebase(user?.uid)
         }
         catch (error) { 
         }
@@ -173,13 +180,13 @@ function Tradesman() {
     }
   }, []);
 
-  const deleteDisapproved = (event, user) => {
+  const deleteDisapproved = (user) => {
     setAlert(
       <ReactBSAlert
       warning
       style={{ display: "block", marginTop: "-100px" }}
       title="Warning"
-      onConfirm={() => deleteUser(user)}
+      onConfirm={() => deleteUserFromDb(user)}
       onCancel={() => setAlert(null)}
       showCancel
       confirmBtnBsStyle="danger"
@@ -188,7 +195,7 @@ function Tradesman() {
       cancelBtnText="Cancel"
       btnSize=""
       >
-        {`Sure you want to delete ${user?.name} as a admin?`}
+        {`Sure you want to delete ${user?.name}?`}
       </ReactBSAlert>
     );
   };
@@ -293,7 +300,7 @@ function Tradesman() {
                           group
                         >
                           <DropdownToggle caret color="primary">
-                            Status
+                          {statusName ? statusName : "Status"}
                           </DropdownToggle>
                           <DropdownMenu className="py-1">
                             <DropdownItem
@@ -485,7 +492,7 @@ function Tradesman() {
                               </DropdownMenu>
                             </UncontrolledDropdown>
                           </a>
-                        </td> : <td><Button onClick={(event) => deleteDisapproved(event, user)} color="warning" type="button">
+                        </td> : <td><Button onClick={() => deleteDisapproved(user)} color="warning" type="button">
                           DELETE
                         </Button></td>
                         }
@@ -583,7 +590,7 @@ function Tradesman() {
                   </Pagination>
                   <div className="d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center">
-                      <h4 className="mr-1 mb-0">Go to page: </h4>
+                      <h4 className="mr-1 mb-0 text-muted">Go to page: </h4>
                       <form
                         onSubmit={(event) => {
                           event.preventDefault();
@@ -607,7 +614,7 @@ function Tradesman() {
                       </form>
                     </div>
                     <div className="d-flex align-items-center">
-                      <h4>Posts per page</h4>
+                      <h4 className="text-muted">Posts per page</h4>
                       <UncontrolledDropdown className="py-2" size="sm" group>
                         <DropdownToggle caret color="secondary">
                           {postsPerPage}

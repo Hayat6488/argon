@@ -44,32 +44,17 @@ const routes = [
       }
     ],
   },
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   icon: "ni ni-archive-2 text-green",
-  //   component: Login,
-  //   layout: "/auth",
-  //   invisible: true
-  // },
-  // {
-  //   path: "/register",
-  //   name: "Register",
-  //   icon: "ni ni-archive-2 text-green",
-  //   component: Register,
-  //   layout: "/auth",
-  // },
   {
     path: "/dashboard",
     name: "Home",
-    icon: "ni ni-shop text-primary",
+    icon: "ni ni-shop text-info",
     component: Dashboard,
     layout: "/admin",
   },
   {
     collapse: true,
     name: "Users",
-    icon: "ni ni-circle-08 text-default",
+    icon: "ni ni-circle-08 text-info",
     state: "tablesCollapse",
     views: [
       {
