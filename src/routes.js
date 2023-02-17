@@ -103,18 +103,26 @@ const routes = [
     layout: "/admin",
   },
   {
-    path: "/services",
-    name: "Services",
+    collapse: true,
+    name: "Utility",
     icon: "ni ni-settings text-info",
-    component: Services,
-    layout: "/admin",
-  },
-  {
-    path: "/servicefee",
-    name: "Service Fee",
-    icon: "ni ni-money-coins text-info",
-    component: ServiceFee,
-    layout: "/admin",
+    state: "tablesCollapse",
+    views: [
+      {
+        path: "/utility/services",
+        name: "Add Services",
+        miniName: "S",
+        component: Services,
+        layout: "/admin",
+      },
+      {
+        path: "/utility/servicefee",
+        name: "Service Fee",
+        miniName: "F",
+        component: ServiceFee,
+        layout: "/admin",
+      }
+    ],
   },
   {
     path: "/admins",
