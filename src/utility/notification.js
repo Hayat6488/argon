@@ -1,4 +1,5 @@
 export default async function sendPushNotification(token, status) {
+  console.log(token);
   try {
     let message = "";
     if (status === "Approved") {
@@ -15,6 +16,8 @@ export default async function sendPushNotification(token, status) {
     };
 
     // https://tradesmanbackend.onrender.com/api/sendNotification
+
+    // http://tradesmanserver-env-1.eba-hzwqbpu9.ap-northeast-1.elasticbeanstalk.com/api/sendNotification
 
     fetch(
       "http://tradesmanserver-env-1.eba-hzwqbpu9.ap-northeast-1.elasticbeanstalk.com/api/sendNotification",
