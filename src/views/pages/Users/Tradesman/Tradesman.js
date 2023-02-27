@@ -21,7 +21,6 @@ import {
 } from "reactstrap";
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader.js";
-import {deleteUser} from 'firebase/auth';
 
 import {
   onSnapshot,

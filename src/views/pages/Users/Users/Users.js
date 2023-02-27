@@ -20,11 +20,12 @@ import {
 // core components
 import SimpleHeader from "components/Headers/SimpleHeader";
 
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, onSnapshot, query, where } from "firebase/firestore";
 
 import Modals from "./Modal/Modals";
 import { db } from "Firebase/firebase.config";
 import Loader from "utility/Loader";
+import ReactBSAlert from "react-bootstrap-sweetalert";
 
 function Users() {
 
@@ -37,6 +38,8 @@ function Users() {
   const [loading, setLoading] = React.useState(true);
   const [showAll, setShowAll] = React.useState(false);
   const [rendered, setRenderer] = React.useState(1);
+  
+  const [alert, setAlert] = React.useState(false);
   
   // All States for   **********
   
@@ -59,23 +62,25 @@ function Users() {
     setUserDetails(user);
   }
 
-  // Database call to read Data ***************
+  const collectionRef = collection(db, "/usersList/user/children");
 
   React.useLayoutEffect(() => {
-    const getData = async () => {
-      const ref = collection(db, "usersList/user/children");
-
-      const querySnapshot = await getDocs(ref);
-      let data = [];
-
-      querySnapshot.forEach((doc) => {
-        data.push({ id: doc.id, ...doc.data() });
+    const unSub = onSnapshot(collectionRef, (QuerySnapshot) => {
+      const items = [];
+      QuerySnapshot.forEach((doc) => {
+        items.push({ id: doc.id, ...doc.data() });
       });
-      setUsers(data);
+      setUsers(items);
       setLoading(false);
+    });
+
+    return () => {
+      unSub();
     };
-    getData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rendered]);
+
+  console.log(users);
 
   const handleSearch = React.useCallback(async (event) => {
     setShowAll(true);
@@ -98,8 +103,38 @@ function Users() {
 
   }, []);
 
+  const deleteUserFromDb = (user) => {
+    try {
+        deleteDoc(doc(db, `/usersList/user/children/${user?.id}`));
+        setAlert(false)
+    }
+    catch (error) { 
+    }
+}
+
+  const deleteUser = (user) => {
+    setAlert(
+      <ReactBSAlert
+      warning
+      style={{ display: "block", marginTop: "-100px" }}
+      title="Warning"
+      onConfirm={() => deleteUserFromDb(user)}
+      onCancel={() => setAlert(null)}
+      showCancel
+      confirmBtnBsStyle="danger"
+      confirmBtnText="Yes"
+      cancelBtnBsStyle="info"
+      cancelBtnText="Cancel"
+      btnSize=""
+      >
+        {`Sure you want to delete ${user?.name}?`}
+      </ReactBSAlert>
+    );
+  };
+
     return (
       <>
+      {alert}
         {loading ?
           <Loader></Loader> :
           <>
@@ -143,6 +178,7 @@ function Users() {
                       <th>Email</th>
                       <th>Location</th>
                       <th />
+                      <th />
                     </tr>
                   </thead>
                   <tbody>
@@ -162,6 +198,11 @@ function Users() {
                         <td>
                           <span>{user?.location?.houseNumber}, {user?.location?.street}, {user?.location?.city}</span>
                         </td>
+                        <td><Button
+                         onClick={() => deleteUser(user)}
+                         color="warning" type="button">
+                          DELETE
+                        </Button></td>
                         <td className="table-actions">
                           <button
                             aria-label="Close"

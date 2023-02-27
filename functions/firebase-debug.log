@@ -1,0 +1,68 @@
+[debug] [2023-02-18T17:38:59.885Z] ----------------------------------------------------------------------
+[debug] [2023-02-18T17:38:59.887Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ASUS\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init functions
+[debug] [2023-02-18T17:38:59.887Z] CLI Version:   11.14.4
+[debug] [2023-02-18T17:38:59.888Z] Platform:      win32
+[debug] [2023-02-18T17:38:59.888Z] Node Version:  v16.13.1
+[debug] [2023-02-18T17:38:59.888Z] Time:          Sat Feb 18 2023 23:38:59 GMT+0600 (Bangladesh Standard Time)
+[debug] [2023-02-18T17:38:59.889Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-02-18T17:38:59.956Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-02-18T17:38:59.956Z] > authorizing via signed-in user (abulhayat619@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Shahed Vai\react-dashboard-main\react-dashboard-main
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2023-02-18T17:39:05.722Z] Using project from CLI flag: locality-tradesmen
+[debug] [2023-02-18T17:39:05.725Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/locality-tradesmen [none]
+[debug] [2023-02-18T17:39:06.212Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/locality-tradesmen 200
+[debug] [2023-02-18T17:39:06.212Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/locality-tradesmen {"projectId":"locality-tradesmen","projectNumber":"843068978464","displayName":"Locality-Tradesmen","name":"projects/locality-tradesmen","resources":{"hostingSite":"locality-tradesmen","realtimeDatabaseInstance":"locality-tradesmen-default-rtdb","storageBucket":"locality-tradesmen.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_b15bdfb8-8d7a-4f4f-adde-ddba813cf2b2"}
+[info] i  Using project locality-tradesmen (Locality-Tradesmen) 
+[info] 
+=== Functions Setup
+[debug] [2023-02-18T17:39:06.217Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-02-18T17:39:06.217Z] > authorizing via signed-in user (abulhayat619@gmail.com)
+[debug] [2023-02-18T17:39:06.217Z] [iam] checking project locality-tradesmen for permissions ["firebase.projects.get"]
+[debug] [2023-02-18T17:39:06.218Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/locality-tradesmen:testIamPermissions [none]
+[debug] [2023-02-18T17:39:06.218Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/locality-tradesmen:testIamPermissions x-goog-quota-user=projects/locality-tradesmen
+[debug] [2023-02-18T17:39:06.218Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/locality-tradesmen:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-18T17:39:07.377Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/locality-tradesmen:testIamPermissions 200
+[debug] [2023-02-18T17:39:07.378Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/locality-tradesmen:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-18T17:39:07.378Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/locality-tradesmen/services/cloudfunctions.googleapis.com [none]
+[debug] [2023-02-18T17:39:07.378Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/locality-tradesmen/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/locality-tradesmen
+[debug] [2023-02-18T17:39:07.379Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/locality-tradesmen/services/runtimeconfig.googleapis.com [none]
+[debug] [2023-02-18T17:39:07.380Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/locality-tradesmen/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/locality-tradesmen
+[debug] [2023-02-18T17:39:08.982Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/locality-tradesmen/services/runtimeconfig.googleapis.com 200
+[debug] [2023-02-18T17:39:08.984Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/locality-tradesmen/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2023-02-18T17:39:09.060Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/locality-tradesmen/services/cloudfunctions.googleapis.com 200
+[debug] [2023-02-18T17:39:09.061Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/locality-tradesmen/services/cloudfunctions.googleapis.com [omitted]
+[info] 
+Detected existing codebase(s): default
+
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
