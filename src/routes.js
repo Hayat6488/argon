@@ -106,7 +106,7 @@ const routes = [
     collapse: true,
     name: "Utility",
     icon: "ni ni-settings text-info",
-    state: "tablesCollapse",
+    state: "formsCollapse",
     views: [
       {
         path: "/utility/services",
